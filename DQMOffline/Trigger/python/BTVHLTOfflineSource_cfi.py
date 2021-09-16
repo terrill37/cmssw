@@ -36,17 +36,25 @@ BTVHLTOfflineSource = DQMEDAnalyzer("BTVHLTOfflineSource",
             pathtype = cms.string("PF"),
         ),
         cms.PSet(
-            pathname = cms.string("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5_v"),
-            pathtype = cms.string("Calo"),
+            pathname = cms.string("HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71_v"),
+            pathtype = cms.string("Calo")
         ),
         cms.PSet(
-            pathname = cms.string("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v"),
-            pathtype = cms.string("PF"),
+            pathname = cms.string("HLT_DoublePFJets40_CaloBTagDeepCSV_p71_v"),
+            pathtype = cms.string("PF")
         ),
-        cms.PSet(
-            pathname = cms.string("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v"),
-            pathtype = cms.string("Calo"),
-        ),
+        #cms.PSet(
+        #    pathname = cms.string("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5_v"),
+        #    pathtype = cms.string("Calo"),
+        #),
+        #cms.PSet(
+        #    pathname = cms.string("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v"),
+        #    pathtype = cms.string("PF"),
+        #),
+        #cms.PSet(
+        #    pathname = cms.string("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v"),
+        #    pathtype = cms.string("Calo"),
+        #),
     ),
 )
 
@@ -60,44 +68,63 @@ referenceTracksForHLTBTag = cms.EDFilter('TrackSelector',
     cut = cms.string("quality('highPurity')")
 )
 
-bTagHLTTrackMonitoring_EmuCalo = trackToTrackComparisonHists.clone()
-bTagHLTTrackMonitoring_EmuCalo.dzWRTPvCut               = cms.double(0.1)
-bTagHLTTrackMonitoring_EmuCalo.monitoredTrack           = cms.InputTag("hltMergedTracksForBTag")
-bTagHLTTrackMonitoring_EmuCalo.referenceTrack           = cms.InputTag("referenceTracksForHLTBTag")
-bTagHLTTrackMonitoring_EmuCalo.monitoredBeamSpot        = cms.InputTag("hltOnlineBeamSpot")
-bTagHLTTrackMonitoring_EmuCalo.referenceBeamSpot        = cms.InputTag("offlineBeamSpot")
-bTagHLTTrackMonitoring_EmuCalo.topDirName               = cms.string("HLT/BTV/HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5Calo")
-bTagHLTTrackMonitoring_EmuCalo.referencePrimaryVertices = cms.InputTag("offlinePrimaryVertices")
-bTagHLTTrackMonitoring_EmuCalo.monitoredPrimaryVertices = cms.InputTag("hltVerticesL3")
-bTagHLTTrackMonitoring_EmuCalo.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5*")
-
-bTagHLTTrackMonitoring_SixJetCalo = bTagHLTTrackMonitoring_EmuCalo.clone()
-bTagHLTTrackMonitoring_SixJetCalo.topDirName               = cms.string("HLT/BTV/HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94PF")
-bTagHLTTrackMonitoring_SixJetCalo.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v*")
-
-
-bTagHLTTrackMonitoring_EmuPF = bTagHLTTrackMonitoring_EmuCalo.clone()
+bTagHLTTrackMonitoring_EmuPF = trackToTrackComparisonHists.clone()
+bTagHLTTrackMonitoring_EmuPF.dzWRTPvCut               = cms.double(0.1)
 bTagHLTTrackMonitoring_EmuPF.monitoredTrack           = cms.InputTag("hltMergedTracks")
-bTagHLTTrackMonitoring_EmuPF.monitoredPrimaryVertices = cms.InputTag("hltVerticesPFSelector")
+bTagHLTTrackMonitoring_EmuPF.referenceTrack           = cms.InputTag("referenceTracksForHLTBTag")
+bTagHLTTrackMonitoring_EmuPF.monitoredBeamSpot        = cms.InputTag("hltOnlineBeamSpot")
+bTagHLTTrackMonitoring_EmuPF.referenceBeamSpot        = cms.InputTag("offlineBeamSpot")
 bTagHLTTrackMonitoring_EmuPF.topDirName               = cms.string("HLT/BTV/HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5PF")
+bTagHLTTrackMonitoring_EmuPF.referencePrimaryVertices = cms.InputTag("offlinePrimaryVertices")
+bTagHLTTrackMonitoring_EmuPF.monitoredPrimaryVertices = cms.InputTag("hltVerticesPFSelector")
 bTagHLTTrackMonitoring_EmuPF.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5*")
 
+bTagHLTTrackMonitoring_CaloDeepCSV = bTagHLTTrackMonitoring_EmuPF.clone()
+bTagHLTTrackMonitoring_CaloDeepCSV.topDirName = cms.string("HLT/BTV/HLT_DoublePFJets40_CaloBTagDeepCSV_p71PF")
+bTagHLTTrackMonitoring_CaloDeepCSV.genericTriggerEventPSet.hltPaths = cms.string("HLT_DoublePFJets40_CaloBTagDeepCSV_p71_v*")
+bTagHLTTrackMonitoring_CaloDeepCSV.monitoredTrack = cms.InputTag("hltMergedTracksForBTag")
+bTagHLTTrackMonitoring_CaloDeepCSV.monitoredPrimaryVertices = cms.InputTag("hltVerticesL3")
 
-bTagHLTTrackMonitoring_SixJetPF = bTagHLTTrackMonitoring_EmuPF.clone()
-bTagHLTTrackMonitoring_SixJetPF.monitoredTrack           = cms.InputTag("hltMergedTracks")
-bTagHLTTrackMonitoring_SixJetPF.monitoredPrimaryVertices = cms.InputTag("hltVerticesPFSelector")
-bTagHLTTrackMonitoring_SixJetPF.topDirName               = cms.string("HLT/BTV/HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94PF")
-bTagHLTTrackMonitoring_SixJetPF.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v*")
+bTagHLTTrackMonitoring_Mu12CaloDeepCSV = bTagHLTTrackMonitoring_CaloDeepCSV.clone()
+bTagHLTTrackMonitoring_Mu12CaloDeepCSV.topDirName = cms.string("HLT/BTV/HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71PF")
+bTagHLTTrackMonitoring_Mu12CaloDeepCSV.genericTriggerEventPSet.hltPaths = cms.string("HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71_v*")
+
+#bTagHLTTrackMonitoring_EmuCalo = trackToTrackComparisonHists.clone()
+#bTagHLTTrackMonitoring_EmuCalo.monitoredTrack           = cms.InputTag("hltMergedTracksForBTag")
+#bTagHLTTrackMonitoring_EmuCalo.topDirName               = cms.string("HLT/BTV/HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5Calo")
+#bTagHLTTrackMonitoring_EmuCalo.monitoredPrimaryVertices = cms.InputTag("hltVerticesL3")
+#bTagHLTTrackMonitoring_EmuCalo.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5*")
+
+
+#bTagHLTTrackMonitoring_SixJetCalo = bTagHLTTrackMonitoring_EmuCalo.clone()
+#bTagHLTTrackMonitoring_SixJetCalo.topDirName               = cms.string("HLT/BTV/HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94PF")
+#bTagHLTTrackMonitoring_SixJetCalo.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v*")
+
+
+#bTagHLTTrackMonitoring_EmuPF = bTagHLTTrackMonitoring_EmuCalo.clone()
+#bTagHLTTrackMonitoring_EmuPF.monitoredTrack           = cms.InputTag("hltMergedTracks")
+#bTagHLTTrackMonitoring_EmuPF.monitoredPrimaryVertices = cms.InputTag("hltVerticesPFSelector")
+#bTagHLTTrackMonitoring_EmuPF.topDirName               = cms.string("HLT/BTV/HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5PF")
+#bTagHLTTrackMonitoring_EmuPF.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5*")
+
+
+#bTagHLTTrackMonitoring_SixJetPF = bTagHLTTrackMonitoring_EmuPF.clone()
+#bTagHLTTrackMonitoring_SixJetPF.monitoredTrack           = cms.InputTag("hltMergedTracks")
+#bTagHLTTrackMonitoring_SixJetPF.monitoredPrimaryVertices = cms.InputTag("hltVerticesPFSelector")
+#bTagHLTTrackMonitoring_SixJetPF.topDirName               = cms.string("HLT/BTV/HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94PF")
+#bTagHLTTrackMonitoring_SixJetPF.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_PFHT400_SixPFJet32_DoublePFBTagDeepCSV_2p94_v*")
 
 
 
 
 bTagHLTTrackMonitoringSequence = cms.Sequence(
     cms.ignore(referenceTracksForHLTBTag)
-    + bTagHLTTrackMonitoring_EmuCalo
-    + bTagHLTTrackMonitoring_SixJetCalo
+    + bTagHLTTrackMonitoring_CaloDeepCSV
+    + bTagHLTTrackMonitoring_Mu12CaloDeepCSV
+    #+ bTagHLTTrackMonitoring_EmuCalo
+    #+ bTagHLTTrackMonitoring_SixJetCalo
     + bTagHLTTrackMonitoring_EmuPF
-    + bTagHLTTrackMonitoring_SixJetPF
+    #+ bTagHLTTrackMonitoring_SixJetPF
 )
 
 
