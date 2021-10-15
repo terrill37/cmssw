@@ -41,7 +41,7 @@ BTVHLTOfflineSource = DQMEDAnalyzer("BTVHLTOfflineSource",
         ),
         cms.PSet(
             pathname = cms.string("HLT_DoublePFJets40_CaloBTagDeepCSV_p71_v"),
-            pathtype = cms.string("PF")
+            pathtype = cms.string("Calo")
         ),
         #cms.PSet(
         #    pathname = cms.string("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_CaloDiJet30_CaloBtagDeepCSV_1p5_v"),
@@ -80,14 +80,14 @@ bTagHLTTrackMonitoring_EmuPF.monitoredPrimaryVertices = cms.InputTag("hltVertice
 bTagHLTTrackMonitoring_EmuPF.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5*")
 
 bTagHLTTrackMonitoring_CaloDeepCSV = bTagHLTTrackMonitoring_EmuPF.clone()
-bTagHLTTrackMonitoring_CaloDeepCSV.topDirName = cms.string("HLT/BTV/HLT_DoublePFJets40_CaloBTagDeepCSV_p71PF")
-bTagHLTTrackMonitoring_CaloDeepCSV.genericTriggerEventPSet.hltPaths = cms.string("HLT_DoublePFJets40_CaloBTagDeepCSV_p71_v*")
+bTagHLTTrackMonitoring_CaloDeepCSV.topDirName = cms.string("HLT/BTV/HLT_DoublePFJets40_CaloBTagDeepCSV_p71Calo")
+bTagHLTTrackMonitoring_CaloDeepCSV.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_DoublePFJets40_CaloBTagDeepCSV_p71*")
 bTagHLTTrackMonitoring_CaloDeepCSV.monitoredTrack = cms.InputTag("hltMergedTracksForBTag")
 bTagHLTTrackMonitoring_CaloDeepCSV.monitoredPrimaryVertices = cms.InputTag("hltVerticesL3")
 
 bTagHLTTrackMonitoring_Mu12CaloDeepCSV = bTagHLTTrackMonitoring_CaloDeepCSV.clone()
-bTagHLTTrackMonitoring_Mu12CaloDeepCSV.topDirName = cms.string("HLT/BTV/HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71PF")
-bTagHLTTrackMonitoring_Mu12CaloDeepCSV.genericTriggerEventPSet.hltPaths = cms.string("HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71_v*")
+bTagHLTTrackMonitoring_Mu12CaloDeepCSV.topDirName = cms.string("HLT/BTV/HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71Calo")
+bTagHLTTrackMonitoring_Mu12CaloDeepCSV.genericTriggerEventPSet.hltPaths = cms.vstring("HLT_Mu12_DoublePFJets40_CaloBTagDeepCSV_p71*")
 
 #bTagHLTTrackMonitoring_EmuCalo = trackToTrackComparisonHists.clone()
 #bTagHLTTrackMonitoring_EmuCalo.monitoredTrack           = cms.InputTag("hltMergedTracksForBTag")
@@ -119,11 +119,13 @@ bTagHLTTrackMonitoring_Mu12CaloDeepCSV.genericTriggerEventPSet.hltPaths = cms.st
 
 bTagHLTTrackMonitoringSequence = cms.Sequence(
     cms.ignore(referenceTracksForHLTBTag)
-    + bTagHLTTrackMonitoring_CaloDeepCSV
-    + bTagHLTTrackMonitoring_Mu12CaloDeepCSV
+    #+ bTagHLTTrackMonitoring_CaloDeepCSV
+    #+ bTagHLTTrackMonitoring_Mu12CaloDeepCSV
     #+ bTagHLTTrackMonitoring_EmuCalo
     #+ bTagHLTTrackMonitoring_SixJetCalo
     + bTagHLTTrackMonitoring_EmuPF
+    + bTagHLTTrackMonitoring_CaloDeepCSV
+    + bTagHLTTrackMonitoring_Mu12CaloDeepCSV
     #+ bTagHLTTrackMonitoring_SixJetPF
 )
 
