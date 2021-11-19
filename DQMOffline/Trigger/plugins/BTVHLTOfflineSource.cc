@@ -517,7 +517,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
           v.PVz_HLTMinusRECO->Fill(VertexHandler->begin()->z() - offlineVertexHandler->begin()->z());
         }
       }
-    }  // caloTagsValid
+    }  // caloTagsValid or PFTagsValid
 
     // specific to Calo b-tagging
     if (caloTags.isValid() && v.getTriggerType() == "Calo" && !caloTags->empty()) {
@@ -739,7 +739,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
     //     }
     //   }
     // }
-  }
+  } //end paths loop
 }
 
 std::vector<const reco::Track*> BTVHLTOfflineSource::getOfflineBTagTracks(float hltJetEta,
