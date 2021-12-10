@@ -110,6 +110,41 @@ private:
   // for the tag and probe
   MonitorElement* h_nElectrons = nullptr;
   MonitorElement* h_nMuons = nullptr;
+  MonitorElement* h_nJets = nullptr;
+  MonitorElement* h_btagVal = nullptr;
+  MonitorElement* h_btagVal2 = nullptr;
+  
+  // new for tnp
+  ObjME jetNSecondaryVertices_;
+  ObjME jet_pt_;
+  ObjME jet_eta_;
+  ObjME trackSumJetEtRatio_;
+  ObjME trackSip2dValAboveCharm_;
+  ObjME trackSip2dSigAboveCharm_;
+  ObjME trackSip3dValAboveCharm_;
+  ObjME trackSip3dSigAboveCharm_;
+  ObjME jetNTracksEtaRel_;
+  ObjME jetNSelectedTracks_;
+  ObjME vertexCategory_;
+  ObjME trackSumJetDeltaR_;
+
+  ObjME trackJetDistVal_;
+  ObjME trackPtRel_;
+  ObjME trackDeltaR_;
+  ObjME trackPtRatio_;
+  ObjME trackSip3dSig_;
+  ObjME trackSip2dSig_;
+  ObjME trackDecayLenVal_;
+  ObjME trackEtaRek_;
+
+  ObjME vertexMass_;
+  ObjME vertexNTracks_;
+  ObjME vertexEnergyRatio_;
+  ObjME vertexJetDeltaR_;
+  ObjME flightDistance2dVal_;
+  ObjME flightDistance3dVal_;
+  ObjME flightDistance2dSig_;
+  ObjME flightDistance3dSig_;
 
   ObjME metME_;
   ObjME metME_variableBinning_;
@@ -432,8 +467,43 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   histname = "nMuons";
   title = "number of muons";
   h_nMuons = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+ 
+  histname = "nJets";
+  title = "number of jets";
+  h_nJets = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
   
+  histname = "btagVal";
+  title = "btagVal";
+  h_btagVal = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 1);
   
+  histname = "btagVal2";
+  title = "btagVal";
+  h_btagVal2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 1);
+
+  histname = "jetNSecondaryVertices";
+  title = "jetNSecondaryVertices";
+  bookME(ibooker,
+         jetNSecondaryVertices_,
+         histname, title, 
+         10, -0.5, 9.5);
+  setMETitle(jetNSecondaryVertices_, "jetNSecondaryVertices", "Entries");
+
+  histname = "jet_pt";
+  title = "jet p_{T}";
+  bookME(ibooker,
+         jet_pt_,
+         histname, title,
+         100, -0.1, 100.);
+  setMETitle(jet_pt_, "jet pt", "Entries");
+
+  histname = "jet_eta";
+  title = "jet #eta";
+  bookME(ibooker,
+         jet_eta_,
+         histname, title,
+         100, -2.5, 2.5);
+  setMETitle(jet_eta_, "#eta", "Entries");
+
 
   if (nmuons_ > 0) {
     histname = "muVsLS";
@@ -854,7 +924,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   std::vector<reco::GsfElectron> electrons;
   unsigned int nElectrons = 0;
   if (nelectrons_ > 0) {
-    if (eleHandle->size() < nelectrons_) {
+    if (eleHandle->size() < nelectrons_) { // this is why n_electrons must be at least '1'
       return;
     }
     
@@ -881,8 +951,10 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     }
 
   }
-  h_nElectrons->Fill(nElectrons);
+  //have a debug
+  //cout<<"nelectrons_: "<<nelectrons_<<" nElectrons: "<<nElectrons<<endl;
 
+  
   edm::Handle<reco::MuonCollection> muoHandle;
   iEvent.getByToken(muoToken_, muoHandle);
   if (!muoHandle.isValid() && nmuons_ > 0) {
@@ -896,7 +968,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   
   unsigned int nMuons = 0;
   std::vector<reco::Muon> muons;
-  if (nmuons_ > 0) {
+  if (nmuons_ > 0) { // need nmuons_ at least be '1'
     for (auto const& m : *muoHandle) {
       if (muoSelection_(m)) {
         muons.push_back(m);
@@ -913,19 +985,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       return;
     }
   }
-  h_nMuons->Fill(nMuons);
-
-  //double mll(-2);
-  //if (nmuons_ > 1) {
-  //  mll = (muons[0].p4() + muons[1].p4()).M();
-
-  //  if ((invMassUppercut_ > -1) && (invMassLowercut_ > -1) && ((mll > invMassUppercut_) || (mll < invMassLowercut_))) {
-  //    return;
-  //  }
-  //  if (opsign_ && (muons[0].charge() == muons[1].charge())) {
-  //    return;
-  //  }
-  //} 
+  //cout<<"nmuons_: "<<nmuons_<<" nMuons: "<<nMuons<<endl; 
 
   double eventHT(0.);
   math::XYZTLorentzVector eventMHT(0., 0., 0., 0.);
@@ -938,7 +998,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     return;
   }
   std::vector<reco::PFJet> jets;
-  if (njets_ > 0) {
+  if (njets_ > 0) { // need at least njets of '1' 
     if (jetHandle->size() < njets_)
       return;
     for (auto const& j : *jetHandle) {
@@ -960,7 +1020,8 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
           }
         }
         if (isJetOverlappedWithLepton)
-          continue;
+          continue; // skip to next jet if overlapped with a lepton
+
         //check if jet overlapped with electron
         if (nelectrons_ > 0) {
           for (auto const& e : electrons) {
@@ -971,31 +1032,31 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
           }
         }
         if (isJetOverlappedWithLepton)
-          continue;
-        jets.push_back(j);
+          continue; // skip to next jet if overlapped with a lepton
+        jets.push_back(j); // keep jet if not overlapped with lepton
       }
     }
-    if (jets.size() < njets_)
+    if (jets.size() < njets_) // not enough jets
       return;
-  }
+  } 
+  
+  unsigned int nJets = jets.size();
+  
+  cout<<"njets_: "<<njets_<<" nJets: "<<nJets<<endl;
 
-  if (eventHT < HTcut_) {
-    return;
-  }
-
-  if ((MHTcut_ > 0) && (eventMHT.pt() < MHTcut_)) {
-    return;
-  }
-
+  //remove below (don't need di-muon mass)
   bool allpairs = false;
   if (nmuons_ > 2) {
     double mumu_mass;
-    for (unsigned int idx = 0; idx < muons.size(); idx++) {
-      for (unsigned int idx2 = idx + 1; idx2 < muons.size(); idx2++) {
-        //compute inv mass of two different leptons
+    // loop through muon list starting at first muon
+    for (unsigned int idx = 0; idx < muons.size(); idx++) { 
+      // loop through muon list beginning with next muon
+      for (unsigned int idx2 = idx + 1; idx2 < muons.size(); idx2++) { 
+        //compute inv mass of two different leptons (muons)
         mumu_mass = (muons[idx2].p4() + muons[idx2].p4()).M();
+        // check mumu mass falls in specified range
         if (mumu_mass < invMassLowercut_ || mumu_mass > invMassUppercut_)
-          allpairs = true;
+          allpairs = true; // failed mll range
       }
     }
   }
@@ -1004,12 +1065,14 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     return;
   }
 
-  JetTagMap bjets;
+  JetTagMap bjets; // bTagged jets
 
-  if (nbjets_ > 0) {
+  //if (nbjets_ > 0) {
+  if (true){  
     // map of Jet,btagValues (for all jets passing bJetSelection_)
     //  - btagValue of each jet is calculated as sum of values from InputTags in jetTagTokens_
     JetTagMap allJetBTagVals;
+    cout<<"nbjets_: "<<nbjets_<<endl;
 
     for (const auto& jetTagToken : jetTagTokens_) {
       edm::Handle<reco::JetTagCollection> bjetHandle;
@@ -1022,38 +1085,48 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       const reco::JetTagCollection& bTags = *(bjetHandle.product());
 
       for (const auto& i_jetTag : bTags) {
-        const auto& jetRef = i_jetTag.first;
+        const auto& jetRef = i_jetTag.first; // where jet that is tagged exists
 
         if (not bjetSelection_(*dynamic_cast<const reco::Jet*>(jetRef.get()))) {
           continue;
         }
 
-        const auto btagVal = i_jetTag.second;
+        const auto btagVal = i_jetTag.second; // bTagVal exists
+        h_btagVal->Fill(btagVal);
 
-        if (not std::isfinite(btagVal)) {
+        if (not std::isfinite(btagVal)) { // checks bTagVal exists
           continue;
         }
 
         if (allJetBTagVals.find(jetRef) != allJetBTagVals.end()) {
-          allJetBTagVals.at(jetRef) += btagVal;
-        } else {
+          allJetBTagVals.at(jetRef) += btagVal; // add bjet tagVal to map
+        } 
+        else {
           allJetBTagVals.insert(JetTagMap::value_type(jetRef, btagVal));
         }
       }
     }
 
     for (const auto& jetBTagVal : allJetBTagVals) {
-      if (jetBTagVal.second < workingpoint_) {
+      /*if (jetBTagVal.second < workingpoint_) { //check if passing btag
+        cout<<"working point: "<<workingpoint_<<endl;
         continue;
-      }
+      }*/
 
       bjets.insert(JetTagMap::value_type(jetBTagVal.first, jetBTagVal.second));
     }
-
+    
+    
     if (bjets.size() < nbjets_) {
       return;
     }
   }
+  
+  //if(bjets.size() < 1){ // need at least one bjet in event
+  //  return;
+  //}
+  unsigned int nbJets = bjets.size();
+  
 
   if (nbjets_ > 1) {
     double deltaEta = std::abs(bjets.begin()->first->eta() - (++bjets.begin())->first->eta());
@@ -1061,6 +1134,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       return;
   }
 
+  // look for muon in bjet
   if ((nbjets_ > 0) && (nmuons_ > 0)) {
     bool foundMuonInsideJet = false;
     for (auto const& bjet : bjets) {
@@ -1075,68 +1149,72 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
         break;
     }
 
-    if (!foundMuonInsideJet)
+    if (!foundMuonInsideJet) // if no muon in bjet exit
       return;
   }
 
-  const int ls = iEvent.id().luminosityBlock();
+  // Event selection
+  //h_nElectrons->Fill(nElectrons); //FIXME 
+  
+  if(nElectrons!=1) return;
+  if(nMuons!=1) return;
+  //if(nJets<2) return;
+  //if(nbJets<1) return;
+  
+  h_nElectrons->Fill(nElectrons); //Fill electron counter
+  h_nMuons->Fill(nMuons); //Fill muon counter
+  h_nJets->Fill(nJets); //Fill jet counter
+
+  std::cout<<"nElectrons: "<<nElectrons<<endl;
+  std::cout<<"nMuons: "<<nMuons<<endl;
+  std::cout<<"nJets: "<<nJets<<endl;
+  std::cout<<"nbJets: "<<nbJets<<endl<<endl;
 
   // numerator condition
-  const bool trg_passed = (num_genTriggerEventFlag_->on() && num_genTriggerEventFlag_->accept(iEvent, iSetup));
- 
-  if (HTcut_ > 0) {
-    eventHT_.fill(trg_passed, eventHT);
-    eventHT_variableBinning_.fill(trg_passed, eventHT);
-    htVsLS_.fill(trg_passed, ls, eventHT);
-  }
-  //george
-  if (MHTcut_ > 0) {
-    eventMHT_.fill(trg_passed, eventMHT.pt());
-    eventMHT_variableBinning_.fill(trg_passed, eventMHT.pt());
-  }
+  // modify this condition for Tag and probe
+  const bool trg_passed = (num_genTriggerEventFlag_->on() && num_genTriggerEventFlag_->accept(iEvent, iSetup)); 
+  // bool isBjet;
+  unsigned int index=0;
+  for(auto& jet1: bjets){
+    bool probe_pass = false;
+    unsigned int jindex=0;
+    for(auto& jet2: bjets){
+      if(jindex==index){ // check if same jet
+        jindex++;
+        continue;
+      }
+      jindex++;
 
-  if (njets_ > 0) {
-    jetMulti_.fill(trg_passed, jets.size());
-    jetEtaPhi_HEP17_.fill(trg_passed, jets.at(0).eta(), jets.at(0).phi());  // for HEP17 monitorning
-    jetVsLS_.fill(trg_passed, ls, jets.at(0).pt());
-  } 
-
-  // Marina
-  if (nbjets_ > 0) {
-    bjetMulti_.fill(trg_passed, bjets.size());
-    bjetVsLS_.fill(trg_passed, ls, bjets.begin()->first->pt());
-  }
-
-  //if (nmuons_ > 0) {
-  //  muMulti_.fill(trg_passed, muons.size());
-  //  muVsLS_.fill(trg_passed, ls, muons.at(0).pt());
-  //  if (nmuons_ > 1) {
-  //    mu1Pt_mu2Pt_.fill(trg_passed, muons.at(0).pt(), muons.at(1).pt());
-  //    mu1Eta_mu2Eta_.fill(trg_passed, muons.at(0).eta(), muons.at(1).eta());
-  //    invMass_mumu_.fill(trg_passed, mll);
-  //    invMass_mumu_variableBinning_.fill(trg_passed, mll);
-  //  }
-  //  if (njets_ > 0) {
-  //    DeltaR_jet_Mu_.fill(trg_passed, deltaR(jets.at(0), muons.at(0)));
-  //  }
-  //}
-
-  if (nelectrons_ > 0) {
-    eleMulti_.fill(trg_passed, electrons.size());
-    eleVsLS_.fill(trg_passed, ls, electrons.at(0).pt());
-    if (HTcut_ > 0)
-      elePt_eventHT_.fill(trg_passed, electrons.at(0).pt(), eventHT);
-    if (njets_ > 0)
-      elePt_jetPt_.fill(trg_passed, electrons.at(0).pt(), jets.at(0).pt());
-    if (nmuons_ > 0) {
-      elePt_muPt_.fill(trg_passed, electrons.at(0).pt(), muons.at(0).pt());
-      eleEta_muEta_.fill(trg_passed, electrons.at(0).eta(), muons.at(0).eta());
+      if (jet2.second >= workingpoint_){// check if passing btag
+        probe_pass = true;
+        h_btagVal2->Fill(jet2.second);
+        break;
+      }
+      //h_btagVal2->Fill(jet2.second);  
+      /*for(auto& bjet: bjets){
+        double dR = deltaR(*bjet.first, jets.at(jindex));
+        if(dR<=0.2){ // check if other jet is bjet
+          cout<<"jet deltaR: "<<dR<<endl;
+          cout<<"jet: "<<jets.at(jindex).pt()<<" "<<jets.at(jindex).eta()<<" "<<jets.at(jindex).phi()<<endl;
+          cout<<"bjet: "<<bjet.first->pt()<<" "<<bjet.first->eta()<<" "<<bjet.first->phi()<<endl<<endl;
+          isBjet=true;
+          break;
+        }
+      }
+      
+      if(isBjet){
+        probe_pass = true;
+        break;
+      }*/
     }
-    if (nelectrons_ > 1) {
-      ele1Pt_ele2Pt_.fill(trg_passed, electrons.at(0).pt(), electrons.at(1).pt());
-      ele1Eta_ele2Eta_.fill(trg_passed, electrons.at(0).eta(), electrons.at(1).eta());
-    }
+    //h_btagVal2->Fill(jet1.second);
+    
+    // fill plots for probe
+    jet_pt_.fill(probe_pass, jet1.first->pt()); 
+    jet_eta_.fill(probe_pass, jet1.first->eta());
+    index++;
   }
+
 
   for (unsigned int iMu = 0; iMu < muons.size(); ++iMu) {
     if (iMu >= nmuons_)
@@ -1164,7 +1242,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   for (unsigned int iJet = 0; iJet < jets.size(); ++iJet) {
     if (iJet >= njets_)
       break;
-    jetPhi_.at(iJet).fill(trg_passed, jets.at(iJet).phi());
+    jetPhi_.at(iJet).fill(trg_passed, jets.at(iJet).phi()); // by jet in event
     jetEta_.at(iJet).fill(trg_passed, jets.at(iJet).eta());
     jetPt_.at(iJet).fill(trg_passed, jets.at(iJet).pt());
     jetEta_variableBinning_.at(iJet).fill(trg_passed, jets.at(iJet).eta());

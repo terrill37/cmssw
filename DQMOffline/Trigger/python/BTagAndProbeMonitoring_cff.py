@@ -12,9 +12,10 @@ from Configuration.Eras.Modifier_run2_HLTconditions_2016_cff import run2_HLTcond
 
 BTagAndProbeJet_jet = BTagAndProbeMonitoring.clone()
 BTagAndProbeJet_jet.FolderName = cms.string('HLT/BTV/EleJet/JetMonitor')
-BTagAndProbeJet_jet.nmuons = cms.uint32(0)
+BTagAndProbeJet_jet.nmuons = cms.uint32(1)
 BTagAndProbeJet_jet.nelectrons = cms.uint32(1)
 BTagAndProbeJet_jet.njets = cms.uint32(1)
+BTagAndProbeJet_jet.nbjets = cms.uint32(1)
 BTagAndProbeJet_jet.eleSelection = cms.string('pt>50 & abs(eta)<2.1')
 BTagAndProbeJet_jet.jetSelection = cms.string('pt>30 & abs(eta)<2.4')
 BTagAndProbeJet_jet.histoPSet.eleEtaBinning = cms.vdouble(-2.1,-1.5,-0.9,-0.6,-0.3,-0.1,0,0.1,0.3,0.6,0.9,1.5,2.1)
@@ -23,17 +24,22 @@ BTagAndProbeJet_jet.histoPSet.elePtBinning = cms.vdouble(0,50,60,80,120,200,400)
 BTagAndProbeJet_jet.histoPSet.elePtBinning2D = cms.vdouble(0,50,70,120,200,400)
 BTagAndProbeJet_jet.histoPSet.jetPtBinning = cms.vdouble(0,30,35,37.5,40,50,60,80,120,200,400)
 BTagAndProbeJet_jet.histoPSet.jetPtBinning2D = cms.vdouble(0,30,35,40,50,60,80,100,200,400)
-BTagAndProbeJet_jet.numGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v*')
-BTagAndProbeJet_jet.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele35_WPTight_Gsf_v*',
-                                                                'HLT_Ele38_WPTight_Gsf_v*',
-                                                                'HLT_Ele40_WPTight_Gsf_v*',)
+BTagAndProbeJet_jet.numGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5*')
+BTagAndProbeJet_jet.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5*')
+
+#BTagAndProbeJet_jet.numGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v*')
+#BTagAndProbeJet_jet.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele35_WPTight_Gsf_v*',
+#                                                                'HLT_Ele38_WPTight_Gsf_v*',
+#                                                                'HLT_Ele40_WPTight_Gsf_v*',)
+
 ### ---
 
 BTagAndProbeJet_ele = BTagAndProbeMonitoring.clone()
 BTagAndProbeJet_ele.FolderName = cms.string('HLT/BTV/EleJet/ElectronMonitor')
-BTagAndProbeJet_ele.nmuons = cms.uint32(0)
+BTagAndProbeJet_ele.nmuons = cms.uint32(1)
 BTagAndProbeJet_ele.nelectrons = cms.uint32(1)
 BTagAndProbeJet_ele.njets = cms.uint32(1)
+BTagAndProbeJet_ele.nbjets = cms.uint32(1)
 BTagAndProbeJet_ele.eleSelection = cms.string('pt>25 & abs(eta)<2.1')
 BTagAndProbeJet_ele.jetSelection = cms.string('pt>50 & abs(eta)<2.4')
 BTagAndProbeJet_ele.histoPSet.eleEtaBinning = cms.vdouble(-2.1,-1.5,-0.9,-0.6,-0.3,-0.1,0,0.1,0.3,0.6,0.9,1.5,2.1)
@@ -56,9 +62,10 @@ BTagAndProbeJet_ele.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_PFJet
 ### ---
 BTagAndProbeJet_all = BTagAndProbeMonitoring.clone()
 BTagAndProbeJet_all.FolderName = cms.string('HLT/BTV/EleJet/GlobalMonitor')
-BTagAndProbeJet_all.nmuons = cms.uint32(0)
+BTagAndProbeJet_all.nmuons = cms.uint32(1)
 BTagAndProbeJet_all.nelectrons = cms.uint32(1)
 BTagAndProbeJet_all.njets = cms.uint32(1)
+BTagAndProbeJet_all.nbjets = cms.uint32(1)
 BTagAndProbeJet_all.eleSelection = cms.string('pt>25 & abs(eta)<2.1')
 BTagAndProbeJet_all.jetSelection = cms.string('pt>30 & abs(eta)<2.4')
 BTagAndProbeJet_all.histoPSet.eleEtaBinning = cms.vdouble(-2.1,-1.5,-0.9,-0.6,-0.3,-0.1,0,0.1,0.3,0.6,0.9,1.5,2.1)
@@ -76,9 +83,10 @@ BTagAndProbeJet_all.numGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele30
 
 BTagAndProbeHT_ht = BTagAndProbeMonitoring.clone()
 BTagAndProbeHT_ht.FolderName = cms.string('HLT/BTV/EleHT/HTMonitor')
-BTagAndProbeHT_ht.nmuons = cms.uint32(0)
+BTagAndProbeHT_ht.nmuons = cms.uint32(1)
 BTagAndProbeHT_ht.nelectrons = cms.uint32(1)
-BTagAndProbeHT_ht.njets = cms.uint32(2)
+BTagAndProbeHT_ht.njets = cms.uint32(1)
+BTagAndProbeHT_ht.nbjets = cms.uint32(1)
 BTagAndProbeHT_ht.eleSelection = cms.string('pt>50 & abs(eta)<2.1')
 BTagAndProbeHT_ht.jetSelection = cms.string('pt>30 & abs(eta)<2.4')
 BTagAndProbeHT_ht.HTcut = cms.double(100)
@@ -99,11 +107,12 @@ BTagAndProbeHT_ht.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele35_W
 
 BTagAndProbeHT_ele = BTagAndProbeMonitoring.clone()
 BTagAndProbeHT_ele.FolderName = cms.string('HLT/BTV/EleHT/ElectronMonitor')
-BTagAndProbeHT_ele.nmuons = cms.uint32(0)
+BTagAndProbeHT_ele.nmuons = cms.uint32(1)
 BTagAndProbeHT_ele.nelectrons = cms.uint32(1)
-BTagAndProbeHT_ele.njets = cms.uint32(2)
+BTagAndProbeHT_ele.njets = cms.uint32(1)
 BTagAndProbeHT_ele.eleSelection = cms.string('pt>25 & abs(eta)<2.1')
 BTagAndProbeHT_ele.jetSelection = cms.string('pt>30 & abs(eta)<2.4')
+BTagAndProbeHT_ele.nbjets = cms.uint32(1)
 BTagAndProbeHT_ele.HTcut = cms.double(200)
 BTagAndProbeHT_ele.histoPSet.eleEtaBinning = cms.vdouble(-2.1,-1.5,-0.9,-0.6,-0.3,-0.1,0,0.1,0.3,0.6,0.9,1.5,2.1)
 BTagAndProbeHT_ele.histoPSet.eleEtaBinning2D = cms.vdouble(-2.1,-1.5,-0.6,0,0.6,1.5,2.1)
@@ -127,9 +136,10 @@ BTagAndProbeHT_ele.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_PFHT25
 
 BTagAndProbeHT_all = BTagAndProbeMonitoring.clone()
 BTagAndProbeHT_all.FolderName = cms.string('HLT/BTV/EleHT/GlobalMonitor')
-BTagAndProbeHT_all.nmuons = cms.uint32(0)
+BTagAndProbeHT_all.nmuons = cms.uint32(1)
 BTagAndProbeHT_all.nelectrons = cms.uint32(1)
-BTagAndProbeHT_all.njets = cms.uint32(2)
+BTagAndProbeHT_all.njets = cms.uint32(1)
+BTagAndProbeHT_all.nbjets = cms.uint32(1)
 BTagAndProbeHT_all.eleSelection = cms.string('pt>25 & abs(eta)<2.1')
 BTagAndProbeHT_all.jetSelection = cms.string('pt>30 & abs(eta)<2.4')
 BTagAndProbeHT_all.HTcut = cms.double(100)

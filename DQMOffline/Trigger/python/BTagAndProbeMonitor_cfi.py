@@ -65,12 +65,12 @@ BTagAndProbeMonitoring.histoPSet.muPtBinning  = [0,5,10,20,30,40,50,70,100,200,4
 BTagAndProbeMonitoring.histoPSet.eleEtaBinning2D = [-2.5,-1.5,-0.6,0.,0.6,1.5,2.5]
 BTagAndProbeMonitoring.histoPSet.jetEtaBinning2D = [-2.5,-1.5,-0.6,0.,0.6,1.5,2.5]
 BTagAndProbeMonitoring.histoPSet.muEtaBinning2D  = [-2.5,-1.5,-0.6,0.,0.6,1.5,2.5]
-BTagAndProbeMonitoring.histoPSet.phoEtaBinning2D = [-2.5,-1.5,-0.6,0.,0.6,1.5,2.5]
+#BTagAndProbeMonitoring.histoPSet.phoEtaBinning2D = [-2.5,-1.5,-0.6,0.,0.6,1.5,2.5]
 # pt binning 2D
 BTagAndProbeMonitoring.histoPSet.elePtBinning2D = [0,20,30,50,100,200,400]
 BTagAndProbeMonitoring.histoPSet.jetPtBinning2D = [0,20,30,50,100,200,400]
 BTagAndProbeMonitoring.histoPSet.muPtBinning2D  = [0,20,30,50,100,200,400]
-BTagAndProbeMonitoring.histoPSet.phoPtBinning2D = [0,20,30,50,100,200,400]
+#BTagAndProbeMonitoring.histoPSet.phoPtBinning2D = [0,20,30,50,100,200,400]
 # HT and phi binning 2D
 BTagAndProbeMonitoring.histoPSet.HTBinning2D  = [0,20,40,70,100,150,200,400,700]
 BTagAndProbeMonitoring.histoPSet.phiBinning2D = [-3.1416,-1.8849,-0.6283,0.6283,1.8849,3.1416]
@@ -87,7 +87,7 @@ BTagAndProbeMonitoring.jets      = "ak4PFJetsCHS" # ak4PFJets, ak4PFJetsCHS, pfJ
 BTagAndProbeMonitoring.electrons = "gedGsfElectrons" # while pfIsolatedElectronsEI are reco::PFCandidate !
 BTagAndProbeMonitoring.elecID    = "egmGsfElectronIDsForDQM:cutBasedElectronID-Fall17-94X-V1-tight" #Electron ID
 BTagAndProbeMonitoring.muons     = "muons" # while pfIsolatedMuonsEI are reco::PFCandidate !
-BTagAndProbeMonitoring.photons   = "photons" # reco::Photon
+#BTagAndProbeMonitoring.photons   = "photons" # reco::Photon
 BTagAndProbeMonitoring.vertices  = "offlinePrimaryVertices"
 
 BTagAndProbeMonitoring.btagAlgos = ['pfDeepCSVJetTags:probb', 'pfDeepCSVJetTags:probbb']
