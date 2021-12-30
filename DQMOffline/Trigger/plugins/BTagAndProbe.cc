@@ -30,6 +30,7 @@
 #include "DQMOffline/Trigger/plugins/TriggerDQMBase.h"
 
 #include <string>
+//#include <TH1F.h>
 #include <vector>
 #include <memory>
 #include <map>
@@ -46,6 +47,8 @@ public:
 protected:
   void bookHistograms(DQMStore::IBooker&, edm::Run const&, edm::EventSetup const&) override;
   void analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup) override;
+  //void fillCutFlow(std::string cut) override;
+  //void AddCut(std::string) override;
 
   struct JetRefCompare {
     inline bool operator()(const edm::RefToBase<reco::Jet>& j1, const edm::RefToBase<reco::Jet>& j2) const {
@@ -108,12 +111,42 @@ private:
   std::vector<double> phi_variable_binning_2D_;
 
   // for the tag and probe
-  MonitorElement* h_nElectrons = nullptr;
-  MonitorElement* h_nMuons = nullptr;
+  MonitorElement* h_nElectrons1 = nullptr;
+  MonitorElement* h_nElectrons2 = nullptr;
+  MonitorElement* h_nElectrons3 = nullptr;
+  MonitorElement* h_nElectrons4 = nullptr;
+  MonitorElement* h_nElectrons5 = nullptr;
+  MonitorElement* h_nElectrons6 = nullptr;
+  MonitorElement* h_nElectrons7 = nullptr;
+
+  MonitorElement* h_nMuons1 = nullptr;
+  MonitorElement* h_nMuons2 = nullptr;
+  MonitorElement* h_nMuons3 = nullptr;
+  MonitorElement* h_nMuons4 = nullptr;
+  MonitorElement* h_nMuons5 = nullptr;
+  MonitorElement* h_nMuons6 = nullptr;
+  //MonitorElement* h_nMuons7 = nullptr;
+
   MonitorElement* h_nJets = nullptr;
   MonitorElement* h_btagVal = nullptr;
   MonitorElement* h_btagVal2 = nullptr;
   
+  MonitorElement* h_nJets1 = nullptr;
+  MonitorElement* h_nJets2 = nullptr;
+  MonitorElement* h_nJets3 = nullptr;
+  MonitorElement* h_nJets4 = nullptr;
+  MonitorElement* h_nJets5 = nullptr;
+  MonitorElement* h_nJets6 = nullptr;
+  MonitorElement* h_nJets7 = nullptr;
+  MonitorElement* h_nJets8 = nullptr;
+  MonitorElement* h_nJets9 = nullptr;
+  MonitorElement* h_nJets10 = nullptr;
+  MonitorElement* h_nJets11 = nullptr;
+  MonitorElement* h_nJets12 = nullptr;
+
+  MonitorElement* cutFlow = nullptr;
+  //TH1F* cutFlow;
+
   // new for tnp
   ObjME jetNSecondaryVertices_;
   ObjME jet_pt_;
@@ -460,18 +493,106 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   std::string currentFolder = folderName_;
   ibooker.setCurrentFolder(currentFolder);
     
-  histname = "nElectrons";
-  title = "number of electrons";
-  h_nElectrons = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+  histname = "nElectrons1";
+  title = "number of electrons1";
+  h_nElectrons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
   
-  histname = "nMuons";
-  title = "number of muons";
-  h_nMuons = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+  histname = "nElectrons2";
+  title = "number of electrons2";
+  h_nElectrons2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+  
+  histname = "nElectrons3";
+  title = "number of electrons3";
+  h_nElectrons3 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+  
+  histname = "nElectrons4";
+  title = "number of electrons4";
+  h_nElectrons4 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+  
+  histname = "nElectrons5";
+  title = "number of electrons5";
+  h_nElectrons5 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+  
+  histname = "nElectrons6";
+  title = "number of electrons6";
+  h_nElectrons6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+  
+  histname = "nElectrons7";
+  title = "number of electrons7";
+  h_nElectrons7 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+
+  histname = "nMuons1";
+  title = "number of muons1";
+  h_nMuons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
  
-  histname = "nJets";
-  title = "number of jets";
-  h_nJets = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+  histname = "nMuons2";
+  title = "number of muons2";
+  h_nMuons2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
   
+  histname = "nMuons3";
+  title = "number of muons3";
+  h_nMuons3 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+  
+  histname = "nMuons4";
+  title = "number of muons4";
+  h_nMuons4 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+  
+  histname = "nMuons5";
+  title = "number of muons5";
+  h_nMuons5 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+  
+  histname = "nMuons6";
+  title = "number of muons6";
+  h_nMuons6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+
+  histname = "nJets1";
+  title = "number of jets1";
+  h_nJets1 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets2";
+  title = "number of jets2";
+  h_nJets2 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+
+  histname = "nJets3";
+  title = "number of jets3";
+  h_nJets3 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets4";
+  title = "number of jets4";
+  h_nJets4 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets5";
+  title = "number of jets5";
+  h_nJets5 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+
+  histname = "nJets6";
+  title = "number of jets6";
+  h_nJets6 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+
+  histname = "nJets7";
+  title = "number of jets7";
+  h_nJets7 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets8";
+  title = "number of jets8";
+  h_nJets8 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets9";
+  title = "number of jets9";
+  h_nJets9 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets10";
+  title = "number of jets10";
+  h_nJets10 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets11";
+  title = "number of jets11";
+  h_nJets11 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  
+  histname = "nJets12";
+  title = "number of jets12";
+  h_nJets12 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+
   histname = "btagVal";
   title = "btagVal";
   h_btagVal = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 1);
@@ -479,6 +600,11 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   histname = "btagVal2";
   title = "btagVal";
   h_btagVal2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 1);
+  
+  histname = "cutFlow";
+  title = "cutFlow";
+  cutFlow = ibooker.book1D(histname.c_str(), title.c_str(), 20, 1, 21);
+  cutFlow->setBinLabel(1, "all");
 
   histname = "jetNSecondaryVertices";
   title = "jetNSecondaryVertices";
@@ -504,436 +630,496 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          100, -2.5, 2.5);
   setMETitle(jet_eta_, "#eta", "Entries");
 
+  histname = "nJets6";
+  title = "number of jets6";
+  h_nJets6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+//if (nmuons_ > 0) {
+  //  histname = "muVsLS";
+  //  histtitle = "muon pt vs LS";
+  //  bookME(ibooker,
+  //         muVsLS_,
+  //         histname,
+  //         histtitle,
+  //         ls_binning_.nbins,
+  //         ls_binning_.xmin,
+  //         ls_binning_.xmax,
+  //         pt_binning_.xmin,
+  //         pt_binning_.xmax);
+  //  setMETitle(muVsLS_, "LS", "muon pt [GeV]");
 
-  if (nmuons_ > 0) {
-    histname = "muVsLS";
-    histtitle = "muon pt vs LS";
-    bookME(ibooker,
-           muVsLS_,
-           histname,
-           histtitle,
-           ls_binning_.nbins,
-           ls_binning_.xmin,
-           ls_binning_.xmax,
-           pt_binning_.xmin,
-           pt_binning_.xmax);
-    setMETitle(muVsLS_, "LS", "muon pt [GeV]");
+  //  histname = "muMulti";
+  //  histtitle = "muon multiplicity";
+  //  bookME(ibooker, muMulti_, histname, histtitle, 6, -.5, 5.5);
+  //  setMETitle(muMulti_, "muon multiplicity", "events");
 
-    histname = "muMulti";
-    histtitle = "muon multiplicity";
-    bookME(ibooker, muMulti_, histname, histtitle, 6, -.5, 5.5);
-    setMETitle(muMulti_, "muon multiplicity", "events");
+  //  if (njets_ > 0) {
+  //    histname = "DeltaR_jet_Mu";
+  //    histtitle = "#DeltaR(jet,mu)";
+  //    bookME(ibooker, DeltaR_jet_Mu_, histname, histtitle, DR_binning_.nbins, DR_binning_.xmin, DR_binning_.xmax);
+  //    setMETitle(DeltaR_jet_Mu_, "#DeltaR(jet,mu)", "events");
+  //  }
+  //}
 
-    if (njets_ > 0) {
-      histname = "DeltaR_jet_Mu";
-      histtitle = "#DeltaR(jet,mu)";
-      bookME(ibooker, DeltaR_jet_Mu_, histname, histtitle, DR_binning_.nbins, DR_binning_.xmin, DR_binning_.xmax);
-      setMETitle(DeltaR_jet_Mu_, "#DeltaR(jet,mu)", "events");
-    }
-  }
+  //if (nelectrons_ > 0) {
+  //  histname = "eleVsLS";
+  //  histtitle = "electron pt vs LS";
+  //  bookME(ibooker,
+  //         eleVsLS_,
+  //         histname,
+  //         histtitle,
+  //         ls_binning_.nbins,
+  //         ls_binning_.xmin,
+  //         ls_binning_.xmax,
+  //         pt_binning_.xmin,
+  //         pt_binning_.xmax);
+  //  setMETitle(eleVsLS_, "LS", "electron pt [GeV]");
 
-  if (nelectrons_ > 0) {
-    histname = "eleVsLS";
-    histtitle = "electron pt vs LS";
-    bookME(ibooker,
-           eleVsLS_,
-           histname,
-           histtitle,
-           ls_binning_.nbins,
-           ls_binning_.xmin,
-           ls_binning_.xmax,
-           pt_binning_.xmin,
-           pt_binning_.xmax);
-    setMETitle(eleVsLS_, "LS", "electron pt [GeV]");
+  //  histname = "eleMulti";
+  //  histtitle = "electron multiplicity";
+  //  bookME(ibooker, eleMulti_, histname, histtitle, 6, -.5, 5.5);
+  //  setMETitle(eleMulti_, "electron multiplicity", "events");
 
-    histname = "eleMulti";
-    histtitle = "electron multiplicity";
-    bookME(ibooker, eleMulti_, histname, histtitle, 6, -.5, 5.5);
-    setMETitle(eleMulti_, "electron multiplicity", "events");
+  //  if (njets_ > 0) {
+  //    histname = "elePt_jetPt";
+  //    histtitle = "electron pt vs jet pt";
+  //    bookME(ibooker, elePt_jetPt_, histname, histtitle, elePt_variable_binning_2D_, jetPt_variable_binning_2D_);
+  //    setMETitle(elePt_jetPt_, "leading electron pt", "leading jet pt");
+  //  }
 
-    if (njets_ > 0) {
-      histname = "elePt_jetPt";
-      histtitle = "electron pt vs jet pt";
-      bookME(ibooker, elePt_jetPt_, histname, histtitle, elePt_variable_binning_2D_, jetPt_variable_binning_2D_);
-      setMETitle(elePt_jetPt_, "leading electron pt", "leading jet pt");
-    }
+  //  if (nmuons_ > 0) {
+  //    histname = "elePt_muPt";
+  //    histtitle = "electron pt vs muon pt";
+  //    bookME(ibooker, elePt_muPt_, histname, histtitle, elePt_variable_binning_2D_, muPt_variable_binning_2D_);
+  //    setMETitle(elePt_muPt_, "electron pt [GeV]", "muon pt [GeV]");
 
-    if (nmuons_ > 0) {
-      histname = "elePt_muPt";
-      histtitle = "electron pt vs muon pt";
-      bookME(ibooker, elePt_muPt_, histname, histtitle, elePt_variable_binning_2D_, muPt_variable_binning_2D_);
-      setMETitle(elePt_muPt_, "electron pt [GeV]", "muon pt [GeV]");
+  //    histname = "eleEta_muEta";
+  //    histtitle = "electron #eta vs muon #eta";
+  //    bookME(ibooker, eleEta_muEta_, histname, histtitle, eleEta_variable_binning_2D_, muEta_variable_binning_2D_);
+  //    setMETitle(eleEta_muEta_, "electron #eta", "muon #eta");
+  //  }
+  //}
 
-      histname = "eleEta_muEta";
-      histtitle = "electron #eta vs muon #eta";
-      bookME(ibooker, eleEta_muEta_, histname, histtitle, eleEta_variable_binning_2D_, muEta_variable_binning_2D_);
-      setMETitle(eleEta_muEta_, "electron #eta", "muon #eta");
-    }
-  }
+  //// Marina
+  //if (nbjets_ > 0) {
+  //  histname = "bjetVsLS";
+  //  histtitle = "b-jet pt vs LS";
+  //  bookME(ibooker,
+  //         bjetVsLS_,
+  //         histname,
+  //         histtitle,
+  //         ls_binning_.nbins,
+  //         ls_binning_.xmin,
+  //         ls_binning_.xmax,
+  //         pt_binning_.xmin,
+  //         pt_binning_.xmax);
+  //  setMETitle(bjetVsLS_, "LS", "b-jet pt [GeV]");
 
-  // Marina
-  if (nbjets_ > 0) {
-    histname = "bjetVsLS";
-    histtitle = "b-jet pt vs LS";
-    bookME(ibooker,
-           bjetVsLS_,
-           histname,
-           histtitle,
-           ls_binning_.nbins,
-           ls_binning_.xmin,
-           ls_binning_.xmax,
-           pt_binning_.xmin,
-           pt_binning_.xmax);
-    setMETitle(bjetVsLS_, "LS", "b-jet pt [GeV]");
+  //  histname = "bjetMulti";
+  //  histtitle = "b-jet multiplicity";
+  //  bookME(ibooker, bjetMulti_, histname, histtitle, 6, -.5, 5.5);
+  //  setMETitle(bjetMulti_, "b-jet multiplicity", "events");
+  //}
 
-    histname = "bjetMulti";
-    histtitle = "b-jet multiplicity";
-    bookME(ibooker, bjetMulti_, histname, histtitle, 6, -.5, 5.5);
-    setMETitle(bjetMulti_, "b-jet multiplicity", "events");
-  }
+  //if (nelectrons_ > 1) {
+  //  histname = "ele1Pt_ele2Pt";
+  //  histtitle = "electron-1 pt vs electron-2 pt";
+  //  bookME(ibooker, ele1Pt_ele2Pt_, histname, histtitle, elePt_variable_binning_2D_, elePt_variable_binning_2D_);
+  //  setMETitle(ele1Pt_ele2Pt_, "electron-1 pt [GeV]", "electron-2 pt [GeV]");
 
-  if (nelectrons_ > 1) {
-    histname = "ele1Pt_ele2Pt";
-    histtitle = "electron-1 pt vs electron-2 pt";
-    bookME(ibooker, ele1Pt_ele2Pt_, histname, histtitle, elePt_variable_binning_2D_, elePt_variable_binning_2D_);
-    setMETitle(ele1Pt_ele2Pt_, "electron-1 pt [GeV]", "electron-2 pt [GeV]");
+  //  histname = "ele1Eta_ele2Eta";
+  //  histtitle = "electron-1 #eta vs electron-2 #eta";
+  //  bookME(ibooker, ele1Eta_ele2Eta_, histname, histtitle, eleEta_variable_binning_2D_, eleEta_variable_binning_2D_);
+  //  setMETitle(ele1Eta_ele2Eta_, "electron-1 #eta", "electron-2 #eta");
+  //}
 
-    histname = "ele1Eta_ele2Eta";
-    histtitle = "electron-1 #eta vs electron-2 #eta";
-    bookME(ibooker, ele1Eta_ele2Eta_, histname, histtitle, eleEta_variable_binning_2D_, eleEta_variable_binning_2D_);
-    setMETitle(ele1Eta_ele2Eta_, "electron-1 #eta", "electron-2 #eta");
-  }
+  //if (nmuons_ > 1) {
+  //  histname = "mu1Pt_mu2Pt";
+  //  histtitle = "muon-1 pt vs muon-2 pt";
+  //  bookME(ibooker, mu1Pt_mu2Pt_, histname, histtitle, muPt_variable_binning_2D_, muPt_variable_binning_2D_);
+  //  setMETitle(mu1Pt_mu2Pt_, "muon-1 pt [GeV]", "muon-2 pt [GeV]");
 
-  if (nmuons_ > 1) {
-    histname = "mu1Pt_mu2Pt";
-    histtitle = "muon-1 pt vs muon-2 pt";
-    bookME(ibooker, mu1Pt_mu2Pt_, histname, histtitle, muPt_variable_binning_2D_, muPt_variable_binning_2D_);
-    setMETitle(mu1Pt_mu2Pt_, "muon-1 pt [GeV]", "muon-2 pt [GeV]");
+  //  histname = "mu1Eta_mu2Eta";
+  //  histtitle = "muon-1 #eta vs muon-2 #eta";
+  //  bookME(ibooker, mu1Eta_mu2Eta_, histname, histtitle, muEta_variable_binning_2D_, muEta_variable_binning_2D_);
+  //  setMETitle(mu1Eta_mu2Eta_, "muon-1 #eta", "muon-2 #eta");
+  //  //george
+  //  histname = "invMass";
+  //  histtitle = "M mu1 mu2";
+  //  bookME(ibooker,
+  //         invMass_mumu_,
+  //         histname,
+  //         histtitle,
+  //         invMass_mumu_binning_.nbins,
+  //         invMass_mumu_binning_.xmin,
+  //         invMass_mumu_binning_.xmax);
+  //  setMETitle(invMass_mumu_, "M(mu1,mu2) [GeV]", "events");
+  //  histname = "invMass_variable";
+  //  histtitle = "M mu1 mu2 variable";
+  //  bookME(ibooker, invMass_mumu_variableBinning_, histname, histtitle, invMass_mumu_variable_binning_);
+  //  setMETitle(invMass_mumu_variableBinning_, "M(mu1,mu2) [GeV]", "events / [GeV]");
+  //}
 
-    histname = "mu1Eta_mu2Eta";
-    histtitle = "muon-1 #eta vs muon-2 #eta";
-    bookME(ibooker, mu1Eta_mu2Eta_, histname, histtitle, muEta_variable_binning_2D_, muEta_variable_binning_2D_);
-    setMETitle(mu1Eta_mu2Eta_, "muon-1 #eta", "muon-2 #eta");
-    //george
-    histname = "invMass";
-    histtitle = "M mu1 mu2";
-    bookME(ibooker,
-           invMass_mumu_,
-           histname,
-           histtitle,
-           invMass_mumu_binning_.nbins,
-           invMass_mumu_binning_.xmin,
-           invMass_mumu_binning_.xmax);
-    setMETitle(invMass_mumu_, "M(mu1,mu2) [GeV]", "events");
-    histname = "invMass_variable";
-    histtitle = "M mu1 mu2 variable";
-    bookME(ibooker, invMass_mumu_variableBinning_, histname, histtitle, invMass_mumu_variable_binning_);
-    setMETitle(invMass_mumu_variableBinning_, "M(mu1,mu2) [GeV]", "events / [GeV]");
-  }
+  //if (HTcut_ > 0) {
+  //  histname = "htVsLS";
+  //  histtitle = "event HT vs LS";
+  //  bookME(ibooker,
+  //         htVsLS_,
+  //         histname,
+  //         histtitle,
+  //         ls_binning_.nbins,
+  //         ls_binning_.xmin,
+  //         ls_binning_.xmax,
+  //         pt_binning_.xmin,
+  //         pt_binning_.xmax);
+  //  setMETitle(htVsLS_, "LS", "event HT [GeV]");
 
-  if (HTcut_ > 0) {
-    histname = "htVsLS";
-    histtitle = "event HT vs LS";
-    bookME(ibooker,
-           htVsLS_,
-           histname,
-           histtitle,
-           ls_binning_.nbins,
-           ls_binning_.xmin,
-           ls_binning_.xmax,
-           pt_binning_.xmin,
-           pt_binning_.xmax);
-    setMETitle(htVsLS_, "LS", "event HT [GeV]");
+  //  histname = "eventHT";
+  //  histtitle = "event HT";
+  //  bookME(ibooker, eventHT_, histname, histtitle, HT_binning_.nbins, HT_binning_.xmin, HT_binning_.xmax);
+  //  setMETitle(eventHT_, " event HT [GeV]", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, eventHT_variableBinning_, histname, histtitle, HT_variable_binning_);
+  //  setMETitle(eventHT_variableBinning_, "event HT [GeV]", "events");
 
-    histname = "eventHT";
-    histtitle = "event HT";
-    bookME(ibooker, eventHT_, histname, histtitle, HT_binning_.nbins, HT_binning_.xmin, HT_binning_.xmax);
-    setMETitle(eventHT_, " event HT [GeV]", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, eventHT_variableBinning_, histname, histtitle, HT_variable_binning_);
-    setMETitle(eventHT_variableBinning_, "event HT [GeV]", "events");
+  //  if (nelectrons_ > 0) {
+  //    histname = "elePt_eventHT";
+  //    histtitle = "electron pt vs event HT";
+  //    bookME(ibooker, elePt_eventHT_, histname, histtitle, elePt_variable_binning_2D_, HT_variable_binning_2D_);
+  //    setMETitle(elePt_eventHT_, "leading electron pt", "event HT");
+  //  }
+  //}
 
-    if (nelectrons_ > 0) {
-      histname = "elePt_eventHT";
-      histtitle = "electron pt vs event HT";
-      bookME(ibooker, elePt_eventHT_, histname, histtitle, elePt_variable_binning_2D_, HT_variable_binning_2D_);
-      setMETitle(elePt_eventHT_, "leading electron pt", "event HT");
-    }
-  }
+  //if (MHTcut_ > 0) {
+  //  //george
+  //  histname = "eventMHT";
+  //  histtitle = "event MHT";
+  //  bookME(ibooker, eventMHT_, histname, histtitle, MHT_binning_.nbins, MHT_binning_.xmin, MHT_binning_.xmax);
+  //  setMETitle(eventMHT_, " event MHT [GeV]", "events");
 
-  if (MHTcut_ > 0) {
-    //george
-    histname = "eventMHT";
-    histtitle = "event MHT";
-    bookME(ibooker, eventMHT_, histname, histtitle, MHT_binning_.nbins, MHT_binning_.xmin, MHT_binning_.xmax);
-    setMETitle(eventMHT_, " event MHT [GeV]", "events");
+  //  histname = "eventMHT_variable";
+  //  histtitle = "event MHT variable";
+  //  bookME(ibooker, eventMHT_variableBinning_, histname, histtitle, MHT_variable_binning_);
+  //  setMETitle(eventMHT_variableBinning_, "event MHT [GeV]", "events / [GeV]");
+  //}
 
-    histname = "eventMHT_variable";
-    histtitle = "event MHT variable";
-    bookME(ibooker, eventMHT_variableBinning_, histname, histtitle, MHT_variable_binning_);
-    setMETitle(eventMHT_variableBinning_, "event MHT [GeV]", "events / [GeV]");
-  }
+  //for (unsigned int iMu = 0; iMu < nmuons_; ++iMu) {
+  //  std::string index = std::to_string(iMu + 1);
 
-  for (unsigned int iMu = 0; iMu < nmuons_; ++iMu) {
-    std::string index = std::to_string(iMu + 1);
+  //  histname = "muPt_";
+  //  histtitle = "muon p_{T} - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, muPt_.at(iMu), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
+  //  setMETitle(muPt_.at(iMu), "muon p_{T} [GeV]", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, muPt_variableBinning_.at(iMu), histname, histtitle, muPt_variable_binning_);
+  //  setMETitle(muPt_variableBinning_.at(iMu), "muon p_{T} [GeV]", "events");
 
-    histname = "muPt_";
-    histtitle = "muon p_{T} - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, muPt_.at(iMu), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
-    setMETitle(muPt_.at(iMu), "muon p_{T} [GeV]", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, muPt_variableBinning_.at(iMu), histname, histtitle, muPt_variable_binning_);
-    setMETitle(muPt_variableBinning_.at(iMu), "muon p_{T} [GeV]", "events");
+  //  histname = "muEta_";
+  //  histtitle = "muon #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, muEta_.at(iMu), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
+  //  setMETitle(muEta_.at(iMu), " muon #eta", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, muEta_variableBinning_.at(iMu), histname, histtitle, muEta_variable_binning_);
+  //  setMETitle(muEta_variableBinning_.at(iMu), " muon #eta", "events");
 
-    histname = "muEta_";
-    histtitle = "muon #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, muEta_.at(iMu), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
-    setMETitle(muEta_.at(iMu), " muon #eta", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, muEta_variableBinning_.at(iMu), histname, histtitle, muEta_variable_binning_);
-    setMETitle(muEta_variableBinning_.at(iMu), " muon #eta", "events");
+  //  histname = "muPhi_";
+  //  histtitle = "muon #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, muPhi_.at(iMu), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
+  //  setMETitle(muPhi_.at(iMu), " muon #phi", "events");
 
-    histname = "muPhi_";
-    histtitle = "muon #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, muPhi_.at(iMu), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
-    setMETitle(muPhi_.at(iMu), " muon #phi", "events");
+  //  histname = "muPtEta_";
+  //  histtitle = "muon p_{T} - #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, muPtEta_.at(iMu), histname, histtitle, muPt_variable_binning_2D_, muEta_variable_binning_2D_);
+  //  setMETitle(muPtEta_.at(iMu), "muon p_{T} [GeV]", "muon #eta");
 
-    histname = "muPtEta_";
-    histtitle = "muon p_{T} - #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, muPtEta_.at(iMu), histname, histtitle, muPt_variable_binning_2D_, muEta_variable_binning_2D_);
-    setMETitle(muPtEta_.at(iMu), "muon p_{T} [GeV]", "muon #eta");
+  //  histname = "muEtaPhi_";
+  //  histtitle = "muon #eta - #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, muEtaPhi_.at(iMu), histname, histtitle, muEta_variable_binning_2D_, phi_variable_binning_2D_);
+  //  setMETitle(muEtaPhi_.at(iMu), "muon #eta", "muon #phi");
+  //}
 
-    histname = "muEtaPhi_";
-    histtitle = "muon #eta - #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, muEtaPhi_.at(iMu), histname, histtitle, muEta_variable_binning_2D_, phi_variable_binning_2D_);
-    setMETitle(muEtaPhi_.at(iMu), "muon #eta", "muon #phi");
-  }
+  //for (unsigned int iEle = 0; iEle < nelectrons_; ++iEle) {
+  //  std::string index = std::to_string(iEle + 1);
 
-  for (unsigned int iEle = 0; iEle < nelectrons_; ++iEle) {
-    std::string index = std::to_string(iEle + 1);
+  //  histname = "elePt_";
+  //  histtitle = "electron p_{T} - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, elePt_.at(iEle), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
+  //  setMETitle(elePt_.at(iEle), "electron p_{T} [GeV]", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, elePt_variableBinning_.at(iEle), histname, histtitle, elePt_variable_binning_);
+  //  setMETitle(elePt_variableBinning_.at(iEle), "electron p_{T} [GeV]", "events");
 
-    histname = "elePt_";
-    histtitle = "electron p_{T} - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, elePt_.at(iEle), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
-    setMETitle(elePt_.at(iEle), "electron p_{T} [GeV]", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, elePt_variableBinning_.at(iEle), histname, histtitle, elePt_variable_binning_);
-    setMETitle(elePt_variableBinning_.at(iEle), "electron p_{T} [GeV]", "events");
+  //  histname = "eleEta_";
+  //  histtitle = "electron #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, eleEta_.at(iEle), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
+  //  setMETitle(eleEta_.at(iEle), " electron #eta", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, eleEta_variableBinning_.at(iEle), histname, histtitle, eleEta_variable_binning_);
+  //  setMETitle(eleEta_variableBinning_.at(iEle), "electron #eta", "events");
 
-    histname = "eleEta_";
-    histtitle = "electron #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, eleEta_.at(iEle), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
-    setMETitle(eleEta_.at(iEle), " electron #eta", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, eleEta_variableBinning_.at(iEle), histname, histtitle, eleEta_variable_binning_);
-    setMETitle(eleEta_variableBinning_.at(iEle), "electron #eta", "events");
+  //  histname = "elePhi_";
+  //  histtitle = "electron #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, elePhi_.at(iEle), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
+  //  setMETitle(elePhi_.at(iEle), " electron #phi", "events");
 
-    histname = "elePhi_";
-    histtitle = "electron #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, elePhi_.at(iEle), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
-    setMETitle(elePhi_.at(iEle), " electron #phi", "events");
+  //  histname = "elePtEta_";
+  //  histtitle = "electron p_{T} - #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, elePtEta_.at(iEle), histname, histtitle, elePt_variable_binning_2D_, eleEta_variable_binning_2D_);
+  //  setMETitle(elePtEta_.at(iEle), "electron p_{T} [GeV]", "electron #eta");
 
-    histname = "elePtEta_";
-    histtitle = "electron p_{T} - #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, elePtEta_.at(iEle), histname, histtitle, elePt_variable_binning_2D_, eleEta_variable_binning_2D_);
-    setMETitle(elePtEta_.at(iEle), "electron p_{T} [GeV]", "electron #eta");
+  //  histname = "eleEtaPhi_";
+  //  histtitle = "electron #eta - #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, eleEtaPhi_.at(iEle), histname, histtitle, eleEta_variable_binning_2D_, phi_variable_binning_2D_);
+  //  setMETitle(eleEtaPhi_.at(iEle), "electron #eta", "electron #phi");
+  //}
 
-    histname = "eleEtaPhi_";
-    histtitle = "electron #eta - #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, eleEtaPhi_.at(iEle), histname, histtitle, eleEta_variable_binning_2D_, phi_variable_binning_2D_);
-    setMETitle(eleEtaPhi_.at(iEle), "electron #eta", "electron #phi");
-  }
+  //  for (unsigned int iJet = 0; iJet < njets_; ++iJet) {
+  //  std::string index = std::to_string(iJet + 1);
 
-    for (unsigned int iJet = 0; iJet < njets_; ++iJet) {
-    std::string index = std::to_string(iJet + 1);
+  //  histname = "jetPt_";
+  //  histtitle = "jet p_{T} - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, jetPt_.at(iJet), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
+  //  setMETitle(jetPt_.at(iJet), "jet p_{T} [GeV]", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, jetPt_variableBinning_.at(iJet), histname, histtitle, jetPt_variable_binning_);
+  //  setMETitle(jetPt_variableBinning_.at(iJet), "jet p_{T} [GeV]", "events");
 
-    histname = "jetPt_";
-    histtitle = "jet p_{T} - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, jetPt_.at(iJet), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
-    setMETitle(jetPt_.at(iJet), "jet p_{T} [GeV]", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, jetPt_variableBinning_.at(iJet), histname, histtitle, jetPt_variable_binning_);
-    setMETitle(jetPt_variableBinning_.at(iJet), "jet p_{T} [GeV]", "events");
+  //  histname = "jetEta_";
+  //  histtitle = "jet #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, jetEta_.at(iJet), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
+  //  setMETitle(jetEta_.at(iJet), "jet #eta", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, jetEta_variableBinning_.at(iJet), histname, histtitle, jetEta_variable_binning_);
+  //  setMETitle(jetEta_variableBinning_.at(iJet), "jet #eta", "events");
 
-    histname = "jetEta_";
-    histtitle = "jet #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, jetEta_.at(iJet), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
-    setMETitle(jetEta_.at(iJet), "jet #eta", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, jetEta_variableBinning_.at(iJet), histname, histtitle, jetEta_variable_binning_);
-    setMETitle(jetEta_variableBinning_.at(iJet), "jet #eta", "events");
+  //  histname = "jetPhi_";
+  //  histtitle = "jet #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, jetPhi_.at(iJet), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
+  //  setMETitle(jetPhi_.at(iJet), "jet #phi", "events");
 
-    histname = "jetPhi_";
-    histtitle = "jet #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, jetPhi_.at(iJet), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
-    setMETitle(jetPhi_.at(iJet), "jet #phi", "events");
+  //  histname = "jetPtEta_";
+  //  histtitle = "jet p_{T} - #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, jetPtEta_.at(iJet), histname, histtitle, jetPt_variable_binning_2D_, jetEta_variable_binning_2D_);
+  //  setMETitle(jetPtEta_.at(iJet), "jet p_{T} [GeV]", "jet #eta");
 
-    histname = "jetPtEta_";
-    histtitle = "jet p_{T} - #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, jetPtEta_.at(iJet), histname, histtitle, jetPt_variable_binning_2D_, jetEta_variable_binning_2D_);
-    setMETitle(jetPtEta_.at(iJet), "jet p_{T} [GeV]", "jet #eta");
+  //  histname = "jetEtaPhi_";
+  //  histtitle = "jet #eta - #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, jetEtaPhi_.at(iJet), histname, histtitle, jetEta_variable_binning_2D_, phi_variable_binning_2D_);
+  //  setMETitle(jetEtaPhi_.at(iJet), "jet #eta", "jet #phi");
+  //}
 
-    histname = "jetEtaPhi_";
-    histtitle = "jet #eta - #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, jetEtaPhi_.at(iJet), histname, histtitle, jetEta_variable_binning_2D_, phi_variable_binning_2D_);
-    setMETitle(jetEtaPhi_.at(iJet), "jet #eta", "jet #phi");
-  }
+  //// Marina
+  //for (unsigned int iBJet = 0; iBJet < nbjets_; ++iBJet) {
+  //  std::string index = std::to_string(iBJet + 1);
 
-  // Marina
-  for (unsigned int iBJet = 0; iBJet < nbjets_; ++iBJet) {
-    std::string index = std::to_string(iBJet + 1);
+  //  histname = "bjetPt_";
+  //  histtitle = "b-jet p_{T} - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, bjetPt_.at(iBJet), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
+  //  setMETitle(bjetPt_.at(iBJet), "b-jet p_{T} [GeV]", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, bjetPt_variableBinning_.at(iBJet), histname, histtitle, jetPt_variable_binning_);
+  //  setMETitle(bjetPt_variableBinning_.at(iBJet), "b-jet p_{T} [GeV]", "events");
 
-    histname = "bjetPt_";
-    histtitle = "b-jet p_{T} - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, bjetPt_.at(iBJet), histname, histtitle, pt_binning_.nbins, pt_binning_.xmin, pt_binning_.xmax);
-    setMETitle(bjetPt_.at(iBJet), "b-jet p_{T} [GeV]", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, bjetPt_variableBinning_.at(iBJet), histname, histtitle, jetPt_variable_binning_);
-    setMETitle(bjetPt_variableBinning_.at(iBJet), "b-jet p_{T} [GeV]", "events");
+  //  histname = "bjetEta_";
+  //  histtitle = "b-jet #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, bjetEta_.at(iBJet), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
+  //  setMETitle(bjetEta_.at(iBJet), "b-jet #eta", "events");
+  //  histname.append("_variableBinning");
+  //  bookME(ibooker, bjetEta_variableBinning_.at(iBJet), histname, histtitle, jetEta_variable_binning_);
+  //  setMETitle(bjetEta_variableBinning_.at(iBJet), "b-jet #eta", "events");
 
-    histname = "bjetEta_";
-    histtitle = "b-jet #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, bjetEta_.at(iBJet), histname, histtitle, eta_binning_.nbins, eta_binning_.xmin, eta_binning_.xmax);
-    setMETitle(bjetEta_.at(iBJet), "b-jet #eta", "events");
-    histname.append("_variableBinning");
-    bookME(ibooker, bjetEta_variableBinning_.at(iBJet), histname, histtitle, jetEta_variable_binning_);
-    setMETitle(bjetEta_variableBinning_.at(iBJet), "b-jet #eta", "events");
+  //  histname = "bjetPhi_";
+  //  histtitle = "b-jet #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, bjetPhi_.at(iBJet), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
+  //  setMETitle(bjetPhi_.at(iBJet), "b-jet #phi", "events");
 
-    histname = "bjetPhi_";
-    histtitle = "b-jet #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, bjetPhi_.at(iBJet), histname, histtitle, phi_binning_.nbins, phi_binning_.xmin, phi_binning_.xmax);
-    setMETitle(bjetPhi_.at(iBJet), "b-jet #phi", "events");
+  //  histname = "bjetCSV_";
+  //  histtitle = "b-jet CSV - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, bjetCSV_.at(iBJet), histname, histtitle, csv_binning_.nbins, csv_binning_.xmin, csv_binning_.xmax);
+  //  setMETitle(bjetCSV_.at(iBJet), "b-jet CSV", "events");
 
-    histname = "bjetCSV_";
-    histtitle = "b-jet CSV - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, bjetCSV_.at(iBJet), histname, histtitle, csv_binning_.nbins, csv_binning_.xmin, csv_binning_.xmax);
-    setMETitle(bjetCSV_.at(iBJet), "b-jet CSV", "events");
+  //  histname = "bjetPtEta_";
+  //  histtitle = "b-jet p_{T} - #eta - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, bjetPtEta_.at(iBJet), histname, histtitle, jetPt_variable_binning_2D_, jetEta_variable_binning_2D_);
+  //  setMETitle(bjetPtEta_.at(iBJet), "b-jet p_{T} [GeV]", "b-jet #eta");
 
-    histname = "bjetPtEta_";
-    histtitle = "b-jet p_{T} - #eta - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, bjetPtEta_.at(iBJet), histname, histtitle, jetPt_variable_binning_2D_, jetEta_variable_binning_2D_);
-    setMETitle(bjetPtEta_.at(iBJet), "b-jet p_{T} [GeV]", "b-jet #eta");
+  //  histname = "bjetEtaPhi_";
+  //  histtitle = "b-jet #eta - #phi - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker, bjetEtaPhi_.at(iBJet), histname, histtitle, jetEta_variable_binning_2D_, phi_variable_binning_2D_);
+  //  setMETitle(bjetEtaPhi_.at(iBJet), "b-jet #eta", "b-jet #phi");
 
-    histname = "bjetEtaPhi_";
-    histtitle = "b-jet #eta - #phi - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker, bjetEtaPhi_.at(iBJet), histname, histtitle, jetEta_variable_binning_2D_, phi_variable_binning_2D_);
-    setMETitle(bjetEtaPhi_.at(iBJet), "b-jet #eta", "b-jet #phi");
-
-    histname = "bjetCSVHT_";
-    histtitle = "HT - b-jet CSV - ";
-    histname.append(index);
-    histtitle.append(index);
-    bookME(ibooker,
-           bjetCSVHT_.at(iBJet),
-           histname,
-           histtitle,
-           csv_binning_.nbins,
-           csv_binning_.xmin,
-           csv_binning_.xmax,
-           HT_binning_.nbins,
-           HT_binning_.xmin,
-           HT_binning_.xmax);
-    setMETitle(bjetCSVHT_.at(iBJet), "b-jet CSV", "event HT [GeV]");
-  }
+  //  histname = "bjetCSVHT_";
+  //  histtitle = "HT - b-jet CSV - ";
+  //  histname.append(index);
+  //  histtitle.append(index);
+  //  bookME(ibooker,
+  //         bjetCSVHT_.at(iBJet),
+  //         histname,
+  //         histtitle,
+  //         csv_binning_.nbins,
+  //         csv_binning_.xmin,
+  //         csv_binning_.xmax,
+  //         HT_binning_.nbins,
+  //         HT_binning_.xmin,
+  //         HT_binning_.xmax);
+  //  setMETitle(bjetCSVHT_.at(iBJet), "b-jet CSV", "event HT [GeV]");
+  //}
 }
 
+//void BTagAndProbe::fillCutFlow(std::string cut){
+//}
+
+//void BTagAndProbe::AddCut(std::string cut){
+//}
+
 void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup) {
+  int cutFlowStatus = 1;
+  cutFlow->Fill(cutFlowStatus);
+  
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "allValid");
   // if valid HLT paths are required,
   // analyze event only if all paths are valid
-  if (requireValidHLTPaths_ and (not hltPathsAreValid_)) {
-    return;
-  }
-
-  // Filter out events if Trigger Filtering is requested
-  if (den_genTriggerEventFlag_->on() && !den_genTriggerEventFlag_->accept(iEvent, iSetup)) {
-    return;
-  }
-
-  edm::Handle<reco::VertexCollection> primaryVertices;
-  iEvent.getByToken(vtxToken_, primaryVertices);
-  //Primary Vertex selection
-  const reco::Vertex* pv = nullptr;
-  for (auto const& v : *primaryVertices) {
-    if (!vtxSelection_(v)) {
-      continue;
-    }
-    pv = &v;
-    break;
-  }
-  if (applyLeptonPVcuts_ && (pv == nullptr)) {
-    edm::LogWarning("BTagAndProbe") << "Invalid handle to reco::VertexCollection, event will be skipped";
-    return;
-  } 
-
+  if (requireValidHLTPaths_ and (not hltPathsAreValid_)) return;
+  
+  // electron Handle valid
   edm::Handle<edm::View<reco::GsfElectron> > eleHandle;
   iEvent.getByToken(eleToken_, eleHandle);
   if (!eleHandle.isValid() && nelectrons_ > 0) {
     edm::LogWarning("BTagAndProbe") << "Electron handle not valid \n";
     return;
   }
-
+  
+  //electron ID Handle valid
   edm::Handle<edm::ValueMap<bool> > eleIDHandle;
   iEvent.getByToken(elecIDToken_, eleIDHandle);
   if (!eleIDHandle.isValid() && nelectrons_ > 0) {
     edm::LogWarning("BTagAndProbe") << "Electron ID handle not valid \n";
     return;
   }
+  
+  //muon handle valid
+  edm::Handle<reco::MuonCollection> muoHandle;
+  iEvent.getByToken(muoToken_, muoHandle);
+  if (!muoHandle.isValid() && nmuons_ > 0) {
+    edm::LogWarning("BTagAndProbe") << "Muon handle not valid \n";
+    return;
+  }
+  
+  for (const auto& jetTagToken : jetTagTokens_) {
+    edm::Handle<reco::JetTagCollection> bjetHandle;
+    iEvent.getByToken(jetTagToken, bjetHandle);
+    if (!bjetHandle.isValid() && nbjets_ > 0) {
+      edm::LogWarning("BTagAndProbe") << "B-Jet handle not valid, will skip event \n";
+      return;
+    }
+  }
+ 
+  cutFlow->Fill(cutFlowStatus);
+
+  // Filter out events if Trigger Filtering is requested
+  //if (den_genTriggerEventFlag_->on() && !den_genTriggerEventFlag_->accept(iEvent, iSetup)) return; 
+  //cutFlowStatus++;
+  //cutFlow->setBinLabel(cutFlowStatus, "passTrigger");
+  //cutFlow->Fill(cutFlowStatus);
+
+  edm::Handle<reco::VertexCollection> primaryVertices;
+  iEvent.getByToken(vtxToken_, primaryVertices);
+  //Primary Vertex selection
+  const reco::Vertex* pv = nullptr;
+  for (auto const& v : *primaryVertices) {
+    if (!vtxSelection_(v)) continue;
+    pv = &v;
+    break;
+  }
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "LeptonPVcuts");
+  
+  if (applyLeptonPVcuts_ && (pv == nullptr)) {
+    edm::LogWarning("BTagAndProbe") << "Invalid handle to reco::VertexCollection, event will be skipped";
+    return;
+  } 
+  cutFlow->Fill(cutFlowStatus);
+
+  //edm::Handle<edm::View<reco::GsfElectron> > eleHandle;
+  //iEvent.getByToken(eleToken_, eleHandle);
+  //if (!eleHandle.isValid() && nelectrons_ > 0) {
+  //  edm::LogWarning("BTagAndProbe") << "Electron handle not valid \n";
+  //  return;
+  //}
+  //cutFlowStatus++;
+  //cutFlow->setBinLabel(cutFlowStatus, "passElecToken");
+  //cutFlow->Fill(cutFlowStatus);
+
+  //edm::Handle<edm::ValueMap<bool> > eleIDHandle;
+  //iEvent.getByToken(elecIDToken_, eleIDHandle);
+  //if (!eleIDHandle.isValid() && nelectrons_ > 0) {
+  //  edm::LogWarning("BTagAndProbe") << "Electron ID handle not valid \n";
+  //  return;
+  //}
+  //cutFlowStatus++;
+  //cutFlow->setBinLabel(cutFlowStatus, "passElecIDToken");
+  //cutFlow->Fill(cutFlowStatus);
 
   std::vector<reco::GsfElectron> electrons;
   unsigned int nElectrons = 0;
   if (nelectrons_ > 0) {
-    if (eleHandle->size() < nelectrons_) { // this is why n_electrons must be at least '1'
-      return;
-    }
+    if (eleHandle->size() < nelectrons_) return; // this is why n_electrons must be at least '1'
+
+    cutFlowStatus++;
+    cutFlow->setBinLabel(cutFlowStatus, "elecHandleSize");
+    cutFlow->Fill(cutFlowStatus);
     
+    h_nElectrons1->Fill(eleHandle->size());
+    h_nElectrons2->Fill(eleIDHandle->size());
     //int nElectronHandle=eleHandle->size();
     for (size_t index = 0; index < eleHandle->size(); index++) {
       const auto e = eleHandle->at(index);
       const auto el = eleHandle->ptrAt(index);
 
       bool pass_id = (*eleIDHandle)[el];
+      pass_id = true;
 
       if (eleSelection_(e) && pass_id) {
         electrons.push_back(e);
@@ -945,26 +1131,35 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       }
     }
     nElectrons = electrons.size();
-    
-    if (nElectrons < nelectrons_) {
-      return;
-    }
+    h_nElectrons3->Fill(nElectrons);
+
+    cutFlowStatus++;
+    cutFlow->setBinLabel(cutFlowStatus, "tooFewElectrons");
+    if (nElectrons < nelectrons_) return;
+    cutFlow->Fill(cutFlowStatus);
 
   }
   //have a debug
   //cout<<"nelectrons_: "<<nelectrons_<<" nElectrons: "<<nElectrons<<endl;
 
   
-  edm::Handle<reco::MuonCollection> muoHandle;
-  iEvent.getByToken(muoToken_, muoHandle);
-  if (!muoHandle.isValid() && nmuons_ > 0) {
-    edm::LogWarning("BTagAndProbe") << "Muon handle not valid \n";
-    return;
-  }
+  //edm::Handle<reco::MuonCollection> muoHandle;
+  //iEvent.getByToken(muoToken_, muoHandle);
+  //if (!muoHandle.isValid() && nmuons_ > 0) {
+  //  edm::LogWarning("BTagAndProbe") << "Muon handle not valid \n";
+  //  return;
+  //}
+  //cutFlowStatus++;
+  //cutFlow->setBinLabel(cutFlowStatus, "passMuonHandle");
+  //cutFlow->Fill(cutFlowStatus);
 
-  if (muoHandle->size() < nmuons_) {
-    return;
-  }
+  if (muoHandle->size() < nmuons_) return;
+  
+  h_nMuons1->Fill(muoHandle->size());
+
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "passMuonSize");
+  cutFlow->Fill(cutFlowStatus);
   
   unsigned int nMuons = 0;
   std::vector<reco::Muon> muons;
@@ -973,302 +1168,274 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       if (muoSelection_(m)) {
         muons.push_back(m);
       }
-
+    
       if (applyLeptonPVcuts_ && ((std::fabs(m.muonBestTrack()->dxy(pv->position())) >= lepPVcuts_.dxy) ||
                                  (std::fabs(m.muonBestTrack()->dz(pv->position())) >= lepPVcuts_.dz))) {
         continue;
       }
     }
+    h_nMuons2->Fill(muons.size());
     
     nMuons = muons.size();
-    if (nMuons < nmuons_) {
-      return;
-    }
+    if (nMuons < nmuons_) return;
+    //h_nMuons3->Fill(nMuons);
+
+    cutFlowStatus++;
+    cutFlow->setBinLabel(cutFlowStatus, "tooFewMuons");
+    cutFlow->Fill(cutFlowStatus);
   }
   //cout<<"nmuons_: "<<nmuons_<<" nMuons: "<<nMuons<<endl; 
 
-  double eventHT(0.);
-  math::XYZTLorentzVector eventMHT(0., 0., 0., 0.);
+  //double eventHT(0.);
+  //math::XYZTLorentzVector eventMHT(0., 0., 0., 0.);
   
   // PF JETS
-  edm::Handle<reco::PFJetCollection> jetHandle;
-  iEvent.getByToken(jetToken_, jetHandle);
-  if (!jetHandle.isValid() && njets_ > 0) {
-    edm::LogWarning("BTagAndProbe") << "Jet handle not valid \n";
-    return;
-  }
-  std::vector<reco::PFJet> jets;
-  if (njets_ > 0) { // need at least njets of '1' 
-    if (jetHandle->size() < njets_)
-      return;
-    for (auto const& j : *jetHandle) {
-      if (HTdefinition_(j)) {
-        eventHT += j.pt();
-      }
-      if (MHTdefinition_(j)) {
-        eventMHT += j.p4();
-      }
-      if (jetSelection_(j)) {
-        bool isJetOverlappedWithLepton = false;
-        //check if jet if overlapped with muon
-        if (nmuons_ > 0) {
-          for (auto const& m : muons) {
-            if (deltaR(j, m) < leptJetDeltaRmin_) {
-              isJetOverlappedWithLepton = true;
-              break;
-            }
-          }
-        }
-        if (isJetOverlappedWithLepton)
-          continue; // skip to next jet if overlapped with a lepton
+  //edm::Handle<reco::PFJetCollection> jetHandle;
+  //iEvent.getByToken(jetToken_, jetHandle);
+  //if (!jetHandle.isValid() && njets_ > 0) {
+  //  edm::LogWarning("BTagAndProbe") << "Jet handle not valid \n";
+  //  return;
+  //}
+  //std::vector<reco::PFJet> jets;
+  //if (njets_ > 0) { // need at least njets of '1' 
+  //  if (jetHandle->size() < njets_)
+  //    return;
+  //  for (auto const& j : *jetHandle) {
+  //    if (HTdefinition_(j)) {
+  //      eventHT += j.pt();
+  //    }
+  //    if (MHTdefinition_(j)) {
+  //      eventMHT += j.p4();
+  //    }
+  //    if (jetSelection_(j)) {
+  //      bool isJetOverlappedWithLepton = false;
+  //      //check if jet if overlapped with muon
+  //      if (nmuons_ > 0) {
+  //        for (auto const& m : muons) {
+  //          if (deltaR(j, m) < leptJetDeltaRmin_) {
+  //            isJetOverlappedWithLepton = true;
+  //            break;
+  //          }
+  //        }
+  //      }
+  //      if (isJetOverlappedWithLepton)
+  //        continue; // skip to next jet if overlapped with a lepton
 
-        //check if jet overlapped with electron
-        if (nelectrons_ > 0) {
-          for (auto const& e : electrons) {
-            if (deltaR(j, e) < leptJetDeltaRmin_) {
-              isJetOverlappedWithLepton = true;
-              break;
-            }
-          }
-        }
-        if (isJetOverlappedWithLepton)
-          continue; // skip to next jet if overlapped with a lepton
-        jets.push_back(j); // keep jet if not overlapped with lepton
-      }
-    }
-    if (jets.size() < njets_) // not enough jets
-      return;
-  } 
-  
-  unsigned int nJets = jets.size();
-  
-  cout<<"njets_: "<<njets_<<" nJets: "<<nJets<<endl;
-
-  //remove below (don't need di-muon mass)
-  bool allpairs = false;
-  if (nmuons_ > 2) {
-    double mumu_mass;
-    // loop through muon list starting at first muon
-    for (unsigned int idx = 0; idx < muons.size(); idx++) { 
-      // loop through muon list beginning with next muon
-      for (unsigned int idx2 = idx + 1; idx2 < muons.size(); idx2++) { 
-        //compute inv mass of two different leptons (muons)
-        mumu_mass = (muons[idx2].p4() + muons[idx2].p4()).M();
-        // check mumu mass falls in specified range
-        if (mumu_mass < invMassLowercut_ || mumu_mass > invMassUppercut_)
-          allpairs = true; // failed mll range
-      }
-    }
-  }
-  //cut only if enabled and the event has a pair that failed the mll range
-  if (allpairs && invMassCutInAllMuPairs_) {
-    return;
-  }
+  //      //check if jet overlapped with electron
+  //      if (nelectrons_ > 0) {
+  //        for (auto const& e : electrons) {
+  //          if (deltaR(j, e) < leptJetDeltaRmin_) {
+  //            isJetOverlappedWithLepton = true;
+  //            break;
+  //          }
+  //        }
+  //      }
+  //      if (isJetOverlappedWithLepton)
+  //        continue; // skip to next jet if overlapped with a lepton
+  //      jets.push_back(j); // keep jet if not overlapped with lepton
+  //    }
+  //  }
+  //  if (jets.size() < njets_) // not enough jets
+  //    return;
+  //} 
+  //
+  //unsigned int nJets = jets.size();
+  //
+  //cout<<"njets_: "<<njets_<<" nJets: "<<nJets<<endl;
 
   JetTagMap bjets; // bTagged jets
 
   //if (nbjets_ > 0) {
-  if (true){  
-    // map of Jet,btagValues (for all jets passing bJetSelection_)
-    //  - btagValue of each jet is calculated as sum of values from InputTags in jetTagTokens_
-    JetTagMap allJetBTagVals;
-    cout<<"nbjets_: "<<nbjets_<<endl;
+  //if (true){  
+  // map of Jet,btagValues (for all jets passing bJetSelection_)
+  //  - btagValue of each jet is calculated as sum of values from InputTags in jetTagTokens_
+  JetTagMap allJetBTagVals;
+  std::cout<<"nbjets_: "<<nbjets_<<endl;
+  int nbjets1=0;
+  int nbjets2=0;
+  int nbjets3=0;
+  
+  for (const auto& jetTagToken : jetTagTokens_) {
+    edm::Handle<reco::JetTagCollection> bjetHandle;
+    iEvent.getByToken(jetTagToken, bjetHandle);
+    //if (not bjetHandle.isValid()) {
+    //  edm::LogWarning("BTagAndProbe") << "B-Jet handle not valid, will skip event \n";
+    //  return;
+    //}
 
-    for (const auto& jetTagToken : jetTagTokens_) {
-      edm::Handle<reco::JetTagCollection> bjetHandle;
-      iEvent.getByToken(jetTagToken, bjetHandle);
-      if (not bjetHandle.isValid()) {
-        edm::LogWarning("BTagAndProbe") << "B-Jet handle not valid, will skip event \n";
-        return;
+    const reco::JetTagCollection& bTags = *(bjetHandle.product());
+    //int nbjets1=0;
+    for (const auto& i_jetTag : bTags) {
+      const auto& jetRef = i_jetTag.first; // where jet that is tagged exists
+      nbjets1++;
+      if (not bjetSelection_(*dynamic_cast<const reco::Jet*>(jetRef.get()))) continue;
+      nbjets2++;        
+      const auto btagVal = i_jetTag.second; // bTagVal exists
+      h_btagVal->Fill(btagVal);
+
+      if (not std::isfinite(btagVal)) continue; // checks bTagVal exists
+      nbjets3++;
+      if (allJetBTagVals.find(jetRef) != allJetBTagVals.end()) {
+        allJetBTagVals.at(jetRef) += btagVal; // add bjet tagVal to map
+      } 
+      else {
+        allJetBTagVals.insert(JetTagMap::value_type(jetRef, btagVal));
       }
-
-      const reco::JetTagCollection& bTags = *(bjetHandle.product());
-
-      for (const auto& i_jetTag : bTags) {
-        const auto& jetRef = i_jetTag.first; // where jet that is tagged exists
-
-        if (not bjetSelection_(*dynamic_cast<const reco::Jet*>(jetRef.get()))) {
-          continue;
-        }
-
-        const auto btagVal = i_jetTag.second; // bTagVal exists
-        h_btagVal->Fill(btagVal);
-
-        if (not std::isfinite(btagVal)) { // checks bTagVal exists
-          continue;
-        }
-
-        if (allJetBTagVals.find(jetRef) != allJetBTagVals.end()) {
-          allJetBTagVals.at(jetRef) += btagVal; // add bjet tagVal to map
-        } 
-        else {
-          allJetBTagVals.insert(JetTagMap::value_type(jetRef, btagVal));
-        }
-      }
-    }
-
-    for (const auto& jetBTagVal : allJetBTagVals) {
-      /*if (jetBTagVal.second < workingpoint_) { //check if passing btag
-        cout<<"working point: "<<workingpoint_<<endl;
-        continue;
-      }*/
-
-      bjets.insert(JetTagMap::value_type(jetBTagVal.first, jetBTagVal.second));
-    }
-    
-    
-    if (bjets.size() < nbjets_) {
-      return;
     }
   }
+  h_nJets1->Fill(nbjets1);
+  h_nJets2->Fill(nbjets2);
+  h_nJets3->Fill(nbjets3);
+
+  int nbjets4=0;
+  int nbjets5=0;
+  int nbjets6=0;
+  //int nbjets7=0;
+  for (const auto& jetBTagVal : allJetBTagVals) {
+    /*if (jetBTagVal.second < workingpoint_) { //check if passing btag
+      cout<<"working point: "<<workingpoint_<<endl;
+      continue;
+    }*/
+    bool isJetOverlappedWithLepton = false;
+    nbjets4++;
+    if(nmuons_>0){
+      for(auto const& m : muons){
+        if(deltaR(*jetBTagVal.first, m) < leptJetDeltaRmin_){
+          isJetOverlappedWithLepton = true;
+          break;
+        }
+      }
+    }
+    if (isJetOverlappedWithLepton) continue;
+    nbjets5++;
+
+    isJetOverlappedWithLepton = false;
+    if(nelectrons_>0){
+      for(auto const& e : electrons){
+        if(deltaR(*jetBTagVal.first, e)<leptJetDeltaRmin_){
+          isJetOverlappedWithLepton = true;
+          break;
+        }
+      }
+    }
+    if (isJetOverlappedWithLepton) continue;
+    nbjets6++;
+
+    bjets.insert(JetTagMap::value_type(jetBTagVal.first, jetBTagVal.second));
+  }
+  h_nJets4->Fill(nbjets4);
+  h_nJets5->Fill(nbjets5);
+  h_nJets6->Fill(nbjets6);
+
+  //// Filter out events if Trigger Filtering is requested
+  if (den_genTriggerEventFlag_->on() && !den_genTriggerEventFlag_->accept(iEvent, iSetup)) return; 
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "passTrigger");
+  cutFlow->Fill(cutFlowStatus);
+  h_nJets7->Fill(bjets.size());
+  h_nElectrons4->Fill(nElectrons);
+  h_nMuons3->Fill(nMuons);
+
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "tooFewJets");
+  if (bjets.size() < nbjets_) return; 
+  cutFlow->Fill(cutFlowStatus);
+  h_nJets8->Fill(bjets.size());
   
-  //if(bjets.size() < 1){ // need at least one bjet in event
-  //  return;
-  //}
+ 
+  ////if(bjets.size() < 1){ // need at least one bjet in event
+  ////  return;
+  ////}
   unsigned int nbJets = bjets.size();
   
-
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "PassJetDeltaEta");
   if (nbjets_ > 1) {
     double deltaEta = std::abs(bjets.begin()->first->eta() - (++bjets.begin())->first->eta());
     if (deltaEta > bJetDeltaEtaMax_)
       return;
   }
+  cutFlow->Fill(cutFlowStatus);
+  h_nJets9->Fill(bjets.size());
 
-  // look for muon in bjet
-  if ((nbjets_ > 0) && (nmuons_ > 0)) {
-    bool foundMuonInsideJet = false;
-    for (auto const& bjet : bjets) {
-      for (auto const& mu : muons) {
-        double dR = deltaR(*bjet.first, mu);
-        if (dR < bJetMuDeltaRmax_) {
-          foundMuonInsideJet = true;
-          break;
-        }
-      }
-      if (foundMuonInsideJet)
-        break;
-    }
+  ////// look for muon in bjet
+  //////if ((nbjets_ > 0) && (nmuons_ > 0)) {
+  //////  bool foundMuonInsideJet = false;
+  //////  for (auto const& bjet : bjets) {
+  //////    for (auto const& mu : muons) {
+  //////      double dR = deltaR(*bjet.first, mu);
+  //////      if (dR < bJetMuDeltaRmax_) {
+  //////        foundMuonInsideJet = true;
+  //////        break;
+  //////      }
+  //////    }
+  //////    if (foundMuonInsideJet)
+  //////      break;
+  //////  }
 
-    if (!foundMuonInsideJet) // if no muon in bjet exit
-      return;
-  }
+  //////  //if (!foundMuonInsideJet) // if no muon in bjet exit
+  //////   // return; //FIXME
+  //////}
 
-  // Event selection
-  //h_nElectrons->Fill(nElectrons); //FIXME 
-  
+  ////// Event selection
+  //////h_nElectrons->Fill(nElectrons); //FIXME 
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "oneElectron");
   if(nElectrons!=1) return;
+  cutFlow->Fill(cutFlowStatus);
+  h_nJets10->Fill(bjets.size());
+  h_nElectrons5->Fill(nElectrons);
+  h_nMuons4->Fill(nMuons);
+
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "oneMuon");
   if(nMuons!=1) return;
-  //if(nJets<2) return;
-  //if(nbJets<1) return;
-  
-  h_nElectrons->Fill(nElectrons); //Fill electron counter
-  h_nMuons->Fill(nMuons); //Fill muon counter
-  h_nJets->Fill(nJets); //Fill jet counter
+  cutFlow->Fill(cutFlowStatus);
+  h_nJets11->Fill(bjets.size());
+  h_nElectrons6->Fill(nElectrons);
+  h_nMuons5->Fill(nMuons);
+
+  cutFlowStatus++;
+  cutFlow->setBinLabel(cutFlowStatus, "twoOrMoreJets");
+  std::cout<<"nbJets: "<<nbJets<<endl;
+  if(nbJets<2) return;
+  std::cout<<"passed nJets requirement"<<endl;
+  ////cutFlowStatus++;
+  ////cutFlow->setBinLabel(cutFlowStatus, "twoOrMoreJets");
+  cutFlow->Fill(cutFlowStatus);
+  h_nJets12->Fill(nbJets);
+
+  h_nElectrons7->Fill(nElectrons); //Fill electron counter
+  h_nMuons6->Fill(nMuons); //Fill muon counter
+  ////h_nJets->Fill(nbJets); //Fill jet counter
 
   std::cout<<"nElectrons: "<<nElectrons<<endl;
   std::cout<<"nMuons: "<<nMuons<<endl;
-  std::cout<<"nJets: "<<nJets<<endl;
-  std::cout<<"nbJets: "<<nbJets<<endl<<endl;
-
-  // numerator condition
-  // modify this condition for Tag and probe
-  const bool trg_passed = (num_genTriggerEventFlag_->on() && num_genTriggerEventFlag_->accept(iEvent, iSetup)); 
-  // bool isBjet;
-  unsigned int index=0;
+  std::cout<<"nbJets: "<<nbJets<<endl;
+  ////std::cout<<"nJets: "<<nJets<<endl;
+  
+  std::cout<<"outide loop"<<endl;
   for(auto& jet1: bjets){
     bool probe_pass = false;
-    unsigned int jindex=0;
+    std::cout<<"inside loop"<<endl;
     for(auto& jet2: bjets){
-      if(jindex==index){ // check if same jet
-        jindex++;
-        continue;
-      }
-      jindex++;
-
+      //if(deltaR(*jet1.first,*jet2.first)<0.1) continue; // check if same jet
       if (jet2.second >= workingpoint_){// check if passing btag
-        probe_pass = true;
+        //probe_pass = true;
         h_btagVal2->Fill(jet2.second);
         break;
       }
       //h_btagVal2->Fill(jet2.second);  
-      /*for(auto& bjet: bjets){
-        double dR = deltaR(*bjet.first, jets.at(jindex));
-        if(dR<=0.2){ // check if other jet is bjet
-          cout<<"jet deltaR: "<<dR<<endl;
-          cout<<"jet: "<<jets.at(jindex).pt()<<" "<<jets.at(jindex).eta()<<" "<<jets.at(jindex).phi()<<endl;
-          cout<<"bjet: "<<bjet.first->pt()<<" "<<bjet.first->eta()<<" "<<bjet.first->phi()<<endl<<endl;
-          isBjet=true;
-          break;
-        }
-      }
-      
-      if(isBjet){
-        probe_pass = true;
-        break;
-      }*/
     }
-    //h_btagVal2->Fill(jet1.second);
+    
+    //debug
+    //cout<<"jet1: "<<jet1.first->pt()<<" "<<jet1.first->eta()<<" "<<jet1.first->phi()<<endl<<endl; 
     
     // fill plots for probe
     jet_pt_.fill(probe_pass, jet1.first->pt()); 
     jet_eta_.fill(probe_pass, jet1.first->eta());
-    index++;
   }
-
-
-  for (unsigned int iMu = 0; iMu < muons.size(); ++iMu) {
-    if (iMu >= nmuons_)
-      break;
-    muPhi_.at(iMu).fill(trg_passed, muons.at(iMu).phi());
-    muEta_.at(iMu).fill(trg_passed, muons.at(iMu).eta());
-    muPt_.at(iMu).fill(trg_passed, muons.at(iMu).pt());
-    muEta_variableBinning_.at(iMu).fill(trg_passed, muons.at(iMu).eta());
-    muPt_variableBinning_.at(iMu).fill(trg_passed, muons.at(iMu).pt());
-    muPtEta_.at(iMu).fill(trg_passed, muons.at(iMu).pt(), muons.at(iMu).eta());
-    muEtaPhi_.at(iMu).fill(trg_passed, muons.at(iMu).eta(), muons.at(iMu).phi());
-  }
-  for (unsigned int iEle = 0; iEle < electrons.size(); ++iEle) {
-    if (iEle >= nelectrons_)
-      break;
-    elePhi_.at(iEle).fill(trg_passed, electrons.at(iEle).phi());
-    eleEta_.at(iEle).fill(trg_passed, electrons.at(iEle).eta());
-    elePt_.at(iEle).fill(trg_passed, electrons.at(iEle).pt());
-    eleEta_variableBinning_.at(iEle).fill(trg_passed, electrons.at(iEle).eta());
-    elePt_variableBinning_.at(iEle).fill(trg_passed, electrons.at(iEle).pt());
-    elePtEta_.at(iEle).fill(trg_passed, electrons.at(iEle).pt(), electrons.at(iEle).eta());
-    eleEtaPhi_.at(iEle).fill(trg_passed, electrons.at(iEle).eta(), electrons.at(iEle).phi());
-  }
-
-  for (unsigned int iJet = 0; iJet < jets.size(); ++iJet) {
-    if (iJet >= njets_)
-      break;
-    jetPhi_.at(iJet).fill(trg_passed, jets.at(iJet).phi()); // by jet in event
-    jetEta_.at(iJet).fill(trg_passed, jets.at(iJet).eta());
-    jetPt_.at(iJet).fill(trg_passed, jets.at(iJet).pt());
-    jetEta_variableBinning_.at(iJet).fill(trg_passed, jets.at(iJet).eta());
-    jetPt_variableBinning_.at(iJet).fill(trg_passed, jets.at(iJet).pt());
-    jetPtEta_.at(iJet).fill(trg_passed, jets.at(iJet).pt(), jets.at(iJet).eta());
-    jetEtaPhi_.at(iJet).fill(trg_passed, jets.at(iJet).eta(), jets.at(iJet).phi());
-  }
-
-  // Marina
-  unsigned int iBJet = 0;
-  for (auto& bjet : bjets) {
-    if (iBJet >= nbjets_)
-      break;
-
-    bjetPhi_.at(iBJet).fill(trg_passed, bjet.first->phi());
-    bjetEta_.at(iBJet).fill(trg_passed, bjet.first->eta());
-    bjetPt_.at(iBJet).fill(trg_passed, bjet.first->pt());
-    bjetCSV_.at(iBJet).fill(trg_passed, std::fmax(0.0, bjet.second));
-    bjetEta_variableBinning_.at(iBJet).fill(trg_passed, bjet.first->eta());
-    bjetPt_variableBinning_.at(iBJet).fill(trg_passed, bjet.first->pt());
-    bjetPtEta_.at(iBJet).fill(trg_passed, bjet.first->pt(), bjet.first->eta());
-    bjetEtaPhi_.at(iBJet).fill(trg_passed, bjet.first->eta(), bjet.first->phi());
-    bjetCSVHT_.at(iBJet).fill(trg_passed, std::fmax(0.0, bjet.second), eventHT);
-
-    iBJet++;
-  }
+   
 }
 
 void BTagAndProbe::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
