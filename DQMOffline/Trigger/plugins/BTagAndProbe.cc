@@ -90,6 +90,7 @@ private:
   MonitorElement* h_nElectrons5 = nullptr;
   MonitorElement* h_nElectrons6 = nullptr;
   MonitorElement* h_nElectrons7 = nullptr;
+  MonitorElement* h_nElectrons8 = nullptr;  
 
   MonitorElement* h_nMuons1 = nullptr;
   MonitorElement* h_nMuons2 = nullptr;
@@ -171,7 +172,7 @@ private:
   ObjME trackSip3dSig_;
   ObjME trackSip2dSig_;
   ObjME trackDecayLenVal_;
-  ObjME trackEtaRek_;
+  ObjME trackEtaRel_;
 
   ObjME vertexMass_;
   ObjME vertexNTracks_;
@@ -383,6 +384,11 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   histname = "nElectrons7";
   title = "number of electrons7";
   h_nElectrons7 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+  
+  histname = "nElectrons8";
+  title = "number of electrons8";
+  h_nElectrons8 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10); 
+
 
   histname = "nMuons1";
   title = "number of muons1";
@@ -581,7 +587,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   bookME(ibooker,
          jet_pt_,
          histname, title,
-         50, -0.1, 200.);
+         100, -0.1, 400.);
   setMETitle(jet_pt_, "jet pt", "Entries");
 
   histname = "jet_eta";
@@ -595,6 +601,223 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   histname = "nJets6";
   title = "number of jets6";
   h_nJets6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+  
+  histname = "jetNSecondaryVertices";
+  title = "jet NSecondary Vertices";
+  bookME(ibooker,
+         jetNSecondaryVertices_,
+         histname, title,
+         10, -0.5, 9.5);
+  setMETitle(jetNSecondaryVertices_, "N Secondary Vertices", "Entries");
+
+  histname = "trackSumJetEtRatio";
+  title = "trackSumJetEtRatio";
+  bookME(ibooker,
+         trackSumJetEtRatio_,
+         histname, title,
+         100, -.1, 1.5);
+  setMETitle(trackSumJetEtRatio_, "trackSumJetEtRatio", "Entries");
+  
+  histname = "trackSumJetDeltaR";
+  title = "trackSumJetDeltaR";
+  bookME(ibooker,
+         trackSumJetDeltaR_,
+         histname, title,
+         100, -0.1, 0.35);
+  setMETitle(trackSumJetDeltaR_, "trackSumJetDeltaR", "Entries");
+
+  histname = "vertexCategory";
+  title = "vertexCategory";
+  bookME(ibooker,
+         vertexCategory_,
+         histname, title,
+         4, -1.5, 2.5);
+  setMETitle(vertexCategory_, "vertexCategory", "Entries");
+
+  histname = "trackSip2dValAboveCharm";
+  title = "trackSip2dValAboveCharm";
+  bookME(ibooker,
+         trackSip2dValAboveCharm_,
+         histname, title,
+         100, -0.2, 0.2);
+  setMETitle(trackSip2dValAboveCharm_, "trackSip2dValAboveCharm", "Entries");
+
+  histname = "trackSip2dSigAboveCharm";
+  title = "trackSip2dSigAboveCharm";
+  bookME(ibooker,
+         trackSip2dSigAboveCharm_,
+         histname, title,
+         100, -50, 50);
+  setMETitle(trackSip2dSigAboveCharm_, "trackSip2dSigAboveCharm", "Entries");
+  
+  histname = "trackSip3dValAboveCharm";
+  title = "trackSip3dValAboveCharm";
+  bookME(ibooker,
+         trackSip3dValAboveCharm_,
+         histname, title,
+         100, -0.2, 0.2);
+  setMETitle(trackSip3dValAboveCharm_, "trackSip3dValAboveCharm", "Entries");
+
+  histname = "trackSip3dSigAboveCharm";
+  title = "trackSip3dSigAboveCharm";
+  bookME(ibooker,
+         trackSip3dSigAboveCharm_,
+         histname, title,
+         100, -50, 50);
+  setMETitle(trackSip3dSigAboveCharm_, "trackSip3dSigAboveCharm", "Entries");
+  
+  histname = "jetNSelectedTracks";
+  title = "jetNSelectedTracks";
+  bookME(ibooker,
+         jetNSelectedTracks_,
+         histname, title,
+         42, -1.5, 40.5);
+  setMETitle(jetNSelectedTracks_, "jetNSelectedTracks", "Entries");
+
+  histname = "jetNTracksEtaRel";
+  title = "jetNTracksEtaRel";
+  bookME(ibooker,
+         jetNTracksEtaRel_,
+         histname, title,
+         42, -1.5, 40.5);
+  setMETitle(jetNTracksEtaRel_, "jetNTracksEtaRel", "Entries");
+  
+  histname = "trackJetDistVal";
+  title = "trackJetDistVal";
+  bookME(ibooker,
+         trackJetDistVal_,
+         histname, title,
+         100, -1, 0.01);
+  setMETitle(trackJetDistVal_, "trackJetDistVal", "Entries");
+
+  histname = "trackPtRel";
+  title = "trackPtRel";
+  bookME(ibooker,
+         trackPtRel_,
+         histname, title,
+         100, -0.1, 7);
+  setMETitle(trackPtRel_, "trackPtRel", "Entries");
+
+  histname = "trackDeltaR";
+  title = "trackDeltaR";
+  bookME(ibooker,
+         trackDeltaR_,
+         histname, title,
+         160, -0.05, 0.47);
+  setMETitle(trackDeltaR_, "trackDeltaR", "Entries");
+
+  histname = "trackPtRatio";
+  title = "trackPtRatio";
+  bookME(ibooker,
+         trackPtRatio_,
+         histname, title,
+         100, -0.01, 0.3);
+  setMETitle(trackPtRatio_, "trackPtRatio", "Entries");
+  
+  histname = "trackSip3dSig";
+  title = "trackSip3dSig";
+  bookME(ibooker,
+         trackSip3dSig_,
+         histname, title,
+         40, -40, 40);
+  setMETitle(trackSip3dSig_, "trackSip3dSig", "Entries");
+  
+  histname = "trackSip2dSig";
+  title = "trackSip2dSig";
+  bookME(ibooker,
+         trackSip2dSig_,
+         histname, title,
+         100, -50, 50.);
+  setMETitle(trackSip2dSig_, "trackSip2dSig", "Entries");
+
+  histname = "trackDecayLenVal";
+  title = "trackDecayLenVal";
+  bookME(ibooker,
+         trackDecayLenVal_,
+         histname, title,
+         100, -0.1, 22);
+  setMETitle(trackDecayLenVal_, "trackDecayLenVal", "Entries");
+  
+  histname = "trackEtaRel";
+  title = "trackEtaRel";
+  bookME(ibooker,
+         trackEtaRel_,
+         histname, title,
+         31, -0.1, 30);
+  setMETitle(trackEtaRel_, "trackEtaRel", "Entries");
+
+  histname = "vertexMass";
+  title = "vertexMass";
+  bookME(ibooker,
+         vertexMass_,
+         histname, title,
+         20, 0, 10);
+  setMETitle(vertexMass_, "vertexMass", "Entries");
+
+  histname = "vertexNTracks";
+  title = "vertexNTracks";
+  bookME(ibooker,
+         vertexNTracks_,
+         histname, title,
+         20, -0.5, 19.5);
+  setMETitle(vertexNTracks_, "vertexNTracks", "Entries");
+
+  histname = "vertexEnergyRatio";
+  title = "vertexEnergyRatio";
+  bookME(ibooker,
+         vertexEnergyRatio_,
+         histname, title,
+         100, -0.1, 3);
+  setMETitle(vertexEnergyRatio_, "vertexEnergyRatio", "Entries");
+  
+  histname = "vertexJetDeltaR";
+  title = "vertexJetDeltaR";
+  bookME(ibooker,
+         vertexJetDeltaR_,
+         histname, title,
+         100, -0.01, .4);
+  setMETitle(vertexJetDeltaR_, "vertexJetDeltaR", "Entries");
+
+  histname = "flightDistance2dVal";
+  title = "flightDistance2dVal";
+  bookME(ibooker,
+         flightDistance2dVal_,
+         histname, title,
+         100, -0.1, 5);
+  setMETitle(flightDistance2dVal_, "flightDistance2dVal", "Entries");
+
+  histname = "flightDistance2dSig";
+  title = "flightDistance2dSig";
+  bookME(ibooker,
+         flightDistance2dSig_,
+         histname, title,
+         100, -10, 150.);
+  setMETitle(flightDistance2dSig_, "flightDistance2dSig", "Entries");
+
+  histname = "flightDistance3dVal";
+  title = "flightDistance3dVal";
+  bookME(ibooker,
+         flightDistance3dVal_,
+         histname, title,
+         100, -0.1, 5);
+  setMETitle(flightDistance3dVal_, "flightDistance3dVal", "Entries");
+  
+  histname = "flightDistance3dSig";
+  title = "flightDistance3dSig";
+  bookME(ibooker,
+         flightDistance3dSig_,
+         histname, title,
+         100, -10, 150.);
+  setMETitle(flightDistance3dSig_, "flightDistance3dSig", "Entries");
+
+//#  histname = "jet_eta";
+//#  title = "jet #eta";
+//#  bookME(ibooker,
+//#         jet_eta_,
+//#         histname, title,
+//#         20, -2.5, 2.5);
+//#  setMETitle(jet_eta_, "#eta", "Entries");
+
 
 }
 
@@ -693,9 +916,9 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     pv = &v;
     break;
   }
+  
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "LeptonPVcuts");
-  
   if (applyLeptonPVcuts_ && (pv == nullptr)) {
     edm::LogWarning("BTagAndProbe") << "Invalid handle to reco::VertexCollection, event will be skipped";
     return;
@@ -704,11 +927,11 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 
   unsigned int nElectrons = 0;
   if (nelectrons_ > 0) {
-    if (eleHandle->size() < nelectrons_) return; // this is why n_electrons must be at least '1'
+    //if (eleHandle->size() < nelectrons_) return; // this is why n_electrons must be at least '1'
 
-    cutFlowStatus++;
-    cutFlow->setBinLabel(cutFlowStatus, "elecHandleSize");
-    cutFlow->Fill(cutFlowStatus);
+    //cutFlowStatus++;
+    //cutFlow->setBinLabel(cutFlowStatus, "elecHandleSize");
+    //cutFlow->Fill(cutFlowStatus);
     
     h_nElectrons1->Fill(eleHandle->size());
     h_nElectrons2->Fill(eleIDHandle->size());
@@ -749,19 +972,18 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
  
   h_nMuons1->Fill(muoHandle->size()); 
   
-  cutFlowStatus++;
-  cutFlow->setBinLabel(cutFlowStatus, "passMuonSize");
+  //cutFlowStatus++;
+  //cutFlow->setBinLabel(cutFlowStatus, "passMuonSize");
   //cutFlow->Fill(cutFlowStatus);
   
   unsigned int nMuons = 0;
   if (nmuons_ > 0) { // need nmuons_ at least be '1'
-    for (auto const& m : *muoHandle) {
+    for(auto const& m : *muoHandle) {
       h_Muons1_pt->Fill(m.pt());
       h_Muons1_eta->Fill(m.eta());
       if (muoSelection_(m)) {
         //muons.push_back(m);
-      
-        
+          
         h_Muons2_pt->Fill(m.pt());
         h_Muons2_eta->Fill(m.eta());
 
@@ -780,19 +1002,9 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     nMuons = muons.size();
     if (nMuons < nmuons_) return;
     h_nMuons3->Fill(nMuons);
-    cutFlow->Fill(cutFlowStatus);
+    //cutFlow->Fill(cutFlowStatus);
   }
-  
-  //std::cout<<"before allJetBTagVals loop"<<endl;
-  //for(const auto& x : allJetBTagVals){
-  //  std::cout<<"allJetBTagVals: "<< x.first->pt()<<" "<<x.first->eta()<<" "<<x.first->phi() <<": "<< x.second <<endl;
-  //}
-  //if (nbjets_ > 0) {
-  //if (true){  
-  // map of Jet,btagValues (for all jets passing bJetSelection_)
-  //  - btagValue of each jet is calculated as sum of values from InputTags in jetTagTokens_
-  //JetTagMap allJetBTagVals;
-  //std::cout<<"nbjets_: "<<nbjets_<<endl;
+   
   int nbjets1=0;
   int nbjets2=0;
   int nbjets3=0;
@@ -871,10 +1083,10 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   h_nElectrons4->Fill(nElectrons);
   h_nMuons3->Fill(nMuons);
 
-  cutFlowStatus++;
-  cutFlow->setBinLabel(cutFlowStatus, "tooFewJets");
-  if (bjets.size() < nbjets_) return; 
-  cutFlow->Fill(cutFlowStatus);
+  //cutFlowStatus++;
+  //cutFlow->setBinLabel(cutFlowStatus, "tooFewJets");
+  //if (bjets.size() < nbjets_) return; 
+  //cutFlow->Fill(cutFlowStatus);
   h_nJets8->Fill(bjets.size());
   
  
@@ -885,7 +1097,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "PassJetDeltaEta");
-  if (nbjets_ > 1) {
+  if (bjets.size() > 1) {
     double deltaEta = std::abs(bjets.begin()->first->eta() - (++bjets.begin())->first->eta());
     if (deltaEta > bJetDeltaEtaMax_)
       return;
@@ -897,18 +1109,18 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   h_nElectrons5->Fill(nElectrons); //FIXME 
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "reqNumElectrons");
-  if(nElectrons!=nelectrons_) return;
+  if(nElectrons<nelectrons_) return;
   cutFlow->Fill(cutFlowStatus);
   h_nJets10->Fill(bjets.size());
-  h_nElectrons5->Fill(nElectrons);
+  h_nElectrons6->Fill(nElectrons);
   h_nMuons4->Fill(nMuons);
 
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "reqNumMuons");
-  if(nMuons!=nmuons_) return;
+  if(nMuons<nmuons_) return;
   cutFlow->Fill(cutFlowStatus);
   h_nJets11->Fill(bjets.size());
-  h_nElectrons6->Fill(nElectrons);
+  h_nElectrons7->Fill(nElectrons);
   h_nMuons5->Fill(nMuons);
 
   cutFlowStatus++;
@@ -934,7 +1146,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     }
   }
 
-  h_nElectrons7->Fill(nElectrons); //Fill electron counter
+  h_nElectrons8->Fill(nElectrons); //Fill electron counter
   h_nMuons6->Fill(nMuons); //Fill muon counter
 
   bool isProbe;
@@ -965,17 +1177,129 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       jet_eta_.fill(passProbe, jet1.first->eta());
     
       for(const auto& shallowTagInfo : *shallowTagInfos){
+        const auto tagJet  = shallowTagInfo.jet();
         const auto& tagVars = shallowTagInfo.taggingVariables();
         
         auto jetEta = tagVars.getList(reco::btau::jetEta, false)[0];
-        auto jetPhi = tagVars.getList(reco::btau::jetPhi, false)[0];
         auto jetPt  = tagVars.getList(reco::btau::jetPt, false)[0];
         
-        //std::cout<<"jet pt: "<<jetPt<<endl;
-        //if(deltaR(jet1.first->eta(), jet1.first->phi(), jetEta, jetPhi)>0.1) continue;
+        if(deltaR(jet1.first->eta(), jet1.first->phi(), tagJet->eta(), tagJet->phi())<0.1) continue;
         std::cout<<"jetPt: "<<jetPt<<" "<<jet1.first->pt()<<endl;
         std::cout<<"jetEta: "<<jetEta<<" "<<jet1.first->eta()<<endl;
-        std::cout<<"jetPhi: "<</*jetPhi<<*/" "<<jet1.first->phi()<<endl;
+        
+        for(const auto& tagVar : tagVars.getList(reco::btau::jetNSecondaryVertices, false)){
+          jetNSecondaryVertices_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)){
+          trackSumJetEtRatio_.fill(passProbe, tagVar);
+        }
+
+        //for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)){
+          //trackSumJetEtRatio_.fill(passProbe, tagVar);
+        //}
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetDeltaR, false)){
+          trackSumJetDeltaR_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::vertexCategory, false)){
+          vertexCategory_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip2dValAboveCharm, false)){
+          trackSip2dValAboveCharm_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip2dSigAboveCharm, false)){
+          trackSip2dSigAboveCharm_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip3dValAboveCharm, false)){
+          trackSip3dValAboveCharm_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip3dSigAboveCharm, false)){
+          trackSip3dSigAboveCharm_.fill(passProbe, tagVar);
+        }
+        
+        for(const auto& tagVar : tagVars.getList(reco::btau::jetNSelectedTracks, false)){
+          jetNSelectedTracks_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::jetNTracksEtaRel, false)){
+          jetNTracksEtaRel_.fill(passProbe, tagVar);
+        }
+
+        //for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)){
+          //trackSumJetEtRatio_.fill(passProbe, tagVar);
+        //}
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackJetDistVal, false)){
+          trackJetDistVal_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackPtRel, false)){
+          trackPtRel_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackDeltaR, false)){
+          trackDeltaR_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackPtRatio, false)){
+          trackPtRatio_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip3dSig, false)){
+          trackSip3dSig_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip2dSig, false)){
+          trackSip2dSig_.fill(passProbe, tagVar);
+        }
+        
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackDecayLenVal, false)){
+          trackDecayLenVal_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::trackEtaRel, false)){
+          trackEtaRel_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::vertexMass, false)){
+          vertexMass_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::vertexNTracks, false)){
+          vertexNTracks_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::vertexEnergyRatio, false)){
+          vertexEnergyRatio_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::vertexJetDeltaR, false)){
+          vertexJetDeltaR_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dVal, false)){
+          flightDistance2dVal_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dSig, false)){
+          flightDistance2dSig_.fill(passProbe, tagVar);
+        }
+
+        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dVal, false)){
+          flightDistance3dVal_.fill(passProbe, tagVar);
+        }
+        
+        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dSig, false)){
+          flightDistance3dSig_.fill(passProbe, tagVar);
+        }
+
+        //std::cout<<"jetPhi: "<<jetPhi.size()<<" "<<jet1.first->phi()<<endl;
       }
 
 
@@ -998,7 +1322,6 @@ void BTagAndProbe::fillDescriptions(edm::ConfigurationDescriptions& descriptions
   desc.add<edm::InputTag>("muons", edm::InputTag("muons"));
   desc.add<edm::InputTag>("electrons", edm::InputTag("gedGsfElectrons"));
   desc.add<edm::InputTag>("elecID", edm::InputTag("egmGsfElectronIDsForDQM:cutBasedElectronID-Fall17-94X-V1-tight"));
-  //desc.add<edm::InputTag>("photons", edm::InputTag("photons"));
   desc.add<edm::InputTag>("jets", edm::InputTag("ak4PFJetsCHS"));
   desc.add<std::vector<edm::InputTag> >(
       "btagAlgos", {edm::InputTag("pfDeepCSVJetTags:probb"), edm::InputTag("pfDeepCSVJetTags:probbb")});
