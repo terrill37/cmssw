@@ -31,6 +31,11 @@
 
 //Tagging variables
 #include "DataFormats/BTauReco/interface/ShallowTagInfo.h"
+//#include "DataFormats/BTauReco/interface/ChargedCandidateFeatures.h"
+//#include "DataFormats/BTauReco/interface/NeutralCandidateFeatures.h"
+//#include "DataFormats/BTauReco/interface/SecondaryVertexFeatures.h"
+//#include "DataFormats/BTauReco/interface/DeepFlavourFeatures.h"
+//#include "DataFormats/BTauReco/interface/DeepFlavourTagInfo.h"
 
 #include <string>
 //#include <TH1F.h>
@@ -76,7 +81,7 @@ private:
 
   //Tag info
   edm::EDGetTokenT<std::vector<reco::ShallowTagInfo> > shallowTagInfosToken_;
-
+  //edm::EDGetTokenT<std::vector<reco::DeepFlavourTagInfo> > deepFlavInfosToken_;
   struct PVcut {
     double dxy;
     double dz;
@@ -245,7 +250,8 @@ private:
   unsigned int nmuons_;
   //unsigned int nphotons_;
   double leptJetDeltaRmin_;
-  //double bJetMuDeltaRmax_;
+  //d
+  //ouble bJetMuDeltaRmax_;
   double bJetDeltaEtaMax_;
   //double HTcut_;
   unsigned int nbjets_;
@@ -255,6 +261,8 @@ private:
   bool applyLeptonPVcuts_;
 
   bool applyMETcut_ = false;
+
+  //std::string deepFlavourTagInfos_;
 
   //double invMassUppercut_;
   //double invMassLowercut_;
@@ -267,7 +275,7 @@ private:
   //bool enablePhotonPlot_;
   //bool enableMETPlot_;
 };
-
+//deepFlavourJetTags
 BTagAndProbe::BTagAndProbe(const edm::ParameterSet& iConfig)
     : folderName_(iConfig.getParameter<std::string>("FolderName")),
       requireValidHLTPaths_(iConfig.getParameter<bool>("requireValidHLTPaths")),
@@ -283,6 +291,8 @@ BTagAndProbe::BTagAndProbe(const edm::ParameterSet& iConfig)
       metToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("met"))),
       shallowTagInfosToken_(
         consumes<std::vector<reco::ShallowTagInfo> >(edm::InputTag("hltDeepCombinedSecondaryVertexBJetTagsInfos"))),
+      //deepFlavInfosToken_(
+        //consumes<std::vector<reco::DeepFlavourTagInfo> >(edm::InputTag("pfDeepFlavourTagInfos"))),
       num_genTriggerEventFlag_(new GenericTriggerEventFlag(
           iConfig.getParameter<edm::ParameterSet>("numGenericTriggerEventPSet"), consumesCollector(), *this)),
       den_genTriggerEventFlag_(new GenericTriggerEventFlag(
@@ -300,7 +310,7 @@ BTagAndProbe::BTagAndProbe(const edm::ParameterSet& iConfig)
       nbjets_(iConfig.getParameter<unsigned int>("nbjets")),
       workingpoint_(iConfig.getParameter<double>("workingpoint")),
       applyLeptonPVcuts_(iConfig.getParameter<bool>("applyLeptonPVcuts")){
-     
+      //deepFlavourTagInfos_(iConfig.getParameter<std::string>("deepFlavourTagInfos")){ 
       
   ObjME empty;
 
@@ -898,6 +908,14 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     edm::LogWarning("BTagAndProbe") << "shallow tag handle not valid, will skip event \n";
     return;
   }
+
+  /*edm::Handle<std::vector<reco::DeepFlavourTagInfo> > deepFlavInfos;
+  std::cout<<deepFlavInfosToken_<<endl;
+  iEvent.getByToken(deepFlavInfosToken_, deepFlavInfos);
+  if(!deepFlavInfos.isValid()){
+    edm::LogWarning("BTagAndProbe") << "deep flavour tag handle not valid, will skip event \n";
+    return;
+  }*/
  
   cutFlow->Fill(cutFlowStatus);
 
@@ -1095,20 +1113,20 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   ////}
   unsigned int nbJets = bjets.size();
   
-  cutFlowStatus++;
+  /*cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "PassJetDeltaEta");
   if (bjets.size() > 1) {
     double deltaEta = std::abs(bjets.begin()->first->eta() - (++bjets.begin())->first->eta());
     if (deltaEta > bJetDeltaEtaMax_)
       return;
   }
-  cutFlow->Fill(cutFlowStatus);
+  cutFlow->Fill(cutFlowStatus);*/
   h_nJets9->Fill(bjets.size()); 
 
   ////// Event selection
   h_nElectrons5->Fill(nElectrons); //FIXME 
   cutFlowStatus++;
-  cutFlow->setBinLabel(cutFlowStatus, "reqNumElectrons");
+  cutFlow->setBinLabel(cutFlowStatus, "reqNumElectrons "+std::to_string(nelectrons_));
   if(nElectrons<nelectrons_) return;
   cutFlow->Fill(cutFlowStatus);
   h_nJets10->Fill(bjets.size());
@@ -1116,7 +1134,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   h_nMuons4->Fill(nMuons);
 
   cutFlowStatus++;
-  cutFlow->setBinLabel(cutFlowStatus, "reqNumMuons");
+  cutFlow->setBinLabel(cutFlowStatus, "reqNumMuons "+std::to_string(nmuons_));
   if(nMuons<nmuons_) return;
   cutFlow->Fill(cutFlowStatus);
   h_nJets11->Fill(bjets.size());
@@ -1124,7 +1142,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   h_nMuons5->Fill(nMuons);
 
   cutFlowStatus++;
-  cutFlow->setBinLabel(cutFlowStatus, "twoJets");
+  cutFlow->setBinLabel(cutFlowStatus, "twoOrMoreJets");
  
   if(nbJets<2) return;
   
@@ -1132,18 +1150,15 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   h_nJets12->Fill(nbJets);
   
   //loop electron, muon distributions
-  if(nmuons_>0){
-    for(auto const& m : muons){
-      h_Muons5_pt->Fill(m.pt());
-      h_Muons5_eta->Fill(m.eta());
-    } 
-  }
-
-  if(nelectrons_>0){
-    for(auto const& e : electrons){
-      h_Electrons4_pt->Fill(e.pt());
-      h_Electrons4_eta->Fill(e.eta());
-    }
+  
+  for(auto const& m : muons){
+    h_Muons5_pt->Fill(m.pt());
+    h_Muons5_eta->Fill(m.eta());
+  } 
+  
+  for(auto const& e : electrons){
+    h_Electrons4_pt->Fill(e.pt());
+    h_Electrons4_eta->Fill(e.eta());
   }
 
   h_nElectrons8->Fill(nElectrons); //Fill electron counter
@@ -1175,17 +1190,29 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 
       jet_pt_.fill(passProbe, jet1.first->pt());
       jet_eta_.fill(passProbe, jet1.first->eta());
-    
+      
+      /*for(const auto& deepFlavInfo : *deepFlavInfos){
+        const auto tagJet = deepFlavInfo.jet();
+        //const auto tagVars = deepFlavInfo.features().tag_info_features;
+        //const auto tagSV = deepFlavInfo.features().sv_features;
+        //const auto tag_npf = deepFlavInfo.features().n_pf_features;
+        //const auto tag_cpf = deepFlavInfo.features().c_pf_features;
+        //const auto tag_seed = deepFlavInfo.features().seed_features;
+
+        std::cout<<"deep flav jet"<<tagJet->eta()<<tagJet->phi()<<endl;
+        //std::cout<<
+      }*/
+
       for(const auto& shallowTagInfo : *shallowTagInfos){
         const auto tagJet  = shallowTagInfo.jet();
         const auto& tagVars = shallowTagInfo.taggingVariables();
         
-        auto jetEta = tagVars.getList(reco::btau::jetEta, false)[0];
-        auto jetPt  = tagVars.getList(reco::btau::jetPt, false)[0];
+        //auto jetEta = tagVars.getList(reco::btau::jetEta, false)[0];
+        //auto jetPt  = tagVars.getList(reco::btau::jetPt, false)[0];
         
-        if(deltaR(jet1.first->eta(), jet1.first->phi(), tagJet->eta(), tagJet->phi())<0.1) continue;
-        std::cout<<"jetPt: "<<jetPt<<" "<<jet1.first->pt()<<endl;
-        std::cout<<"jetEta: "<<jetEta<<" "<<jet1.first->eta()<<endl;
+        if(deltaR(jet1.first->eta(), jet1.first->phi(), tagJet->eta(), tagJet->phi())>0.3) continue;
+        //std::cout<<"jetPt: "<<jetPt<<" "<<jet1.first->pt()<<endl;
+        //std::cout<<"jetEta: "<<jetEta<<" "<<jet1.first->eta()<<endl;
         
         for(const auto& tagVar : tagVars.getList(reco::btau::jetNSecondaryVertices, false)){
           jetNSecondaryVertices_.fill(passProbe, tagVar);
@@ -1338,6 +1365,8 @@ void BTagAndProbe::fillDescriptions(edm::ConfigurationDescriptions& descriptions
   desc.add<double>("leptJetDeltaRmin", 0);
   desc.add<double>("bJetMuDeltaRmax", 9999.);
   desc.add<double>("bJetDeltaEtaMax", 9999.);
+  
+  //desc.add<double>("deepFlavourTagInfos", "pfDeepFlavour");
 
   desc.add<unsigned int>("nbjets", 0);
   desc.add<double>("workingpoint", 0.4941);  // DeepCSV Medium wp
@@ -1356,7 +1385,7 @@ void BTagAndProbe::fillDescriptions(edm::ConfigurationDescriptions& descriptions
   genericTriggerEventPSet.add<std::string>("hltDBKey", "");
   genericTriggerEventPSet.add<bool>("errorReplyHlt", false);
   genericTriggerEventPSet.add<unsigned int>("verbosityLevel", 1);
-
+  
   desc.add<edm::ParameterSetDescription>("numGenericTriggerEventPSet", genericTriggerEventPSet);
   desc.add<edm::ParameterSetDescription>("denGenericTriggerEventPSet", genericTriggerEventPSet);
 
