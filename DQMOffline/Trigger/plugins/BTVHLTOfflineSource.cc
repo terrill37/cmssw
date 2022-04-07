@@ -686,7 +686,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
 
         for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dSig, false)) {
           v.h_flightDistance2dSig->Fill(tagVar);
-        }       
+        }
 
         for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dVal, false)) {
           v.h_flightDistance3dVal->Fill(tagVar);

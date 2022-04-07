@@ -394,7 +394,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   histname = "nElectrons7";
   title = "number of electrons7";
   h_nElectrons7 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
-  
+
   histname = "nElectrons8";
   title = "number of electrons8";
   h_nElectrons8 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
@@ -506,8 +506,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
 
   histname = "Electrons4_eta";
   title = "Electrons4 eta";
-  h_Electrons4_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50); 
-
+  h_Electrons4_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
   //nJets
   histname = "nJets1";
@@ -607,18 +606,6 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          20, -2.5, 2.5);
   setMETitle(jet_eta_, "#eta", "Entries");
 
-  histname = "nJets6";
-  title = "number of jets6";
-  h_nJets6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
-  
-  histname = "jetNSecondaryVertices";
-  title = "jet NSecondary Vertices";
-  bookME(ibooker,
-         jetNSecondaryVertices_,
-         histname, title,
-         10, -0.5, 9.5);
-  setMETitle(jetNSecondaryVertices_, "N Secondary Vertices", "Entries");
-
   histname = "trackSumJetEtRatio";
   title = "trackSumJetEtRatio";
   bookME(ibooker,
@@ -626,7 +613,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          100, -.1, 1.5);
   setMETitle(trackSumJetEtRatio_, "trackSumJetEtRatio", "Entries");
-  
+
   histname = "trackSumJetDeltaR";
   title = "trackSumJetDeltaR";
   bookME(ibooker,
@@ -658,7 +645,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          100, -50, 50);
   setMETitle(trackSip2dSigAboveCharm_, "trackSip2dSigAboveCharm", "Entries");
-  
+
   histname = "trackSip3dValAboveCharm";
   title = "trackSip3dValAboveCharm";
   bookME(ibooker,
@@ -674,7 +661,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          100, -50, 50);
   setMETitle(trackSip3dSigAboveCharm_, "trackSip3dSigAboveCharm", "Entries");
-  
+
   histname = "jetNSelectedTracks";
   title = "jetNSelectedTracks";
   bookME(ibooker,
@@ -690,7 +677,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          42, -1.5, 40.5);
   setMETitle(jetNTracksEtaRel_, "jetNTracksEtaRel", "Entries");
-  
+
   histname = "trackJetDistVal";
   title = "trackJetDistVal";
   bookME(ibooker,
@@ -722,7 +709,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          100, -0.01, 0.3);
   setMETitle(trackPtRatio_, "trackPtRatio", "Entries");
-  
+
   histname = "trackSip3dSig";
   title = "trackSip3dSig";
   bookME(ibooker,
@@ -730,7 +717,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          40, -40, 40);
   setMETitle(trackSip3dSig_, "trackSip3dSig", "Entries");
-  
+
   histname = "trackSip2dSig";
   title = "trackSip2dSig";
   bookME(ibooker,
@@ -746,7 +733,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          100, -0.1, 22);
   setMETitle(trackDecayLenVal_, "trackDecayLenVal", "Entries");
-  
+
   histname = "trackEtaRel";
   title = "trackEtaRel";
   bookME(ibooker,
@@ -915,11 +902,11 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     edm::LogWarning("BTagAndProbe") << "deep flavour tag handle not valid, will skip event \n";
     return;
   }*/
- 
+
   cutFlow->Fill(cutFlowStatus);
 
   // Filter out events if Trigger Filtering is requested
-  //if (den_genTriggerEventFlag_->on() && !den_genTriggerEventFlag_->accept(iEvent, iSetup)) return; 
+  //if (den_genTriggerEventFlag_->on() && !den_genTriggerEventFlag_->accept(iEvent, iSetup)) return;
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "passTrigger");
   cutFlow->Fill(cutFlowStatus);
