@@ -172,7 +172,7 @@ private:
     MonitorElement* h_3d_ip_distance = nullptr;
     MonitorElement* h_3d_ip_error = nullptr;
     MonitorElement* h_3d_ip_sig = nullptr;
-    
+
     //NEW FIXME
     MonitorElement* h_jetNSecondaryVertices = nullptr;
     MonitorElement* h_jet_pt = nullptr;
@@ -195,7 +195,7 @@ private:
     MonitorElement* h_trackSip2dSig = nullptr;
     MonitorElement* h_trackDecayLenVal = nullptr;
     MonitorElement* h_trackEtaRel = nullptr; //Find this variable
-    
+
     //MonitorElement* h_vertexMass = nullptr; //exists
     //MonitorElement* h_vertexNTracks = nullptr; //exists
     MonitorElement* h_vertexEnergyRatio = nullptr;
@@ -552,7 +552,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
       for (const auto& shallowTagInfo : *shallowTagInfoCollection) {
         const auto& tagVars = shallowTagInfo.taggingVariables();
         //std::cout<<"fill jetNSecondaryVertices: "<<reco::btau::jetNSecondaryVertices<<endl;
-        //v.h_jetNSecondaryVertices->Fill(tagVars.getList(reco::btau::jetNSecondaryVertices)[0]); 
+        //v.h_jetNSecondaryVertices->Fill(tagVars.getList(reco::btau::jetNSecondaryVertices)[0]);
         //int i;
         //i=0;
 
@@ -564,7 +564,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
           v.h_jetNSecondaryVertices->Fill(tagVar);
           v.n_vtx->Fill(tagVar);
         }
-        
+
         for (const auto& tagVar : tagVars.getList(reco::btau::jetNSelectedTracks, false)) {
           v.n_sel_tracks->Fill(tagVar);
           v.h_jetNSelectedTracks->Fill(tagVar);
@@ -577,7 +577,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
         for (const auto& tagVar : tagVars.getList(reco::btau::jetEta, false)) {
           v.h_jet_eta->Fill(tagVar);
         }
-        
+
         for (const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)) {
           v.h_trackSumJetEtRatio->Fill(tagVar);
         }
@@ -622,7 +622,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
         const auto& trackPtRatio = tagVars.getList(reco::btau::trackPtRatio, false);
         const auto& trackDecayLenVal = tagVars.getList(reco::btau::trackDecayLenVal, false);
         const auto& trackEtaRel = tagVars.getList(reco::btau::trackEtaRel, false);
-        
+
         //cout<<"3d: "<<trackSip3dVal.size()<<endl;
         //cout<<"trackJetDistVal: "<<trackJetDistVal.size()<<endl;
         //cout<<"trackPtRel: "<<trackPtRel.size()<<endl;
@@ -631,11 +631,11 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
         for (unsigned i_trk = 0; i_trk < trackEtaRel.size(); i_trk++){
           v.h_trackEtaRel->Fill(trackEtaRel[i_trk]);
         }
-        
+
         for (unsigned i_trk = 0; i_trk < trackJetDistVal.size(); i_trk++){
           v.h_trackJetDistVal->Fill(trackJetDistVal[i_trk]);
         }
-        
+
         for (unsigned i_trk = 0; i_trk < trackPtRel.size(); i_trk++){
           v.h_trackPtRel->Fill(trackPtRel[i_trk]);
         }
@@ -658,11 +658,11 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
           v.h_3d_ip_distance->Fill(val);
           v.h_3d_ip_error->Fill(val / sig);
           v.h_3d_ip_sig->Fill(sig);
-          
-          v.h_trackSip2dSig->Fill(trackSip2dSig[i_trk]);
-          
 
-        } 
+          v.h_trackSip2dSig->Fill(trackSip2dSig[i_trk]);
+
+
+        }
 
         // vertex mass and tracks per vertex
         for (const auto& tagVar : tagVars.getList(reco::btau::vertexMass, false)) {
@@ -671,7 +671,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
         for (const auto& tagVar : tagVars.getList(reco::btau::vertexNTracks, false)) {
           v.n_vtx_trks->Fill(tagVar);
         }
-        
+
         for (const auto& tagVar : tagVars.getList(reco::btau::vertexEnergyRatio, false)){
           v.h_vertexEnergyRatio->Fill(tagVar);
         }
@@ -679,23 +679,23 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
         for (const auto& tagVar : tagVars.getList(reco::btau::vertexJetDeltaR, false)) {
           v.h_vertexJetDeltaR->Fill(tagVar);
         }
-    
+
         for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dVal, false)) {
           v.h_flightDistance2dVal->Fill(tagVar);
         }
-        
+
         for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dSig, false)) {
           v.h_flightDistance2dSig->Fill(tagVar);
         }       
-        
+
         for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dVal, false)) {
           v.h_flightDistance3dVal->Fill(tagVar);
         }
-        
+
         for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dSig, false)) {
           v.h_flightDistance3dSig->Fill(tagVar);
         }
-        
+
         // // track N total/pixel hits
         // for (const auto & tagVar : tagVars.getList(reco::btau::trackNPixelHits, false)) {
         //   v.n_pixel_hits->Fill(tagVar);}
@@ -908,7 +908,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     histoname = "3d_ip_sig";
     title = "3D IP significance of tracks (cm)" + trigPath;
     v.h_3d_ip_sig = iBooker.book1D(histoname.c_str(), title.c_str(), 40, -40, 40);
-    
+
     //new FIXME
     histoname = "jetNSecondaryVertices";
     title = "jet N Secondary Vertices" + trigPath;
@@ -957,7 +957,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     histoname = "trackSumJetDeltaR";
     title = "trackSumJetDeltaR" + trigPath;
     v.h_trackSumJetDeltaR = iBooker.book1D(histoname.c_str(), title.c_str(), 100, -0.1, 0.35);
-    
+
     //new 2 FIXME below
     histoname = "trackJetDistVal";
     title = "trackJetDistVal" + trigPath;
@@ -992,7 +992,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     v.h_trackEtaRel = iBooker.book1D(histoname.c_str(), title.c_str(), 31, 0, 30);
 
     //new 3 FIXME below
-    
+
     //histoname = "vertexMass";
     //title = "vertexMass" + trigPath;
     //v.h_vertexMass = iBooker.book1D(histoname.c_str(), title.c_str(), 60, 0, 60);
@@ -1024,7 +1024,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     histoname = "flightDistance3dSig";
     title = "flightDistance3dSig" + trigPath;
     v.h_flightDistance3dSig = iBooker.book1D(histoname.c_str(), title.c_str(), 100, -10, 150);
-    
+
     //end new
 
     histoname = "OnlineTrkEff_Pt";
