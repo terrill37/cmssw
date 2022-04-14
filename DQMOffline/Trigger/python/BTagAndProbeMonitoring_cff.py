@@ -21,7 +21,7 @@ BTagAndProbe_1e1m.muoSelection = cms.string('pt>10 & abs(eta)<2.4')
 BTagAndProbe_1e1m.bjetSelection = cms.string('pt>20 & abs(eta)<2.4')
 BTagAndProbe_1e1m.numGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5*')
 BTagAndProbe_1e1m.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_PFDiJet30_PFBtagDeepCSV_1p5*')
-
+BTagAndProbe_1e1m.debug = cms.bool(False)
 #BTagAndProbeJet_jet.numGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v*')
 #BTagAndProbeJet_jet.denGenericTriggerEventPSet.hltPaths = cms.vstring('HLT_Ele35_WPTight_Gsf_v*',
 #                                                                'HLT_Ele38_WPTight_Gsf_v*',
@@ -33,6 +33,7 @@ BTagAndProbe_1e0m = BTagAndProbe_1e1m.clone()
 BTagAndProbe_1e0m.FolderName = cms.string('HLT/BTV/TnP/OneEle_NoMu')
 BTagAndProbe_1e0m.nmuons = cms.uint32(0)
 BTagAndProbe_1e0m.nelectrons = cms.uint32(1)
+BTagAndProbe_1e0m.debug = cms.bool(True)
 
 ### ---
 BTagAndProbe_0e1m = BTagAndProbe_1e1m.clone()

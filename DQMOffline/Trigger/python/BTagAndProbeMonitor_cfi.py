@@ -43,9 +43,4 @@ BTagAndProbeMonitoring.denGenericTriggerEventPSet.andOrDcs      = False
 BTagAndProbeMonitoring.denGenericTriggerEventPSet.errorReplyDcs = True
 BTagAndProbeMonitoring.denGenericTriggerEventPSet.verbosityLevel = 0
 
-#BTagAndProbeMonitoring.MHTdefinition = 'pt>30 & abs(eta)<2.5'
-#BTagAndProbeMonitoring.MHTcut = -1
-#BTagAndProbeMonitoring.invMassUppercut = -1.0
-#BTagAndProbeMonitoring.invMassLowercut = -1.0
-#BTagAndProbeMonitoring.oppositeSignMuons = False
-#BTagAndProbeMonitoring.invMassCutInAllMuPairs = False
+#BTagAndProbeMonitoring.debug = False

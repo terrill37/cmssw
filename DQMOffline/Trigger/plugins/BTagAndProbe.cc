@@ -107,7 +107,6 @@ private:
 
   MonitorElement* h_nJets = nullptr;
   MonitorElement* h_btagVal = nullptr;
-  MonitorElement* h_btagVal2 = nullptr;
   MonitorElement* h_btagVal_pp = nullptr;
   MonitorElement* h_btagVal_pf = nullptr;
   MonitorElement* h_btagVal_pa = nullptr;
@@ -159,6 +158,9 @@ private:
   // new for tnp
   ObjME jetNSecondaryVertices_;
   ObjME jet_pt_;
+  ObjME jet_pt2_;
+  ObjME jet_pt3_;
+
   ObjME jet_eta_;
   ObjME trackSumJetEtRatio_;
   ObjME trackSip2dValAboveCharm_;
@@ -259,6 +261,7 @@ private:
   std::string btagalgoName_;
   PVcut lepPVcuts_;
   bool applyLeptonPVcuts_;
+  bool debug_;
 
   bool applyMETcut_ = false;
 
@@ -309,7 +312,8 @@ BTagAndProbe::BTagAndProbe(const edm::ParameterSet& iConfig)
       bJetDeltaEtaMax_(iConfig.getParameter<double>("bJetDeltaEtaMax")),
       nbjets_(iConfig.getParameter<unsigned int>("nbjets")),
       workingpoint_(iConfig.getParameter<double>("workingpoint")),
-      applyLeptonPVcuts_(iConfig.getParameter<bool>("applyLeptonPVcuts")){
+      applyLeptonPVcuts_(iConfig.getParameter<bool>("applyLeptonPVcuts")),
+      debug_(iConfig.getParameter<bool>("debug")){
       //deepFlavourTagInfos_(iConfig.getParameter<std::string>("deepFlavourTagInfos")){
 
   ObjME empty;
@@ -366,204 +370,201 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   std::string title;
   std::string currentFolder = folderName_;
   ibooker.setCurrentFolder(currentFolder);
+  if(debug_){
+    histname = "nElectrons1";
+    title = "number of electrons1";
+    h_nElectrons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons1";
-  title = "number of electrons1";
-  h_nElectrons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nElectrons2";
+    title = "number of electrons2";
+    h_nElectrons2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons2";
-  title = "number of electrons2";
-  h_nElectrons2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nElectrons3";
+    title = "number of electrons3";
+    h_nElectrons3 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons3";
-  title = "number of electrons3";
-  h_nElectrons3 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nElectrons4";
+    title = "number of electrons4";
+    h_nElectrons4 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons4";
-  title = "number of electrons4";
-  h_nElectrons4 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nElectrons5";
+    title = "number of electrons5";
+    h_nElectrons5 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons5";
-  title = "number of electrons5";
-  h_nElectrons5 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nElectrons6";
+    title = "number of electrons6";
+    h_nElectrons6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons6";
-  title = "number of electrons6";
-  h_nElectrons6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nElectrons7";
+    title = "number of electrons7";
+    h_nElectrons7 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons7";
-  title = "number of electrons7";
-  h_nElectrons7 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nElectrons8";
+    title = "number of electrons8";
+    h_nElectrons8 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nElectrons8";
-  title = "number of electrons8";
-  h_nElectrons8 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nMuons1";
+    title = "number of muons1";
+    h_nMuons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nMuons1";
-  title = "number of muons1";
-  h_nMuons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nMuons2";
+    title = "number of muons2";
+    h_nMuons2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nMuons2";
-  title = "number of muons2";
-  h_nMuons2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nMuons3";
+    title = "number of muons3";
+    h_nMuons3 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nMuons3";
-  title = "number of muons3";
-  h_nMuons3 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nMuons4";
+    title = "number of muons4";
+    h_nMuons4 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nMuons4";
-  title = "number of muons4";
-  h_nMuons4 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nMuons5";
+    title = "number of muons5";
+    h_nMuons5 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nMuons5";
-  title = "number of muons5";
-  h_nMuons5 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    histname = "nMuons6";
+    title = "number of muons6";
+    h_nMuons6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-  histname = "nMuons6";
-  title = "number of muons6";
-  h_nMuons6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
+    //muon pt
+    histname = "Muons1_pt";
+    title = "muons1 pt";
+    h_Muons1_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
-  //muon pt
-  histname = "Muons1_pt";
-  title = "muons1 pt";
-  h_Muons1_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
+    histname = "Muons2_pt";
+    title = "muons2 pt";
+    h_Muons2_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
-  histname = "Muons2_pt";
-  title = "muons2 pt";
-  h_Muons2_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
+    histname = "Muons3_pt";
+    title = "muons3 pt";
+    h_Muons3_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
-  histname = "Muons3_pt";
-  title = "muons3 pt";
-  h_Muons3_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
+    histname = "Muons4_pt";
+    title = "muons4 pt";
+    h_Muons4_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 50);
 
-  histname = "Muons4_pt";
-  title = "muons4 pt";
-  h_Muons4_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 50);
+    histname = "Muons5_pt";
+    title = "muons5 pt";
+    h_Muons5_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 50);
 
-  histname = "Muons5_pt";
-  title = "muons5 pt";
-  h_Muons5_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 50);
+    histname = "Muons6_pt";
+    title = "muons6 pt";
+    h_Muons6_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 50);
 
-  histname = "Muons6_pt";
-  title = "muons6 pt";
-  h_Muons6_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 50);
+    //muon eta
+    histname = "Muons1_eta";
+    title = "muons1 eta";
+    h_Muons1_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -5, 5);
 
-  //muon eta
-  histname = "Muons1_eta";
-  title = "muons1 eta";
-  h_Muons1_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -5, 5);
+    histname = "Muons2_eta";
+    title = "muons2 eta";
+    h_Muons2_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -5, 5);
 
-  histname = "Muons2_eta";
-  title = "muons2 eta";
-  h_Muons2_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -5, 5);
+    histname = "Muons3_eta";
+    title = "muons3 eta";
+    h_Muons3_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -5, 5);
 
-  histname = "Muons3_eta";
-  title = "muons3 eta";
-  h_Muons3_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -5, 5);
+    histname = "Muons4_eta";
+    title = "muons4 eta";
+    h_Muons4_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
-  histname = "Muons4_eta";
-  title = "muons4 eta";
-  h_Muons4_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
+    histname = "Muons5_eta";
+    title = "muons5 eta";
+    h_Muons5_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
-  histname = "Muons5_eta";
-  title = "muons5 eta";
-  h_Muons5_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
+    histname = "Muons6_eta";
+    title = "muons6 eta";
+    h_Muons6_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
-  histname = "Muons6_eta";
-  title = "muons6 eta";
-  h_Muons6_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
+    //electron pt
+    histname = "Electrons1_pt";
+    title = "electrons1 pt";
+    h_Electrons1_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
-  //electron pt
-  histname = "Electrons1_pt";
-  title = "electrons1 pt";
-  h_Electrons1_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
+    histname = "Electrons2_pt";
+    title = "Electrons2 pt";
+    h_Electrons2_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
-  histname = "Electrons2_pt";
-  title = "Electrons2 pt";
-  h_Electrons2_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
+    histname = "Electrons3_pt";
+    title = "Electrons3 pt";
+    h_Electrons3_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
-  histname = "Electrons3_pt";
-  title = "Electrons3 pt";
-  h_Electrons3_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
-
-  histname = "Electrons4_pt";
-  title = "Electrons4 pt";
-  h_Electrons4_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
+    histname = "Electrons4_pt";
+    title = "Electrons4 pt";
+    h_Electrons4_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
 
-  //electron eta
-  histname = "Electrons1_eta";
-  title = "Electrons1 eta";
-  h_Electrons1_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
+    //electron eta
+    histname = "Electrons1_eta";
+    title = "Electrons1 eta";
+    h_Electrons1_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
-  histname = "Electrons2_eta";
-  title = "Electrons2 eta";
-  h_Electrons2_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
+    histname = "Electrons2_eta";
+    title = "Electrons2 eta";
+    h_Electrons2_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
-  histname = "Electrons3_eta";
-  title = "Electrons3 eta";
-  h_Electrons3_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
+    histname = "Electrons3_eta";
+    title = "Electrons3 eta";
+    h_Electrons3_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
-  histname = "Electrons4_eta";
-  title = "Electrons4 eta";
-  h_Electrons4_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
+    histname = "Electrons4_eta";
+    title = "Electrons4 eta";
+    h_Electrons4_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
 
-  //nJets
-  histname = "nJets1";
-  title = "number of jets1";
-  h_nJets1 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    //nJets
+    histname = "nJets1";
+    title = "number of jets1";
+    h_nJets1 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets2";
-  title = "number of jets2";
-  h_nJets2 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets2";
+    title = "number of jets2";
+    h_nJets2 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets3";
-  title = "number of jets3";
-  h_nJets3 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets3";
+    title = "number of jets3";
+    h_nJets3 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets4";
-  title = "number of jets4";
-  h_nJets4 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets4";
+    title = "number of jets4";
+    h_nJets4 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets5";
-  title = "number of jets5";
-  h_nJets5 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets5";
+    title = "number of jets5";
+    h_nJets5 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets6";
-  title = "number of jets6";
-  h_nJets6 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets6";
+    title = "number of jets6";
+    h_nJets6 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets7";
-  title = "number of jets7";
-  h_nJets7 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets7";
+    title = "number of jets7";
+    h_nJets7 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets8";
-  title = "number of jets8";
-  h_nJets8 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets8";
+    title = "number of jets8";
+    h_nJets8 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets9";
-  title = "number of jets9";
-  h_nJets9 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets9";
+    title = "number of jets9";
+    h_nJets9 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets10";
-  title = "number of jets10";
-  h_nJets10 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets10";
+    title = "number of jets10";
+    h_nJets10 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets11";
-  title = "number of jets11";
-  h_nJets11 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+    histname = "nJets11";
+    title = "number of jets11";
+    h_nJets11 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
 
-  histname = "nJets12";
-  title = "number of jets12";
-  h_nJets12 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
-
+    histname = "nJets12";
+    title = "number of jets12";
+    h_nJets12 = ibooker.book1D(histname.c_str(), title.c_str(), 20, 0, 20);
+  }
+  
   histname = "btagVal";
   title = "btagVal";
   h_btagVal = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 1);
-
-  histname = "btagVal2";
-  title = "btagVal";
-  h_btagVal2 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 1);
 
   histname = "btagVal_probe_pass";
   title = "btagVal";
@@ -597,6 +598,22 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          100, -0.1, 400.);
   setMETitle(jet_pt_, "jet pt", "Entries");
+
+  histname = "jet_pt2";
+  title = "jet p_{T}";
+  bookME(ibooker,
+         jet_pt2_,
+         histname, title,
+         100, -0.1, 400.);
+  setMETitle(jet_pt2_, "jet pt", "Entries");
+
+  histname = "jet_pt3";
+  title = "jet p_{T}";
+  bookME(ibooker,
+         jet_pt3_,
+         histname, title,
+         100, -0.1, 400.);
+  setMETitle(jet_pt3_, "jet pt", "Entries");
 
   histname = "jet_eta";
   title = "jet #eta";
@@ -851,7 +868,6 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   cutFlow->setBinLabel(cutFlowStatus, "allValid");
   // if valid HLT paths are required,
   // analyze event only if all paths are valid
-  //std::cout<<"requireValidPaths: "<<requireValidHLTPaths_<<" hltPathsAreValid: "<<hltPathsAreValid_<<endl;
   if (requireValidHLTPaths_ && (!hltPathsAreValid_)) return;
 
   // electron Handle valid
@@ -937,25 +953,20 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     //cutFlow->setBinLabel(cutFlowStatus, "elecHandleSize");
     //cutFlow->Fill(cutFlowStatus);
 
-    h_nElectrons1->Fill(eleHandle->size());
-    h_nElectrons2->Fill(eleIDHandle->size());
-    //FIXME possibly add eleIDHandle == eleHandle sizes requirement
-    //int nElectronHandle=eleHandle->size();
+    if(debug_) h_nElectrons1->Fill(eleHandle->size());
+    if(debug_) h_nElectrons2->Fill(eleIDHandle->size());
     for (size_t index = 0; index < eleHandle->size(); index++) {
       const auto e = eleHandle->at(index);
       const auto el = eleHandle->ptrAt(index);
 
       bool pass_id = (*eleIDHandle)[el];
-      //pass_id = true;
 
-      h_Electrons1_pt->Fill(e.pt());
-      h_Electrons1_eta->Fill(e.eta());
+      if(debug_) h_Electrons1_pt->Fill(e.pt());
+      if(debug_) h_Electrons1_eta->Fill(e.eta());
 
       if (eleSelection_(e) && pass_id) {
-        //electrons.push_back(e);
-
-        h_Electrons2_pt->Fill(e.pt());
-        h_Electrons2_eta->Fill(e.eta());
+        if(debug_) h_Electrons2_pt->Fill(e.pt());
+        if(debug_) h_Electrons2_eta->Fill(e.eta());
 
         if (applyLeptonPVcuts_ && ((std::fabs(e.gsfTrack()->dxy(pv->position())) >= lepPVcuts_.dxy) ||
                                    (std::fabs(e.gsfTrack()->dz(pv->position())) >= lepPVcuts_.dz))) {
@@ -963,12 +974,14 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
         }
         electrons.push_back(e);
 
-        h_Electrons3_pt->Fill(e.pt());
-        h_Electrons3_eta->Fill(e.eta());
+        if(debug_) h_Electrons3_pt->Fill(e.pt());
+        if(debug_) h_Electrons3_eta->Fill(e.eta());
       }
     }
+    
     nElectrons = electrons.size();
-    h_nElectrons3->Fill(nElectrons);
+    if(debug_) h_nElectrons3->Fill(nElectrons);
+    
   }
   //have a debug
   //cout<<"nelectrons_: "<<nelectrons_<<" nElectrons: "<<nElectrons<<endl;
@@ -980,12 +993,12 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   unsigned int nMuons = 0;
   if (nmuons_ > 0) { // need nmuons_ at least be '1'
     for(auto const& m : *muoHandle) {
-      h_Muons1_pt->Fill(m.pt());
-      h_Muons1_eta->Fill(m.eta());
+      if(debug_) h_Muons1_pt->Fill(m.pt());
+      if(debug_) h_Muons1_eta->Fill(m.eta());
       if (muoSelection_(m)) {
         //muons.push_back(m);
-        h_Muons2_pt->Fill(m.pt());
-        h_Muons2_eta->Fill(m.eta());
+        if(debug_) h_Muons2_pt->Fill(m.pt());
+        if(debug_) h_Muons2_eta->Fill(m.eta());
 
         if (applyLeptonPVcuts_ && ((std::fabs(m.muonBestTrack()->dxy(pv->position())) >= lepPVcuts_.dxy) ||
                                      (std::fabs(m.muonBestTrack()->dz(pv->position())) >= lepPVcuts_.dz))) {
@@ -993,15 +1006,15 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
         }
         muons.push_back(m);
 
-        h_Muons3_pt->Fill(m.pt());
-        h_Muons3_eta->Fill(m.eta());
+        if(debug_) h_Muons3_pt->Fill(m.pt());
+        if(debug_) h_Muons3_eta->Fill(m.eta());
       }
     }
-    h_nMuons2->Fill(muons.size());
+    if(debug_) h_nMuons2->Fill(muons.size());
 
     nMuons = muons.size();
     if (nMuons < nmuons_) return;
-    h_nMuons3->Fill(nMuons);
+    if(debug_) h_nMuons3->Fill(nMuons);
     //cutFlow->Fill(cutFlowStatus);
   }
 
@@ -1014,7 +1027,6 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     iEvent.getByToken(jetTagToken, bjetHandle);
 
     const reco::JetTagCollection& bTags = *(bjetHandle.product());
-    //int nbjets1=0;
     for (const auto& i_jetTag : bTags) {
       const auto& jetRef = i_jetTag.first; // where jet that is tagged exists
       nbjets1++;
@@ -1033,19 +1045,16 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       }
     }
   }
-  h_nJets1->Fill(nbjets1);
-  h_nJets2->Fill(nbjets2);
-  h_nJets3->Fill(nbjets3);
+  if(debug_){
+    h_nJets1->Fill(nbjets1);
+    h_nJets2->Fill(nbjets2);
+    h_nJets3->Fill(nbjets3);
+  }
 
   int nbjets4=0;
   int nbjets5=0;
   int nbjets6=0;
-  //int nbjets7=0;
   for (const auto& jetBTagVal : allJetBTagVals) {
-    /*if (jetBTagVal.second < workingpoint_) { //check if passing btag
-      cout<<"working point: "<<workingpoint_<<endl;
-      continue;
-    }*/
     bool isJetOverlappedWithLepton = false;
     nbjets4++;
     if(nmuons_>0){
@@ -1054,8 +1063,8 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
           isJetOverlappedWithLepton = true;
           break;
         }
-        h_Muons4_pt->Fill(m.pt());
-        h_Muons4_eta->Fill(m.eta());
+        if(debug_) h_Muons4_pt->Fill(m.pt());
+        if(debug_) h_Muons4_eta->Fill(m.eta());
       }
     }
     if (isJetOverlappedWithLepton) continue;
@@ -1075,75 +1084,76 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 
     bjets.insert(JetTagMap::value_type(jetBTagVal.first, jetBTagVal.second));
   }
-  h_nJets4->Fill(nbjets4);
-  h_nJets5->Fill(nbjets5);
-  h_nJets6->Fill(nbjets6);
 
-  h_nJets7->Fill(bjets.size());
-  h_nElectrons4->Fill(nElectrons);
-  h_nMuons3->Fill(nMuons);
+  if(debug_){
+    h_nJets4->Fill(nbjets4);
+    h_nJets5->Fill(nbjets5);
+    h_nJets6->Fill(nbjets6);
 
-  //cutFlowStatus++;
-  //cutFlow->setBinLabel(cutFlowStatus, "tooFewJets");
-  //if (bjets.size() < nbjets_) return; 
-  //cutFlow->Fill(cutFlowStatus);
-  h_nJets8->Fill(bjets.size());
- 
-  ////if(bjets.size() < 1){ // need at least one bjet in event
-  ////  return;
-  ////}
+    h_nJets7->Fill(bjets.size());
+    h_nElectrons4->Fill(nElectrons);
+    h_nMuons3->Fill(nMuons);
+
+    h_nJets8->Fill(bjets.size());
+  } 
+
   unsigned int nbJets = bjets.size();
   
-  /*cutFlowStatus++;
+  cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "PassJetDeltaEta");
   if (bjets.size() > 1) {
     double deltaEta = std::abs(bjets.begin()->first->eta() - (++bjets.begin())->first->eta());
     if (deltaEta > bJetDeltaEtaMax_)
       return;
   }
-  cutFlow->Fill(cutFlowStatus);*/
-  h_nJets9->Fill(bjets.size()); 
+  cutFlow->Fill(cutFlowStatus);
+  if(debug_) h_nJets9->Fill(bjets.size()); 
 
   ////// Event selection
-  h_nElectrons5->Fill(nElectrons); //FIXME 
+  if(debug_) h_nElectrons5->Fill(nElectrons);
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "reqNumElectrons "+std::to_string(nelectrons_));
-  if(nElectrons<nelectrons_) return;
+  if(nElectrons<nelectrons_) return; //electron requirement
   cutFlow->Fill(cutFlowStatus);
-  h_nJets10->Fill(bjets.size());
-  h_nElectrons6->Fill(nElectrons);
-  h_nMuons4->Fill(nMuons);
+  if(debug_){
+    h_nJets10->Fill(bjets.size());
+    h_nElectrons6->Fill(nElectrons);
+    h_nMuons4->Fill(nMuons);
+  }
 
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "reqNumMuons "+std::to_string(nmuons_));
-  if(nMuons<nmuons_) return;
+  if(nMuons<nmuons_) return; //muon requirement
   cutFlow->Fill(cutFlowStatus);
-  h_nJets11->Fill(bjets.size());
-  h_nElectrons7->Fill(nElectrons);
-  h_nMuons5->Fill(nMuons);
+  if(debug_){
+    h_nJets11->Fill(bjets.size());
+    h_nElectrons7->Fill(nElectrons);
+    h_nMuons5->Fill(nMuons);
+  }
 
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "twoOrMoreJets");
  
-  if(nbJets<2) return;
+  if(nbJets<2) return; //Jet requirement
   
   cutFlow->Fill(cutFlowStatus);
-  h_nJets12->Fill(nbJets);
+  if(debug_) h_nJets12->Fill(nbJets);
   
   //loop electron, muon distributions
-  
-  for(auto const& m : muons){
-    h_Muons5_pt->Fill(m.pt());
-    h_Muons5_eta->Fill(m.eta());
-  } 
-  
-  for(auto const& e : electrons){
-    h_Electrons4_pt->Fill(e.pt());
-    h_Electrons4_eta->Fill(e.eta());
-  }
+  if(debug_){
+    for(auto const& m : muons){
+      h_Muons5_pt->Fill(m.pt());
+      h_Muons5_eta->Fill(m.eta());
+    } 
+    
+    for(auto const& e : electrons){
+      h_Electrons4_pt->Fill(e.pt());
+      h_Electrons4_eta->Fill(e.eta());
+    }
 
-  h_nElectrons8->Fill(nElectrons); //Fill electron counter
-  h_nMuons6->Fill(nMuons); //Fill muon counter
+    h_nElectrons8->Fill(nElectrons); //Fill electron counter
+    h_nMuons6->Fill(nMuons); //Fill muon counter
+  }
 
   bool isProbe;
   bool passProbe;
@@ -1152,9 +1162,8 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     for(auto& jet2: bjets){
       if(deltaR(*jet1.first,*jet2.first)<0.3) continue; // check if same jet
       if (jet2.second >= workingpoint_){// check if passing btag
-        //std::cout<<"working point: "<<workingpoint_<<endl;
+        if(debug_) std::cout<<"working point: "<<workingpoint_<<endl;
         isProbe = true;
-        //h_btagVal2->Fill(jet2.second);
         break;
       }  
     }
@@ -1194,7 +1203,12 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
         if(deltaR(jet1.first->eta(), jet1.first->phi(), tagJet->eta(), tagJet->phi())>0.3) continue;
         //std::cout<<"jetPt: "<<jetPt<<" "<<jet1.first->pt()<<endl;
         //std::cout<<"jetEta: "<<jetEta<<" "<<jet1.first->eta()<<endl;
-
+        
+        jet_pt2_.fill(passProbe, jet1.first->pt());
+        jet_pt3_.fill(passProbe, tagJet->pt());
+        
+        const auto& tagVar = tagVars.getList(reco::btau::jetNSecondaryVertices, false);
+        std::cout<<"jetNSecondaryVertices size: "<<tagVar.size()<<endl;
         for(const auto& tagVar : tagVars.getList(reco::btau::jetNSecondaryVertices, false)){
           jetNSecondaryVertices_.fill(passProbe, tagVar);
         }
@@ -1352,7 +1366,8 @@ void BTagAndProbe::fillDescriptions(edm::ConfigurationDescriptions& descriptions
   desc.add<unsigned int>("nbjets", 0);
   desc.add<double>("workingpoint", 0.4941);  // DeepCSV Medium wp
   desc.add<bool>("applyLeptonPVcuts", false);
- 
+  desc.add<bool>("debug", false);
+
   edm::ParameterSetDescription genericTriggerEventPSet;
   genericTriggerEventPSet.add<bool>("andOr");
   genericTriggerEventPSet.add<edm::InputTag>("dcsInputTag", edm::InputTag("scalersRawToDigi"));
