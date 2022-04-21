@@ -159,6 +159,7 @@ private:
   ObjME jetNSecondaryVertices_;
   ObjME jet_pt_;
   ObjME jet_eta_;
+  ObjME jet_bTagVal_;
   ObjME trackSumJetEtRatio_;
   ObjME trackSip2dValAboveCharm_;
   ObjME trackSip2dSigAboveCharm_;
@@ -587,7 +588,15 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
          histname, title,
          10, -0.5, 9.5);
   setMETitle(jetNSecondaryVertices_, "jetNSecondaryVertices", "Entries");
-
+  
+  histname = "jet_bTagVal";
+  title = "jet bTagVal";
+  bookME(ibooker,
+         jet_bTagVal_,
+         histname, title,
+         100, -0.1, 400.);
+  setMETitle(jet_bTagVal_, "jet bTagVal", "Entries");
+  
   histname = "jet_pt";
   title = "jet p_{T}";
   bookME(ibooker,
@@ -1180,6 +1189,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 
         jet_pt_.fill(passProbe, tagJet->pt());
         jet_eta_.fill(passProbe, tagJet->eta());
+        jet_bTagVal_.fill(passProbe, jet1.second);
 
         const auto& tagVar = tagVars.getList(reco::btau::jetNSecondaryVertices, false);
         std::cout<<"jetNSecondaryVertices size: "<<tagVar.size()<<endl;
