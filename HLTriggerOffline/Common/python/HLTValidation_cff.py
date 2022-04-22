@@ -57,8 +57,8 @@ hltvalidationWithMC = cms.Sequence(
     +ExoticaValidationSequence
     +b2gHLTriggerValidation
     +SMPValidationSequence
-    +hltbtagValidationSequence #too noisy for now
     +hltHCALdigisAnalyzer+hltHCALRecoAnalyzer+hltHCALNoiseRates # HCAL
+    #+hltbtagValidationSequence #too noisy for now
 )
 
 hltvalidationWithData = cms.Sequence(
