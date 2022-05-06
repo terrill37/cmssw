@@ -38,7 +38,6 @@
 //#include "DataFormats/BTauReco/interface/DeepFlavourTagInfo.h"
 
 #include <string>
-//#include <TH1F.h>
 #include <vector>
 #include <memory>
 #include <map>
@@ -55,8 +54,6 @@ public:
 protected:
   void bookHistograms(DQMStore::IBooker&, edm::Run const&, edm::EventSetup const&) override;
   void analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup) override;
-  //void fillCutFlow(std::string cut) override;
-  //void AddCut(std::string) override;
 
   struct JetRefCompare {
     inline bool operator()(const edm::RefToBase<reco::Jet>& j1, const edm::RefToBase<reco::Jet>& j2) const {
@@ -669,12 +666,6 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   //#         20, -2.5, 2.5);
   //#  setMETitle(jet_eta_, "#eta", "Entries");
 }
-
-//void BTagAndProbe::fillCutFlow(std::string cut){
-//}
-
-//void BTagAndProbe::AddCut(std::string cut){
-//}
 
 void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup) {
   //vector definitions
