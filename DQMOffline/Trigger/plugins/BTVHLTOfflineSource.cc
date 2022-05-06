@@ -194,7 +194,7 @@ private:
     MonitorElement* h_trackSip3dSig = nullptr;
     MonitorElement* h_trackSip2dSig = nullptr;
     MonitorElement* h_trackDecayLenVal = nullptr;
-    MonitorElement* h_trackEtaRel = nullptr; //Find this variable
+    MonitorElement* h_trackEtaRel = nullptr;  //Find this variable
 
     //MonitorElement* h_vertexMass = nullptr; //exists
     //MonitorElement* h_vertexNTracks = nullptr; //exists
@@ -629,27 +629,27 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
         //cout<<"trackPtRel: "<<trackPtRel.size()<<endl;
         //cout<<"trackEtaRel: "<<trackEtaRel.size()<<endl;
 
-        for (unsigned i_trk = 0; i_trk < trackEtaRel.size(); i_trk++){
+        for (unsigned i_trk = 0; i_trk < trackEtaRel.size(); i_trk++) {
           v.h_trackEtaRel->Fill(trackEtaRel[i_trk]);
         }
 
-        for (unsigned i_trk = 0; i_trk < trackJetDistVal.size(); i_trk++){
+        for (unsigned i_trk = 0; i_trk < trackJetDistVal.size(); i_trk++) {
           v.h_trackJetDistVal->Fill(trackJetDistVal[i_trk]);
         }
 
-        for (unsigned i_trk = 0; i_trk < trackPtRel.size(); i_trk++){
+        for (unsigned i_trk = 0; i_trk < trackPtRel.size(); i_trk++) {
           v.h_trackPtRel->Fill(trackPtRel[i_trk]);
         }
 
-        for (unsigned i_trk = 0; i_trk < trackDeltaR.size(); i_trk++){
+        for (unsigned i_trk = 0; i_trk < trackDeltaR.size(); i_trk++) {
           v.h_trackDeltaR->Fill(trackDeltaR[i_trk]);
         }
 
-        for (unsigned i_trk = 0; i_trk < trackPtRatio.size(); i_trk++){
+        for (unsigned i_trk = 0; i_trk < trackPtRatio.size(); i_trk++) {
           v.h_trackPtRatio->Fill(trackPtRatio[i_trk]);
         }
 
-        for (unsigned i_trk = 0; i_trk < trackDecayLenVal.size(); i_trk++){
+        for (unsigned i_trk = 0; i_trk < trackDecayLenVal.size(); i_trk++) {
           v.h_trackDecayLenVal->Fill(trackDecayLenVal[i_trk]);
         }
 
@@ -661,8 +661,6 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
           v.h_3d_ip_sig->Fill(sig);
 
           v.h_trackSip2dSig->Fill(trackSip2dSig[i_trk]);
-
-
         }
 
         // vertex mass and tracks per vertex
@@ -673,7 +671,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
           v.n_vtx_trks->Fill(tagVar);
         }
 
-        for (const auto& tagVar : tagVars.getList(reco::btau::vertexEnergyRatio, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::vertexEnergyRatio, false)) {
           v.h_vertexEnergyRatio->Fill(tagVar);
         }
 
@@ -740,7 +738,7 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
     //     }
     //   }
     // }
-  } //end paths loop
+  }  //end paths loop
 }
 
 std::vector<const reco::Track*> BTVHLTOfflineSource::getOfflineBTagTracks(float hltJetEta,
@@ -829,7 +827,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     std::string subdirName = dirname_ + "/" + trgPathName + v.getTriggerType();
     std::string trigPath = "(" + trgPathName + ")";
     iBooker.setCurrentFolder(subdirName);
-    
+
     std::string labelname("HLT");
     std::string histoname(labelname + "");
     std::string title(labelname + "");

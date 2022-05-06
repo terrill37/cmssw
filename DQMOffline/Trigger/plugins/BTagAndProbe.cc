@@ -214,7 +214,7 @@ private:
 
   bool applyMETcut_ = false;
 
-  //std::string deepFlavourTagInfos_; 
+  //std::string deepFlavourTagInfos_;
 };
 //deepFlavourJetTags
 BTagAndProbe::BTagAndProbe(const edm::ParameterSet& iConfig)
@@ -231,9 +231,9 @@ BTagAndProbe::BTagAndProbe(const edm::ParameterSet& iConfig)
                                 [this](edm::InputTag const& tag) { return mayConsume<reco::JetTagCollection>(tag); })),
       metToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("met"))),
       shallowTagInfosToken_(
-        consumes<std::vector<reco::ShallowTagInfo> >(edm::InputTag("hltDeepCombinedSecondaryVertexBJetTagsInfos"))),
+          consumes<std::vector<reco::ShallowTagInfo> >(edm::InputTag("hltDeepCombinedSecondaryVertexBJetTagsInfos"))),
       //deepFlavInfosToken_(
-        //consumes<std::vector<reco::DeepFlavourTagInfo> >(edm::InputTag("pfDeepFlavourTagInfos"))),
+      //consumes<std::vector<reco::DeepFlavourTagInfo> >(edm::InputTag("pfDeepFlavourTagInfos"))),
       num_genTriggerEventFlag_(new GenericTriggerEventFlag(
           iConfig.getParameter<edm::ParameterSet>("numGenericTriggerEventPSet"), consumesCollector(), *this)),
       den_genTriggerEventFlag_(new GenericTriggerEventFlag(
@@ -251,8 +251,8 @@ BTagAndProbe::BTagAndProbe(const edm::ParameterSet& iConfig)
       nbjets_(iConfig.getParameter<unsigned int>("nbjets")),
       workingpoint_(iConfig.getParameter<double>("workingpoint")),
       applyLeptonPVcuts_(iConfig.getParameter<bool>("applyLeptonPVcuts")),
-      debug_(iConfig.getParameter<bool>("debug")){
-      //deepFlavourTagInfos_(iConfig.getParameter<std::string>("deepFlavourTagInfos")){
+      debug_(iConfig.getParameter<bool>("debug")) {
+  //deepFlavourTagInfos_(iConfig.getParameter<std::string>("deepFlavourTagInfos")){
 
   ObjME empty;
 
@@ -273,12 +273,12 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   std::string title;
   std::string currentFolder = folderName_;
   ibooker.setCurrentFolder(currentFolder);
- 
+
   histname = "cutFlow";
   title = "cutFlow";
   cutFlow = ibooker.book1D(histname.c_str(), title.c_str(), 20, 1, 21);
   cutFlow->setBinLabel(1, "all");
-  
+
   // Initialize the GenericTriggerEventFlag
   if (num_genTriggerEventFlag_ && num_genTriggerEventFlag_->on())
     num_genTriggerEventFlag_->initRun(iRun, iSetup);
@@ -295,8 +295,8 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
   if (requireValidHLTPaths_ && (!hltPathsAreValid_)) {
     return;
   }
- 
-  if(debug_){
+
+  if (debug_) {
     histname = "nElectrons1";
     title = "number of electrons1";
     h_nElectrons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
@@ -329,7 +329,6 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
     title = "number of electrons8";
     h_nElectrons8 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
 
-
     histname = "nMuons1";
     title = "number of muons1";
     h_nMuons1 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
@@ -353,7 +352,7 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
     histname = "nMuons6";
     title = "number of muons6";
     h_nMuons6 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
-    
+
     histname = "nMuons7";
     title = "number of muons7";
     h_nMuons7 = ibooker.book1D(histname.c_str(), title.c_str(), 10, 0, 10);
@@ -425,7 +424,6 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
     title = "Electrons4 pt";
     h_Electrons4_pt = ibooker.book1D(histname.c_str(), title.c_str(), 50, 0, 100);
 
-
     //electron eta
     histname = "Electrons1_eta";
     title = "Electrons1 eta";
@@ -442,7 +440,6 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
     histname = "Electrons4_eta";
     title = "Electrons4 eta";
     h_Electrons4_eta = ibooker.book1D(histname.c_str(), title.c_str(), 10, -2.50, 2.50);
-
 
     //nJets
     histname = "nJets1";
@@ -516,253 +513,161 @@ void BTagAndProbe::bookHistograms(DQMStore::IBooker& ibooker, edm::Run const& iR
 
   histname = "jetNSecondaryVertices";
   title = "jetNSecondaryVertices";
-  bookME(ibooker,
-         jetNSecondaryVertices_,
-         histname, title,
-         10, -0.5, 9.5);
+  bookME(ibooker, jetNSecondaryVertices_, histname, title, 10, -0.5, 9.5);
   setMETitle(jetNSecondaryVertices_, "jetNSecondaryVertices", "Entries");
 
   histname = "jet_bTagVal";
   title = "jet bTag Val";
-  bookME(ibooker,
-         jet_tagVal_,
-         histname, title,
-         10, 0., 1.);
+  bookME(ibooker, jet_tagVal_, histname, title, 10, 0., 1.);
   setMETitle(jet_tagVal_, "jet bTag Val", "Entries");
 
   histname = "jet_pt";
   title = "jet p_{T}";
-  bookME(ibooker,
-         jet_pt_,
-         histname, title,
-         100, -0.1, 400.);
+  bookME(ibooker, jet_pt_, histname, title, 100, -0.1, 400.);
   setMETitle(jet_pt_, "jet pt", "Entries");
 
   histname = "jet_eta";
   title = "jet #eta";
-  bookME(ibooker,
-         jet_eta_,
-         histname, title,
-         20, -2.5, 2.5);
+  bookME(ibooker, jet_eta_, histname, title, 20, -2.5, 2.5);
   setMETitle(jet_eta_, "#eta", "Entries");
 
   histname = "jetNSecondaryVertices";
   title = "jet NSecondary Vertices";
-  bookME(ibooker,
-         jetNSecondaryVertices_,
-         histname, title,
-         10, -0.5, 9.5);
+  bookME(ibooker, jetNSecondaryVertices_, histname, title, 10, -0.5, 9.5);
   setMETitle(jetNSecondaryVertices_, "N Secondary Vertices", "Entries");
 
   histname = "trackSumJetEtRatio";
   title = "trackSumJetEtRatio";
-  bookME(ibooker,
-         trackSumJetEtRatio_,
-         histname, title,
-         100, -.1, 1.5);
+  bookME(ibooker, trackSumJetEtRatio_, histname, title, 100, -.1, 1.5);
   setMETitle(trackSumJetEtRatio_, "trackSumJetEtRatio", "Entries");
 
   histname = "trackSumJetDeltaR";
   title = "trackSumJetDeltaR";
-  bookME(ibooker,
-         trackSumJetDeltaR_,
-         histname, title,
-         100, -0.1, 0.35);
+  bookME(ibooker, trackSumJetDeltaR_, histname, title, 100, -0.1, 0.35);
   setMETitle(trackSumJetDeltaR_, "trackSumJetDeltaR", "Entries");
 
   histname = "vertexCategory";
   title = "vertexCategory";
-  bookME(ibooker,
-         vertexCategory_,
-         histname, title,
-         4, -1.5, 2.5);
+  bookME(ibooker, vertexCategory_, histname, title, 4, -1.5, 2.5);
   setMETitle(vertexCategory_, "vertexCategory", "Entries");
 
   histname = "trackSip2dValAboveCharm";
   title = "trackSip2dValAboveCharm";
-  bookME(ibooker,
-         trackSip2dValAboveCharm_,
-         histname, title,
-         100, -0.2, 0.2);
+  bookME(ibooker, trackSip2dValAboveCharm_, histname, title, 100, -0.2, 0.2);
   setMETitle(trackSip2dValAboveCharm_, "trackSip2dValAboveCharm", "Entries");
 
   histname = "trackSip2dSigAboveCharm";
   title = "trackSip2dSigAboveCharm";
-  bookME(ibooker,
-         trackSip2dSigAboveCharm_,
-         histname, title,
-         100, -50, 50);
+  bookME(ibooker, trackSip2dSigAboveCharm_, histname, title, 100, -50, 50);
   setMETitle(trackSip2dSigAboveCharm_, "trackSip2dSigAboveCharm", "Entries");
 
   histname = "trackSip3dValAboveCharm";
   title = "trackSip3dValAboveCharm";
-  bookME(ibooker,
-         trackSip3dValAboveCharm_,
-         histname, title,
-         100, -0.2, 0.2);
+  bookME(ibooker, trackSip3dValAboveCharm_, histname, title, 100, -0.2, 0.2);
   setMETitle(trackSip3dValAboveCharm_, "trackSip3dValAboveCharm", "Entries");
 
   histname = "trackSip3dSigAboveCharm";
   title = "trackSip3dSigAboveCharm";
-  bookME(ibooker,
-         trackSip3dSigAboveCharm_,
-         histname, title,
-         100, -50, 50);
+  bookME(ibooker, trackSip3dSigAboveCharm_, histname, title, 100, -50, 50);
   setMETitle(trackSip3dSigAboveCharm_, "trackSip3dSigAboveCharm", "Entries");
 
   histname = "jetNSelectedTracks";
   title = "jetNSelectedTracks";
-  bookME(ibooker,
-         jetNSelectedTracks_,
-         histname, title,
-         42, -1.5, 40.5);
+  bookME(ibooker, jetNSelectedTracks_, histname, title, 42, -1.5, 40.5);
   setMETitle(jetNSelectedTracks_, "jetNSelectedTracks", "Entries");
 
   histname = "jetNTracksEtaRel";
   title = "jetNTracksEtaRel";
-  bookME(ibooker,
-         jetNTracksEtaRel_,
-         histname, title,
-         42, -1.5, 40.5);
+  bookME(ibooker, jetNTracksEtaRel_, histname, title, 42, -1.5, 40.5);
   setMETitle(jetNTracksEtaRel_, "jetNTracksEtaRel", "Entries");
 
   histname = "trackJetDistVal";
   title = "trackJetDistVal";
-  bookME(ibooker,
-         trackJetDistVal_,
-         histname, title,
-         100, -1, 0.01);
+  bookME(ibooker, trackJetDistVal_, histname, title, 100, -1, 0.01);
   setMETitle(trackJetDistVal_, "trackJetDistVal", "Entries");
 
   histname = "trackPtRel";
   title = "trackPtRel";
-  bookME(ibooker,
-         trackPtRel_,
-         histname, title,
-         100, -0.1, 7);
+  bookME(ibooker, trackPtRel_, histname, title, 100, -0.1, 7);
   setMETitle(trackPtRel_, "trackPtRel", "Entries");
 
   histname = "trackDeltaR";
   title = "trackDeltaR";
-  bookME(ibooker,
-         trackDeltaR_,
-         histname, title,
-         160, -0.05, 0.47);
+  bookME(ibooker, trackDeltaR_, histname, title, 160, -0.05, 0.47);
   setMETitle(trackDeltaR_, "trackDeltaR", "Entries");
 
   histname = "trackPtRatio";
   title = "trackPtRatio";
-  bookME(ibooker,
-         trackPtRatio_,
-         histname, title,
-         100, -0.01, 0.3);
+  bookME(ibooker, trackPtRatio_, histname, title, 100, -0.01, 0.3);
   setMETitle(trackPtRatio_, "trackPtRatio", "Entries");
 
   histname = "trackSip3dSig";
   title = "trackSip3dSig";
-  bookME(ibooker,
-         trackSip3dSig_,
-         histname, title,
-         40, -40, 40);
+  bookME(ibooker, trackSip3dSig_, histname, title, 40, -40, 40);
   setMETitle(trackSip3dSig_, "trackSip3dSig", "Entries");
 
   histname = "trackSip2dSig";
   title = "trackSip2dSig";
-  bookME(ibooker,
-         trackSip2dSig_,
-         histname, title,
-         100, -50, 50.);
+  bookME(ibooker, trackSip2dSig_, histname, title, 100, -50, 50.);
   setMETitle(trackSip2dSig_, "trackSip2dSig", "Entries");
 
   histname = "trackDecayLenVal";
   title = "trackDecayLenVal";
-  bookME(ibooker,
-         trackDecayLenVal_,
-         histname, title,
-         100, -0.1, 22);
+  bookME(ibooker, trackDecayLenVal_, histname, title, 100, -0.1, 22);
   setMETitle(trackDecayLenVal_, "trackDecayLenVal", "Entries");
 
   histname = "trackEtaRel";
   title = "trackEtaRel";
-  bookME(ibooker,
-         trackEtaRel_,
-         histname, title,
-         31, -0.1, 30);
+  bookME(ibooker, trackEtaRel_, histname, title, 31, -0.1, 30);
   setMETitle(trackEtaRel_, "trackEtaRel", "Entries");
 
   histname = "vertexMass";
   title = "vertexMass";
-  bookME(ibooker,
-         vertexMass_,
-         histname, title,
-         20, 0, 10);
+  bookME(ibooker, vertexMass_, histname, title, 20, 0, 10);
   setMETitle(vertexMass_, "vertexMass", "Entries");
 
   histname = "vertexNTracks";
   title = "vertexNTracks";
-  bookME(ibooker,
-         vertexNTracks_,
-         histname, title,
-         20, -0.5, 19.5);
+  bookME(ibooker, vertexNTracks_, histname, title, 20, -0.5, 19.5);
   setMETitle(vertexNTracks_, "vertexNTracks", "Entries");
 
   histname = "vertexEnergyRatio";
   title = "vertexEnergyRatio";
-  bookME(ibooker,
-         vertexEnergyRatio_,
-         histname, title,
-         100, -0.1, 3);
+  bookME(ibooker, vertexEnergyRatio_, histname, title, 100, -0.1, 3);
   setMETitle(vertexEnergyRatio_, "vertexEnergyRatio", "Entries");
 
   histname = "vertexJetDeltaR";
   title = "vertexJetDeltaR";
-  bookME(ibooker,
-         vertexJetDeltaR_,
-         histname, title,
-         100, -0.01, .4);
+  bookME(ibooker, vertexJetDeltaR_, histname, title, 100, -0.01, .4);
   setMETitle(vertexJetDeltaR_, "vertexJetDeltaR", "Entries");
 
   histname = "flightDistance2dVal";
   title = "flightDistance2dVal";
-  bookME(ibooker,
-         flightDistance2dVal_,
-         histname, title,
-         100, -0.1, 5);
+  bookME(ibooker, flightDistance2dVal_, histname, title, 100, -0.1, 5);
   setMETitle(flightDistance2dVal_, "flightDistance2dVal", "Entries");
 
   histname = "flightDistance2dSig";
   title = "flightDistance2dSig";
-  bookME(ibooker,
-         flightDistance2dSig_,
-         histname, title,
-         100, -10, 150.);
+  bookME(ibooker, flightDistance2dSig_, histname, title, 100, -10, 150.);
   setMETitle(flightDistance2dSig_, "flightDistance2dSig", "Entries");
 
   histname = "flightDistance3dVal";
   title = "flightDistance3dVal";
-  bookME(ibooker,
-         flightDistance3dVal_,
-         histname, title,
-         100, -0.1, 5);
+  bookME(ibooker, flightDistance3dVal_, histname, title, 100, -0.1, 5);
   setMETitle(flightDistance3dVal_, "flightDistance3dVal", "Entries");
 
   histname = "flightDistance3dSig";
   title = "flightDistance3dSig";
-  bookME(ibooker,
-         flightDistance3dSig_,
-         histname, title,
-         100, -10, 150.);
+  bookME(ibooker, flightDistance3dSig_, histname, title, 100, -10, 150.);
   setMETitle(flightDistance3dSig_, "flightDistance3dSig", "Entries");
 
-//#  histname = "jet_eta";
-//#  title = "jet #eta";
-//#  bookME(ibooker,
-//#         jet_eta_,
-//#         histname, title,
-//#         20, -2.5, 2.5);
-//#  setMETitle(jet_eta_, "#eta", "Entries");
-
-
+  //#  histname = "jet_eta";
+  //#  title = "jet #eta";
+  //#  bookME(ibooker,
+  //#         jet_eta_,
+  //#         histname, title,
+  //#         20, -2.5, 2.5);
+  //#  setMETitle(jet_eta_, "#eta", "Entries");
 }
 
 //void BTagAndProbe::fillCutFlow(std::string cut){
@@ -800,7 +705,8 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   // if valid HLT paths are required,
   // analyze event only if all paths are valid
   //std::cout<<"requireValidPaths: "<<requireValidHLTPaths_<<" hltPathsAreValid: "<<hltPathsAreValid_<<endl;
-  if (requireValidHLTPaths_ && (!hltPathsAreValid_)) return;
+  if (requireValidHLTPaths_ && (!hltPathsAreValid_))
+    return;
 
   // electron Handle valid
   edm::Handle<edm::View<reco::GsfElectron> > eleHandle;
@@ -838,7 +744,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   //tag info
   edm::Handle<std::vector<reco::ShallowTagInfo> > shallowTagInfos;
   iEvent.getByToken(shallowTagInfosToken_, shallowTagInfos);
-  if(!shallowTagInfos.isValid()){
+  if (!shallowTagInfos.isValid()) {
     edm::LogWarning("BTagAndProbe") << "shallow tag handle not valid, will skip event \n";
     return;
   }
@@ -864,7 +770,8 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   //Primary Vertex selection
   const reco::Vertex* pv = nullptr;
   for (auto const& v : *primaryVertices) {
-    if (!vtxSelection_(v)) continue;
+    if (!vtxSelection_(v))
+      continue;
     pv = &v;
     break;
   }
@@ -885,7 +792,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     //cutFlow->setBinLabel(cutFlowStatus, "elecHandleSize");
     //cutFlow->Fill(cutFlowStatus);
 
-    if(debug_){
+    if (debug_) {
       h_nElectrons1->Fill(eleHandle->size());
       h_nElectrons2->Fill(eleIDHandle->size());
     }
@@ -897,7 +804,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
 
       bool pass_id = (*eleIDHandle)[el];
       //pass_id = true;
-      if(debug_){
+      if (debug_) {
         h_Electrons1_pt->Fill(e.pt());
         h_Electrons1_eta->Fill(e.eta());
       }
@@ -905,8 +812,7 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       if (eleSelection_(e) && pass_id) {
         //electrons.push_back(e);
 
-
-        if(debug_){
+        if (debug_) {
           h_Electrons2_pt->Fill(e.pt());
           h_Electrons2_eta->Fill(e.eta());
         }
@@ -917,62 +823,67 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
         }
         electrons.push_back(e);
 
-        if(debug_){
+        if (debug_) {
           h_Electrons3_pt->Fill(e.pt());
           h_Electrons3_eta->Fill(e.eta());
         }
       }
     }
     nElectrons = electrons.size();
-    if(debug_) h_nElectrons3->Fill(nElectrons);
+    if (debug_)
+      h_nElectrons3->Fill(nElectrons);
   }
   //have a debug
   //cout<<"nelectrons_: "<<nelectrons_<<" nElectrons: "<<nElectrons<<endl;
 
-  if(debug_) h_nMuons1->Fill(muoHandle->size());
+  if (debug_)
+    h_nMuons1->Fill(muoHandle->size());
 
   //cutFlowStatus++;
   //cutFlow->setBinLabel(cutFlowStatus, "passMuonSize");
   //cutFlow->Fill(cutFlowStatus);
 
   unsigned int nMuons = 0;
-  if (nmuons_ > 0) { // need nmuons_ at least be '1'
-    for(auto const& m : *muoHandle) {
-      if(debug_){
+  if (nmuons_ > 0) {  // need nmuons_ at least be '1'
+    for (auto const& m : *muoHandle) {
+      if (debug_) {
         h_Muons1_pt->Fill(m.pt());
         h_Muons1_eta->Fill(m.eta());
       }
       if (muoSelection_(m)) {
         //muons.push_back(m);
-        
-        if(debug_){
+
+        if (debug_) {
           h_Muons2_pt->Fill(m.pt());
           h_Muons2_eta->Fill(m.eta());
         }
 
         if (applyLeptonPVcuts_ && ((std::fabs(m.muonBestTrack()->dxy(pv->position())) >= lepPVcuts_.dxy) ||
-                                     (std::fabs(m.muonBestTrack()->dz(pv->position())) >= lepPVcuts_.dz))) {
-            continue;
+                                   (std::fabs(m.muonBestTrack()->dz(pv->position())) >= lepPVcuts_.dz))) {
+          continue;
         }
         muons.push_back(m);
-        
-        if(debug_){
+
+        if (debug_) {
           h_Muons3_pt->Fill(m.pt());
           h_Muons3_eta->Fill(m.eta());
         }
       }
     }
-    if(debug_) h_nMuons2->Fill(muons.size());
+    if (debug_)
+      h_nMuons2->Fill(muons.size());
 
     nMuons = muons.size();
-    if (nMuons < nmuons_) return;
-    if(debug_) h_nMuons3->Fill(nMuons);
+    if (nMuons < nmuons_)
+      return;
+    if (debug_)
+      h_nMuons3->Fill(nMuons);
     //cutFlow->Fill(cutFlowStatus);
   }
 
-  int nbjets1=0;
-  int nbjets2=0;
-  int nbjets3=0;
+  int nbjets1 = 0;
+  int nbjets2 = 0;
+  int nbjets3 = 0;
 
   for (const auto& jetTagToken : jetTagTokens_) {
     edm::Handle<reco::JetTagCollection> bjetHandle;
@@ -981,33 +892,34 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     const reco::JetTagCollection& bTags = *(bjetHandle.product());
     //int nbjets1=0;
     for (const auto& i_jetTag : bTags) {
-      const auto& jetRef = i_jetTag.first; // where jet that is tagged exists
+      const auto& jetRef = i_jetTag.first;  // where jet that is tagged exists
       nbjets1++;
-      if (not bjetSelection_(*dynamic_cast<const reco::Jet*>(jetRef.get()))) continue;
+      if (not bjetSelection_(*dynamic_cast<const reco::Jet*>(jetRef.get())))
+        continue;
       nbjets2++;
-      const auto btagVal = i_jetTag.second; // bTagVal exists
+      const auto btagVal = i_jetTag.second;  // bTagVal exists
       h_btagVal->Fill(btagVal);
 
-      if (not std::isfinite(btagVal)) continue; // checks bTagVal exists
+      if (not std::isfinite(btagVal))
+        continue;  // checks bTagVal exists
       nbjets3++;
       if (allJetBTagVals.find(jetRef) != allJetBTagVals.end()) {
-        allJetBTagVals.at(jetRef) += btagVal; // add bjet tagVal to map
-      }
-      else {
+        allJetBTagVals.at(jetRef) += btagVal;  // add bjet tagVal to map
+      } else {
         allJetBTagVals.insert(JetTagMap::value_type(jetRef, btagVal));
       }
     }
   }
-  
-  if(debug_){
+
+  if (debug_) {
     h_nJets1->Fill(nbjets1);
     h_nJets2->Fill(nbjets2);
     h_nJets3->Fill(nbjets3);
   }
 
-  int nbjets4=0;
-  int nbjets5=0;
-  int nbjets6=0;
+  int nbjets4 = 0;
+  int nbjets5 = 0;
+  int nbjets6 = 0;
   //int nbjets7=0;
   for (const auto& jetBTagVal : allJetBTagVals) {
     /*if (jetBTagVal.second < workingpoint_) { //check if passing btag
@@ -1016,36 +928,38 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
     }*/
     bool isJetOverlappedWithLepton = false;
     nbjets4++;
-    if(nmuons_>0){
-      for(auto const& m : muons){
-        if(deltaR(*jetBTagVal.first, m) < leptJetDeltaRmin_){
+    if (nmuons_ > 0) {
+      for (auto const& m : muons) {
+        if (deltaR(*jetBTagVal.first, m) < leptJetDeltaRmin_) {
           isJetOverlappedWithLepton = true;
           break;
         }
-        if(debug_){
+        if (debug_) {
           h_Muons4_pt->Fill(m.pt());
           h_Muons4_eta->Fill(m.eta());
         }
       }
     }
-    if (isJetOverlappedWithLepton) continue;
+    if (isJetOverlappedWithLepton)
+      continue;
     nbjets5++;
 
     isJetOverlappedWithLepton = false;
-    if(nelectrons_>0){
-      for(auto const& e : electrons){
-        if(deltaR(*jetBTagVal.first, e)<leptJetDeltaRmin_){
+    if (nelectrons_ > 0) {
+      for (auto const& e : electrons) {
+        if (deltaR(*jetBTagVal.first, e) < leptJetDeltaRmin_) {
           isJetOverlappedWithLepton = true;
           break;
         }
       }
     }
-    if (isJetOverlappedWithLepton) continue;
+    if (isJetOverlappedWithLepton)
+      continue;
     nbjets6++;
 
     bjets.insert(JetTagMap::value_type(jetBTagVal.first, jetBTagVal.second));
   }
-  if(debug_){
+  if (debug_) {
     h_nJets4->Fill(nbjets4);
     h_nJets5->Fill(nbjets5);
     h_nJets6->Fill(nbjets6);
@@ -1074,24 +988,28 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       return;
   }
   cutFlow->Fill(cutFlowStatus);*/
-  if(debug_) h_nJets9->Fill(bjets.size());
+  if (debug_)
+    h_nJets9->Fill(bjets.size());
 
   ////// Event selection
-  if(debug_) h_nElectrons5->Fill(nElectrons); //FIXME
+  if (debug_)
+    h_nElectrons5->Fill(nElectrons);  //FIXME
   cutFlowStatus++;
-  cutFlow->setBinLabel(cutFlowStatus, "reqNumElectrons "+std::to_string(nelectrons_));
-  if(nElectrons<nelectrons_) return;
+  cutFlow->setBinLabel(cutFlowStatus, "reqNumElectrons " + std::to_string(nelectrons_));
+  if (nElectrons < nelectrons_)
+    return;
   cutFlow->Fill(cutFlowStatus);
-  if(debug_){
+  if (debug_) {
     h_nJets10->Fill(bjets.size());
     h_nElectrons6->Fill(nElectrons);
     h_nMuons5->Fill(nMuons);
   }
   cutFlowStatus++;
-  cutFlow->setBinLabel(cutFlowStatus, "reqNumMuons "+std::to_string(nmuons_));
-  if(nMuons<nmuons_) return;
+  cutFlow->setBinLabel(cutFlowStatus, "reqNumMuons " + std::to_string(nmuons_));
+  if (nMuons < nmuons_)
+    return;
   cutFlow->Fill(cutFlowStatus);
-  if(debug_){
+  if (debug_) {
     h_nJets11->Fill(bjets.size());
     h_nElectrons7->Fill(nElectrons);
     h_nMuons6->Fill(nMuons);
@@ -1099,33 +1017,36 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
   cutFlowStatus++;
   cutFlow->setBinLabel(cutFlowStatus, "twoOrMoreJets");
 
-  if(nbJets<2) return;
+  if (nbJets < 2)
+    return;
 
   cutFlow->Fill(cutFlowStatus);
-  if(debug_) h_nJets12->Fill(nbJets);
+  if (debug_)
+    h_nJets12->Fill(nbJets);
 
   //loop electron, muon distributions
-  if(debug_){
-    for(auto const& m : muons){
+  if (debug_) {
+    for (auto const& m : muons) {
       h_Muons5_pt->Fill(m.pt());
       h_Muons5_eta->Fill(m.eta());
     }
 
-    for(auto const& e : electrons){
+    for (auto const& e : electrons) {
       h_Electrons4_pt->Fill(e.pt());
       h_Electrons4_eta->Fill(e.eta());
     }
-    h_nElectrons8->Fill(nElectrons); //Fill electron counter
-    h_nMuons7->Fill(nMuons); //Fill muon counter
+    h_nElectrons8->Fill(nElectrons);  //Fill electron counter
+    h_nMuons7->Fill(nMuons);          //Fill muon counter
   }
-  
+
   bool isProbe;
   bool passProbe;
-  for(auto& jet1: bjets){
+  for (auto& jet1 : bjets) {
     isProbe = false;
-    for(auto& jet2: bjets){
-      if(deltaR(*jet1.first,*jet2.first)<0.3) continue; // check if same jet
-      if (jet2.second >= workingpoint_){// check if passing btag
+    for (auto& jet2 : bjets) {
+      if (deltaR(*jet1.first, *jet2.first) < 0.3)
+        continue;                          // check if same jet
+      if (jet2.second >= workingpoint_) {  // check if passing btag
         //std::cout<<"working point: "<<workingpoint_<<endl;
         isProbe = true;
         //h_btagVal2->Fill(jet2.second);
@@ -1133,15 +1054,15 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
       }
     }
 
-    if(isProbe){
+    if (isProbe) {
       h_btagVal_pa->Fill(jet1.second);
-      passProbe=false;
+      passProbe = false;
 
-      if(jet1.second>=workingpoint_){
+      if (jet1.second >= workingpoint_) {
         h_btagVal_pp->Fill(jet1.second);
-        passProbe=true;
-      }
-      else h_btagVal_pf->Fill(jet1.second);
+        passProbe = true;
+      } else
+        h_btagVal_pf->Fill(jet1.second);
 
       /*for(const auto& deepFlavInfo : *deepFlavInfos){
         const auto tagJet = deepFlavInfo.jet();
@@ -1155,139 +1076,135 @@ void BTagAndProbe::analyze(edm::Event const& iEvent, edm::EventSetup const& iSet
         //std::cout<<
       }*/
 
-      for(const auto& shallowTagInfo : *shallowTagInfos){
-        const auto tagJet  = shallowTagInfo.jet();
+      for (const auto& shallowTagInfo : *shallowTagInfos) {
+        const auto tagJet = shallowTagInfo.jet();
         const auto& tagVars = shallowTagInfo.taggingVariables();
 
         //auto jetEta = tagVars.getList(reco::btau::jetEta, false)[0];
         //auto jetPt  = tagVars.getList(reco::btau::jetPt, false)[0];
 
-        if(deltaR(jet1.first->eta(), jet1.first->phi(), tagJet->eta(), tagJet->phi())>0.3) continue;
+        if (deltaR(jet1.first->eta(), jet1.first->phi(), tagJet->eta(), tagJet->phi()) > 0.3)
+          continue;
 
         jet_pt_.fill(passProbe, tagJet->pt());
         jet_eta_.fill(passProbe, tagJet->eta());
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::jetNSecondaryVertices, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::jetNSecondaryVertices, false)) {
           jetNSecondaryVertices_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)) {
           trackSumJetEtRatio_.fill(passProbe, tagVar);
         }
 
         //for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)){
-          //trackSumJetEtRatio_.fill(passProbe, tagVar);
+        //trackSumJetEtRatio_.fill(passProbe, tagVar);
         //}
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetDeltaR, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSumJetDeltaR, false)) {
           trackSumJetDeltaR_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::vertexCategory, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::vertexCategory, false)) {
           vertexCategory_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip2dValAboveCharm, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSip2dValAboveCharm, false)) {
           trackSip2dValAboveCharm_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip2dSigAboveCharm, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSip2dSigAboveCharm, false)) {
           trackSip2dSigAboveCharm_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip3dValAboveCharm, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSip3dValAboveCharm, false)) {
           trackSip3dValAboveCharm_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip3dSigAboveCharm, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSip3dSigAboveCharm, false)) {
           trackSip3dSigAboveCharm_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::jetNSelectedTracks, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::jetNSelectedTracks, false)) {
           jetNSelectedTracks_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::jetNTracksEtaRel, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::jetNTracksEtaRel, false)) {
           jetNTracksEtaRel_.fill(passProbe, tagVar);
         }
 
         //for(const auto& tagVar : tagVars.getList(reco::btau::trackSumJetEtRatio, false)){
-          //trackSumJetEtRatio_.fill(passProbe, tagVar);
+        //trackSumJetEtRatio_.fill(passProbe, tagVar);
         //}
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackJetDistVal, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackJetDistVal, false)) {
           trackJetDistVal_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackPtRel, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackPtRel, false)) {
           trackPtRel_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackDeltaR, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackDeltaR, false)) {
           trackDeltaR_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackPtRatio, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackPtRatio, false)) {
           trackPtRatio_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip3dSig, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSip3dSig, false)) {
           trackSip3dSig_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackSip2dSig, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackSip2dSig, false)) {
           trackSip2dSig_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackDecayLenVal, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackDecayLenVal, false)) {
           trackDecayLenVal_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::trackEtaRel, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::trackEtaRel, false)) {
           trackEtaRel_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::vertexMass, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::vertexMass, false)) {
           vertexMass_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::vertexNTracks, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::vertexNTracks, false)) {
           vertexNTracks_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::vertexEnergyRatio, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::vertexEnergyRatio, false)) {
           vertexEnergyRatio_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::vertexJetDeltaR, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::vertexJetDeltaR, false)) {
           vertexJetDeltaR_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dVal, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dVal, false)) {
           flightDistance2dVal_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dSig, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance2dSig, false)) {
           flightDistance2dSig_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dVal, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dVal, false)) {
           flightDistance3dVal_.fill(passProbe, tagVar);
         }
 
-        for(const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dSig, false)){
+        for (const auto& tagVar : tagVars.getList(reco::btau::flightDistance3dSig, false)) {
           flightDistance3dSig_.fill(passProbe, tagVar);
         }
 
         //std::cout<<"jetPhi: "<<jetPhi.size()<<" "<<jet1.first->phi()<<endl;
       }
-
-
-
     }
-    
   }
-
 }
 
 void BTagAndProbe::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
