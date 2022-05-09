@@ -173,7 +173,7 @@ private:
     MonitorElement* h_3d_ip_error = nullptr;
     MonitorElement* h_3d_ip_sig = nullptr;
 
-    //NEW FIXME
+    //NEW
     MonitorElement* h_jetNSecondaryVertices = nullptr;
     MonitorElement* h_jet_pt = nullptr;
     MonitorElement* h_jet_eta = nullptr;
@@ -612,12 +612,11 @@ void BTVHLTOfflineSource::analyze(const edm::Event& iEvent, const edm::EventSetu
         }
 
         // impact parameter
-        // and new stuff FIXME
+        // and new stuff
         const auto& trackSip3dVal = tagVars.getList(reco::btau::trackSip3dVal, false);
         const auto& trackSip3dSig = tagVars.getList(reco::btau::trackSip3dSig, false);
         const auto& trackJetDistVal = tagVars.getList(reco::btau::trackJetDistVal, false);
         const auto& trackPtRel = tagVars.getList(reco::btau::trackPtRel, false);
-        const auto& trackSip2dVal = tagVars.getList(reco::btau::trackSip2dVal, false);
         const auto& trackSip2dSig = tagVars.getList(reco::btau::trackSip2dSig, false);
         const auto& trackDeltaR = tagVars.getList(reco::btau::trackDeltaR, false);
         const auto& trackPtRatio = tagVars.getList(reco::btau::trackPtRatio, false);
@@ -908,7 +907,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     title = "3D IP significance of tracks (cm)" + trigPath;
     v.h_3d_ip_sig = iBooker.book1D(histoname.c_str(), title.c_str(), 40, -40, 40);
 
-    //new FIXME
+    //new
     histoname = "jetNSecondaryVertices";
     title = "jet N Secondary Vertices" + trigPath;
     v.h_jetNSecondaryVertices = iBooker.book1D(histoname.c_str(), title.c_str(), 10, -0.5, 9.5);
@@ -957,7 +956,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     title = "trackSumJetDeltaR" + trigPath;
     v.h_trackSumJetDeltaR = iBooker.book1D(histoname.c_str(), title.c_str(), 100, -0.1, 0.35);
 
-    //new 2 FIXME below
+    //new 2 below
     histoname = "trackJetDistVal";
     title = "trackJetDistVal" + trigPath;
     v.h_trackJetDistVal = iBooker.book1D(histoname.c_str(), title.c_str(), 100, -1, 0.01);
@@ -990,7 +989,7 @@ void BTVHLTOfflineSource::bookHistograms(DQMStore::IBooker& iBooker, edm::Run co
     title = "trackEtaRel" + trigPath;
     v.h_trackEtaRel = iBooker.book1D(histoname.c_str(), title.c_str(), 31, 0, 30);
 
-    //new 3 FIXME below
+    //new 3 below
 
     //histoname = "vertexMass";
     //title = "vertexMass" + trigPath;
