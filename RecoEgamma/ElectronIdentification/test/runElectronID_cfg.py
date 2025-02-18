@@ -15,7 +15,8 @@ process.maxEvents = cms.untracked.PSet(
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-    '/store/relval/CMSSW_3_10_0_pre2/RelValZEE/GEN-SIM-RECO/START39_V3-v1/0061/A0E0AF74-F5E2-DF11-A9BC-002618943939.root',
+    #'/store/relval/CMSSW_3_10_0_pre2/RelValZEE/GEN-SIM-RECO/START39_V3-v1/0061/A0E0AF74-F5E2-DF11-A9BC-002618943939.root',
+    '/uscms/home/wterrill/nobackup/retraining/CMSSW_14_1_7/src/RecoEgamma/ElectronIdentification/test/JPsiToEE_pth0to10_MiniAOD.root'
     ),
     secondaryFileNames = cms.untracked.vstring (
    )

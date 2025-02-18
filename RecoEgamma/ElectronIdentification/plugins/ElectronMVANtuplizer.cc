@@ -107,7 +107,8 @@ private:
   const size_t nCats_;
 
   // Tokens
-  const edm::EDGetTokenT<edm::View<reco::GsfElectron>> src_;
+  //const edm::EDGetTokenT<edm::View<reco::GsfElectron>> src_;
+  const edm::EDGetTokenT<edm::View<pat::Electron>> src_;
   const edm::EDGetTokenT<std::vector<reco::Vertex>> vertices_;
   const edm::EDGetTokenT<std::vector<PileupSummaryInfo>> pileup_;
   const edm::EDGetTokenT<edm::View<reco::GenParticle>> genParticles_;
@@ -127,7 +128,8 @@ private:
   // other
   TTree* tree_;
 
-  MVAVariableManager<reco::GsfElectron> mvaVarMngr_;
+  //MVAVariableManager<reco::GsfElectron> mvaVarMngr_;
+  MVAVariableManager<pat::Electron> mvaVarMngr_;
   const int nVars_;
   std::vector<float> vars_;
 
@@ -162,7 +164,8 @@ ElectronMVANtuplizer::ElectronMVANtuplizer(const edm::ParameterSet& iConfig)
       mvaCatTags_(iConfig.getParameter<std::vector<std::string>>("eleMVACats")),
       mvaCatBranchNames_(iConfig.getParameter<std::vector<std::string>>("eleMVACatLabels")),
       nCats_(mvaCatBranchNames_.size()),
-      src_(consumes<edm::View<reco::GsfElectron>>(iConfig.getParameter<edm::InputTag>("src"))),
+      //src_(consumes<edm::View<reco::GsfElectron>>(iConfig.getParameter<edm::InputTag>("src"))),
+      src_(consumes<edm::View<pat::Electron>>(iConfig.getParameter<edm::InputTag>("src"))),
       vertices_(consumes<std::vector<reco::Vertex>>(iConfig.getParameter<edm::InputTag>("vertices"))),
       pileup_(consumes<std::vector<PileupSummaryInfo>>(iConfig.getParameter<edm::InputTag>("pileup"))),
       genParticles_(consumes<edm::View<reco::GenParticle>>(iConfig.getParameter<edm::InputTag>("genParticles"))),

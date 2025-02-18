@@ -62,3 +62,4 @@ ele_eClass                         classification                               
 ele_nbrem                          numberOfBrems                                              None None
 ele_oldhebc                        full5x5_hcalOverEcalBc                                     None None
 ele_hebc                           hcalOverEcalBc                                             None None
+ele_ID                             electronID("ID")                                           None None

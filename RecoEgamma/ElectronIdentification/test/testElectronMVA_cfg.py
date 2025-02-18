@@ -1,6 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 from Configuration.AlCa.GlobalTag import GlobalTag
+from RecoEgamma.EgammaElectronProducers.lowPtGsfElectronID_cfi import lowPtGsfElectronID
+from RecoEgamma.EgammaElectronProducers.lowPtGsfElectrons_cfi import lowPtRegressionModifier
 
 process = cms.Process("ElectronMVANtuplizer")
 
@@ -19,7 +21,9 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-         '/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/RECOSIMstep_94X_mc2017_realistic_v10-v1/00000/0293A280-B5F3-E711-8303-3417EBE33927.root'
+         #'/store/mc/Run3Summer19MiniAOD/DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8/MINIAODSIM/2023Scenario_106X_mcRun3_2023_realistic_v3-v1/270000/670DBBD9-A15B-BF4F-930B-AB4A1EADB2A0.root'
+         #'/store/mc/RunIIFall17MiniAOD/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/RECOSIMstep_94X_mc2017_realistic_v10-v1/00000/0293A280-B5F3-E711-8303-3417EBE33927.root'
+         'file:/uscms/home/wterrill/nobackup/retraining/CMSSW_14_1_7/src/RecoEgamma/ElectronIdentification/test/JPsiToEE_pth0to10_MiniAOD.root'
     )
 )
 
@@ -52,6 +56,8 @@ my_id_modules = [
         'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
         'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V2_cff',
         'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V2_cff',
+        #'RecoEgamma.ElectronIdentification.Identification.LowPtElectrons.LowPtElectrons_ID_2021May17.root',
+        #'RecoEgamma.EgammaElectronProducers.lowPtGsfElectrons_cfi',
                  ]
 
 #add them to the VID producer
@@ -61,77 +67,38 @@ for idmod in my_id_modules:
 process.ntuplizer = cms.EDAnalyzer('ElectronMVANtuplizer',
         #
         eleMVAs             = cms.vstring(
-                                          "egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80",
-                                          "egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp90",
-                                          "egmGsfElectronIDs:mvaEleID-Spring16-HZZ-V1-wpLoose",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-noIso-V2-wp80",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-noIso-V2-wpLoose",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-noIso-V2-wp90",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wpHZZ",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp80",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wpLoose",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp90",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80",
-                                          "egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose",
+                                           #"lowPtGsfElectronID:2019Aug07",
+                                           #"lowPtGsfElectronIDExtra:2020Sept15",
+                                           #"lowPtGsfElectronID:2020Nov28",
+                                           #"lowPtGsfElectronIDExtra:2021May17"
+                                           #"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose",
                                           ),
         eleMVALabels        = cms.vstring(
-                                          "Spring16GPV1wp80",
-                                          "Spring16GPV1wp90",
-                                          "Spring16HZZV1wpLoose",
-                                          "Fall17noIsoV2wp80",
-                                          "Fall17noIsoV2wpLoose",
-                                          "Fall17noIsoV2wp90",
-                                          "Fall17isoV2wpHZZ",
-                                          "Fall17isoV2wp80",
-                                          "Fall17isoV2wpLoose",
-                                          "Fall17isoV2wp90",
-                                          "Fall17noIsoV1wp90",
-                                          "Fall17noIsoV1wp80",
-                                          "Fall17noIsoV1wpLoose",
-                                          "Fall17isoV1wp90",
-                                          "Fall17isoV1wp80",
-                                          "Fall17isoV1wpLoose",
+                                           #"Aug201907",
+                                           #"Sept202015",
+                                           #"Nov202018",
+                                           #"May202117",
+                                           #"Fall17isoV1wpLoose",
                                           ),
         eleMVAValMaps        = cms.vstring(
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1RawValues",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1RawValues",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV2Values",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV2RawValues",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV2Values",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV2RawValues",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values",
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values",
+                                           #"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV2RawValues",
                                            ),
         eleMVAValMapLabels   = cms.vstring(
-                                           "Spring16GPV1Vals",
-                                           "Spring16GPV1RawVals",
-                                           "Spring16HZZV1Vals",
-                                           "Spring16HZZV1RawVals",
-                                           "Fall17NoIsoV2Vals",
-                                           "Fall17NoIsoV2RawVals",
-                                           "Fall17IsoV2Vals",
-                                           "Fall17IsoV2RawVals",
-                                           "Fall17IsoV1Vals",
-                                           "Fall17NoIsoV1Vals",
+                                           #"Fall17NoIsoV2Vals",
                                            ),
         eleMVACats           = cms.vstring(
-                                           "electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Categories",
+                                           #"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV2Categories",
                                            ),
         eleMVACatLabels      = cms.vstring(
-                                           "EleMVACats",
+                                           #"EleMVACats",
                                            ),
         #
         variableDefinition   = cms.string(mvaVariablesFile),
-        ptThreshold = cms.double(5.0),
+        ptThreshold = cms.double(0.0),
         #
         doEnergyMatrix = cms.bool(False), # disabled by default due to large size
         energyMatrixSize = cms.int32(2), # corresponding to 5x5
+        src = cms.InputTag("slimmedLowPtElectrons"),
         #
         **input_tags
         )
