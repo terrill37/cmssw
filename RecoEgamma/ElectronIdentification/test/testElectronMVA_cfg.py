@@ -99,6 +99,7 @@ process.ntuplizer = cms.EDAnalyzer('ElectronMVANtuplizer',
         doEnergyMatrix = cms.bool(False), # disabled by default due to large size
         energyMatrixSize = cms.int32(2), # corresponding to 5x5
         src = cms.InputTag("slimmedLowPtElectrons"),
+        isMC = cms.bool(True),
         #
         **input_tags
         )

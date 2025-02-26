@@ -352,9 +352,8 @@ int ElectronMVANtuplizer::matchToTruth(reco::GsfElectron const& electron,
   reco::GenParticle const* closestElectron = nullptr;
   for (auto const& particle : genParticles) {
     // Drop everything that is not electron or not status 1
-    if (std::abs(particle.pdgId()) != 11 || particle.status() != 1)
-      continue;
-    //
+    if (std::abs(particle.pdgId()) != 11 || particle.status() != 1){continue;}
+
     double dRtmp = ROOT::Math::VectorUtil::DeltaR(electron.p4(), particle.p4());
     if (dRtmp < dR) {
       dR = dRtmp;
@@ -362,14 +361,21 @@ int ElectronMVANtuplizer::matchToTruth(reco::GsfElectron const& electron,
     }
   }
   // See if the closest electron is close enough. If not, no match found.
-  if (closestElectron == nullptr || dR >= deltaR_)
-    return UNMATCHED;
-
-  if (closestElectron->fromHardProcessFinalState())
+  if (closestElectron == nullptr || dR >= deltaR_){return UNMATCHED;}
+    
+  bool fromJPsi = closestElectron->numberOfMothers()>=1 && closestElectron->mother() && //has mother
+    std::abs(closestElectron->mother()->pdgId()) == 443; //mother is J/psi
+  //if (closestElectron->fromHardProcessFinalState())
+  //if (closestElectron->isPromptFinalState()){
+  if (fromJPsi){
+    std::cout<<"PROMPT\n";
     return TRUE_PROMPT_ELECTRON;
+  }
 
-  if (closestElectron->isDirectHardProcessTauDecayProductFinalState())
+  if (closestElectron->isDirectHardProcessTauDecayProductFinalState()){
+    std::cout<<"FROM TAU\n";
     return TRUE_ELECTRON_FROM_TAU;
+  }
 
   // What remains is true non-prompt electrons
   return TRUE_NON_PROMPT_ELECTRON;
