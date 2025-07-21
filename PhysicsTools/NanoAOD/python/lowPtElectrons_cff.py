@@ -39,6 +39,16 @@ isoForLowPtEle = cms.EDProducer(
     EAFile_PFIso = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt"),
 )
 
+modifiedIDLowPtElectrons = cms.EDProducer(
+    "lowPtIDProducer",
+    src = cms.InputTag("isoForLowPtEle"),
+    modelFile = cms.string("RecoEgamma/ElectronIdentification/data/LowPtElectrons/electron_id_JPsiToEE2023_10Jun2025_all.root"),
+    rho = cms.InputTag("fixedGridRhoFastjetAll"),
+    isMC = cms.bool(True),
+    doMatch = cms.bool(True),
+    deltaR = cms.double(0.03),
+)
+
 updatedLowPtElectronsWithUserData = cms.EDProducer(
     "PATElectronUserDataEmbedder",
     src = cms.InputTag("updatedLowPtElectrons"),
@@ -161,6 +171,7 @@ lowPtElectronMCTable = cms.EDProducer(
 ################################################################################
 
 lowPtElectronTask = cms.Task(modifiedLowPtElectrons,
+                             modifiedIDLowPtElectrons,
                              updatedLowPtElectrons,
                              isoForLowPtEle,
                              updatedLowPtElectronsWithUserData,

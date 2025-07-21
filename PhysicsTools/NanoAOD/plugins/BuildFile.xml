@@ -3,6 +3,7 @@
 <use name="roothistmatrix"/>
 <use name="tbb"/>
 <use name="CommonTools/Egamma"/>
+<use name="CommonTools/BaseParticlePropagator"/>
 <use name="CondFormats/BTauObjects"/>
 <use name="CondFormats/DataRecord"/>
 <use name="CondFormats/L1TObjects"/>
